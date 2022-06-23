@@ -1,5 +1,6 @@
 #[cfg(feature = "pyo3")]
 use pyo3::prelude::*;
+use pyo3::{exceptions::PyNotImplementedError, pyclass::CompareOp};
 use serde::{Deserialize, Serialize};
 
 #[cfg_attr(feature = "pyo3", pyclass(name = "RsOpType"))]
@@ -589,4 +590,16 @@ pub enum OpType {
     Copy,
     #[cfg(feature = "tket2ops")]
     Const,
+}
+
+#[cfg(feature = "pyo3")]
+#[pymethods]
+impl OpType {
+    fn __richcmp__(&self, other: &Self, op: CompareOp) -> PyResult<bool> {
+        match op {
+            CompareOp::Eq => Ok(self == other),
+            CompareOp::Ne => Ok(self != other),
+            _ => Err(PyNotImplementedError::new_err("Unsupported comparison.")),
+        }
+    }
 }

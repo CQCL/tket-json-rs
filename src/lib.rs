@@ -1,5 +1,7 @@
 pub mod circuit_json;
 pub mod optype;
+#[cfg(feature = "pyo3")]
+pub mod pytket;
 
 #[cfg(test)]
 mod tests {

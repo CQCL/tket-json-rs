@@ -1,5 +1,8 @@
+#[cfg(feature = "pyo3")]
+use pyo3::prelude::*;
 use serde::{Deserialize, Serialize};
 
+#[cfg_attr(feature = "pyo3", pyclass(name = "RsOpType"))]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub enum OpType {
     /**
@@ -565,4 +568,25 @@ pub enum OpType {
      * See \ref UnitaryTableauBox
      */
     UnitaryTableauBox,
+
+    #[cfg(feature = "tket2ops")]
+    AngleAdd,
+    #[cfg(feature = "tket2ops")]
+    AngleMul,
+    #[cfg(feature = "tket2ops")]
+    AngleNeg,
+    #[cfg(feature = "tket2ops")]
+    QuatMul,
+    #[cfg(feature = "tket2ops")]
+    RxF64,
+    #[cfg(feature = "tket2ops")]
+    RzF64,
+    #[cfg(feature = "tket2ops")]
+    Rotation,
+    #[cfg(feature = "tket2ops")]
+    ToRotation,
+    #[cfg(feature = "tket2ops")]
+    Copy,
+    #[cfg(feature = "tket2ops")]
+    Const,
 }

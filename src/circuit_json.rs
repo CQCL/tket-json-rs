@@ -13,6 +13,19 @@ pub struct CompositeGate {
 }
 
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
+pub enum ClassicalExpUnit {
+    U32,
+    Register,
+    BitRegister,
+    ClassicalExpUnit,
+}
+
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
+pub struct ClassicalExp {
+    args: Vec<ClassicalExpUnit>,
+}
+
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct BoxID(uuid::Uuid);
 
 /// Box for an operation, the enum variant names come from the names
@@ -35,6 +48,11 @@ pub enum OpBox {
         // 4x4 matrix of complex numbers
         matrix: [[(f32, f32); 4]; 4],
     },
+    Unitary3qBox {
+        id: BoxID,
+        // 8x8 matric of complex numbers
+        matrix: Box<[[(f32, f32); 8]; 8]>,
+    },
     ExpBox {
         id: BoxID,
         // 4x4 matrix of complex numbers
@@ -52,6 +70,15 @@ pub enum OpBox {
         n_qubits: u32,
         qubit_indices: Vec<(u32, u32)>,
     },
+    StabiliserAssertionBox {
+        id: BoxID,
+        coeff: bool,
+        string: Vec<String>,
+    },
+    ProjectorAssertionBox {
+        id: BoxID,
+        matrix: Vec<Vec<f32>>,
+    },
     Composite {
         id: BoxID,
         gate: CompositeGate,
@@ -62,6 +89,13 @@ pub enum OpBox {
         id: BoxID,
         n_controls: u32,
         op: Box<Operation>,
+    },
+    ClassicalExpBox {
+        id: BoxID,
+        n_i: u32,
+        n_io: u32,
+        n_o: u32,
+        exp: ClassicalExp,
     },
 }
 

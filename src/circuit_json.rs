@@ -159,3 +159,16 @@ pub struct SerialCircuit<P = String> {
     pub bits: Vec<Register>,
     pub implicit_permutation: Vec<Permutation>,
 }
+
+impl<P> Operation<P> {
+    pub fn from_optype(op_type: OpType) -> Self {
+        Self {
+            op_type,
+            n_qb: None,
+            params: None,
+            op_box: None,
+            signature: None,
+            conditional: None,
+        }
+    }
+}

@@ -8,8 +8,6 @@ tket-json-rs
 
 Serializable definition of TKET circuits and operations.
 
-Please read the [API documentation here][].
-
 ## Features
 
 -   `pyo3`: Enable Python bindings via pyo3.

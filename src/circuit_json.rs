@@ -1,7 +1,7 @@
 use crate::optype::OpType;
 use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct Register(pub String, pub Vec<i64>);
 
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
@@ -12,13 +12,13 @@ pub struct CompositeGate {
     name: String,
 }
 
-#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct BitRegister {
     name: String,
     size: u32,
 }
 
-#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
 #[serde(untagged)]
 pub enum ClassicalExpUnit {
     U32(u32),
@@ -27,19 +27,19 @@ pub enum ClassicalExpUnit {
     ClassicalExpUnit(ClassicalExp),
 }
 
-#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct ClassicalExp {
     args: Vec<ClassicalExpUnit>,
     op: String,
 }
 
-#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct PauliStabiliser {
     coeff: bool,
     string: Vec<String>,
 }
 
-#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct BoxID(uuid::Uuid);
 
 /// Box for an operation, the enum variant names come from the names
@@ -144,7 +144,7 @@ pub struct Command<P = String> {
     pub opgroup: Option<String>,
 }
 
-#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct Permutation(pub Register, pub Register);
 
 /// Pytket canonical circuit

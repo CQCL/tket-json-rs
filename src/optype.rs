@@ -5,7 +5,7 @@ use pyo3::{exceptions::PyNotImplementedError, pyclass::CompareOp};
 use serde::{Deserialize, Serialize};
 
 #[cfg_attr(feature = "pyo3", pyclass(name = "RsOpType"))]
-#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum OpType {
     /**
      * Quantum input node of the circuit

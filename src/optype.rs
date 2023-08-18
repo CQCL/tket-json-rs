@@ -1,594 +1,432 @@
+//! Defines the `OpType` enum, which represents the operation types in a quantum
+//! circuit.
+
 #[cfg(feature = "pyo3")]
 use pyo3::prelude::*;
 #[cfg(feature = "pyo3")]
 use pyo3::{exceptions::PyNotImplementedError, pyclass::CompareOp};
 use serde::{Deserialize, Serialize};
 
+/// Operation types in a quantum circuit.
 #[cfg_attr(feature = "pyo3", pyclass(name = "RsOpType"))]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum OpType {
-    /**
-     * Quantum input node of the circuit
-     */
+    /// Quantum input node of the circuit
     Input,
 
-    /**
-     * Quantum output node of the circuit
-     */
+    /// Quantum output node of the circuit
     Output,
 
-    /**
-     * Quantum node with no predecessors, implicitly in zero state.
-     */
+    /// Quantum node with no predecessors, implicitly in zero state.
     Create,
 
-    /**
-     * Quantum node with no successors, not composable with input nodes of other
-     * circuits.
-     */
+    /// Quantum node with no successors, not composable with input nodes of other
+    /// circuits.
     Discard,
 
-    /**
-     * Classical input node of the circuit
-     */
+    /// Classical input node of the circuit
     ClInput,
 
-    /**
-     * Classical output node of the circuit
-     */
+    /// Classical output node of the circuit
     ClOutput,
 
-    /**
-     * No-op that must be preserved by compilation
-     */
+    /// No-op that must be preserved by compilation
     Barrier,
 
-    /**
-     * FlowOp introducing a target for Branch or Goto commands
-     */
+    /// FlowOp introducing a target for Branch or Goto commands
     Label,
 
-    /**
-     * Execution jumps to a label if a condition bit is true (1),
-     * otherwise continues to next command
-     */
+    /// Execution jumps to a label if a condition bit is true (1),
+    /// otherwise continues to next command
     Branch,
 
-    /**
-     * Execution jumps to a label unconditionally
-     */
+    /// Execution jumps to a label unconditionally
     Goto,
 
-    /**
-     * Execution halts and the program terminates
-     */
+    /// Execution halts and the program terminates
     Stop,
 
-    /**
-     * A general classical operation where all inputs are also outputs
-     */
+    /// A general classical operation where all inputs are also outputs
     ClassicalTransform,
 
-    /**
-     * An operation to set some bits to specified values
-     */
+    /// An operation to set some bits to specified values
     SetBits,
 
-    /**
-     * An operation to copy some bit values
-     */
+    /// An operation to copy some bit values
     CopyBits,
 
-    /**
-     * A classical predicate defined by a range of values in binary encoding
-     */
+    /// A classical predicate defined by a range of values in binary encoding
     RangePredicate,
 
-    /**
-     * A classical predicate defined by a truth table
-     */
+    /// A classical predicate defined by a truth table
     ExplicitPredicate,
 
-    /**
-     * An operation defined by a truth table that modifies one bit
-     */
+    /// An operation defined by a truth table that modifies one bit
     ExplicitModifier,
 
-    /**
-     * A classical operation applied to multiple bits simultaneously
-     */
+    /// A classical operation applied to multiple bits simultaneously
     MultiBit,
 
-    /**
-     * \f$ \left[ \begin{array}{cc} 1 & 0 \\ 0 & -1 \end{array} \right] \f$
-     */
+    /// \f$ \left[ \begin{array}{cc} 1 & 0 \\ 0 & -1 \end{array} \right] \f$
     Z,
 
-    /**
-     * \f$ \left[ \begin{array}{cc} 0 & 1 \\ 1 & 0 \end{array} \right] \f$
-     */
+    /// \f$ \left[ \begin{array}{cc} 0 & 1 \\ 1 & 0 \end{array} \right] \f$
     X,
 
-    /**
-     * \f$ \left[ \begin{array}{cc} 0 & -i \\ i & 0 \end{array} \right] \f$
-     */
+    /// \f$ \left[ \begin{array}{cc} 0 & -i \\ i & 0 \end{array} \right] \f$
     Y,
 
-    /**
-     * \f$ \left[ \begin{array}{cc} 1 & 0 \\ 0 & i \end{array} \right] =
-     * \mathrm{U1}(\frac12) \f$
-     */
+    /// \f$ \left[ \begin{array}{cc} 1 & 0 \\ 0 & i \end{array} \right] =
+    /// \mathrm{U1}(\frac12) \f$
     S,
 
-    /**
-     * \f$ \left[ \begin{array}{cc} 1 & 0 \\ 0 & -i \end{array} \right] =
-     * \mathrm{U1}(-\frac12) \f$
-     */
+    /// \f$ \left[ \begin{array}{cc} 1 & 0 \\ 0 & -i \end{array} \right] =
+    /// \mathrm{U1}(-\frac12) \f$
     Sdg,
 
-    /**
-     * \f$ \left[ \begin{array}{cc} 1 & 0 \\ 0 & e^{i\pi/4} \end{array} \right]
-     * = \mathrm{U1}(\frac14) \f$
-     */
+    /// \f$ \left[ \begin{array}{cc} 1 & 0 \\ 0 & e^{i\pi/4} \end{array} \right]
+    /// = \mathrm{U1}(\frac14) \f$
     T,
 
-    /**
-     * \f$ \left[ \begin{array}{cc} 1 & 0 \\ 0 & e^{-i\pi/4} \end{array} \right]
-     * \equiv \mathrm{U1}(-\frac14) \f$
-     */
+    /// \f$ \left[ \begin{array}{cc} 1 & 0 \\ 0 & e^{-i\pi/4} \end{array} \right]
+    /// \equiv \mathrm{U1}(-\frac14) \f$
     Tdg,
 
-    /**
-     * \f$ \frac{1}{\sqrt 2} \left[ \begin{array}{cc} 1 & -i \\ -i & 1
-     * \end{array} \right] = \mathrm{Rx}(\frac12) \f$
-     */
+    /// \f$ \frac{1}{\sqrt 2} \left[ \begin{array}{cc} 1 & -i \\ -i & 1
+    /// \end{array} \right] = \mathrm{Rx}(\frac12) \f$
     V,
 
-    /**
-     * \f$ \frac{1}{\sqrt 2} \left[ \begin{array}{cc} 1 & i \\ i & 1 \end{array}
-     * \right] = \mathrm{Rx}(-\frac12) \f$
-     */
+    /// \f$ \frac{1}{\sqrt 2} \left[ \begin{array}{cc} 1 & i \\ i & 1 \end{array}
+    /// \right] = \mathrm{Rx}(-\frac12) \f$
     Vdg,
 
-    /**
-     * \f$ \frac{1}{2} \left[ \begin{array}{cc} 1+i & 1-i \\ 1-i & 1+i
-     * \end{array} \right] = e^{\frac{i\pi}{4}}\mathrm{Rx}(\frac12) \f$
-     */
+    /// \f$ \frac{1}{2} \left[ \begin{array}{cc} 1+i & 1-i \\ 1-i & 1+i
+    /// \end{array} \right] = e^{\frac{i\pi}{4}}\mathrm{Rx}(\frac12) \f$
     SX,
 
-    /**
-     * \f$ \frac{1}{2} \left[ \begin{array}{cc} 1-i & 1+i \\ 1+i & 1-i
-     * \end{array} \right] = e^{\frac{-i\pi}{4}}\mathrm{Rx}(-\frac12) \f$
-     */
+    /// \f$ \frac{1}{2} \left[ \begin{array}{cc} 1-i & 1+i \\ 1+i & 1-i
+    /// \end{array} \right] = e^{\frac{-i\pi}{4}}\mathrm{Rx}(-\frac12) \f$
     SXdg,
 
-    /**
-     * \f$ \frac{1}{\sqrt 2} \left[ \begin{array}{cc} 1 & 1 \\ 1 & -1
-     * \end{array} \right] \f$
-     */
+    /// \f$ \frac{1}{\sqrt 2} \left[ \begin{array}{cc} 1 & 1 \\ 1 & -1
+    /// \end{array} \right] \f$
     H,
 
-    /**
-     * \f$ \mathrm{Rx}(\alpha) = e^{-\frac12 i \pi \alpha X} = \left[
-     * \begin{array}{cc} \cos\frac{\pi\alpha}{2} & -i\sin\frac{\pi\alpha}{2} \\
-     * -i\sin\frac{\pi\alpha}{2} & \cos\frac{\pi\alpha}{2} \end{array} \right]
-     * \f$
-     */
+    /// \f$ \mathrm{Rx}(\alpha) = e^{-\frac12 i \pi \alpha X} = \left[
+    /// \begin{array}{cc} \cos\frac{\pi\alpha}{2} & -i\sin\frac{\pi\alpha}{2} \\
+    /// -i\sin\frac{\pi\alpha}{2} & \cos\frac{\pi\alpha}{2} \end{array} \right]
+    /// \f$
     Rx,
 
-    /**
-     * \f$ \mathrm{Ry}(\alpha) = e^{-\frac12 i \pi \alpha Y} = \left[
-     * \begin{array}{cc} \cos\frac{\pi\alpha}{2} & -\sin\frac{\pi\alpha}{2}
-     * \\ \sin\frac{\pi\alpha}{2} & \cos\frac{\pi\alpha}{2} \end{array} \right]
-     * \f$
-     */
+    /// \f$ \mathrm{Ry}(\alpha) = e^{-\frac12 i \pi \alpha Y} = \left[
+    /// \begin{array}{cc} \cos\frac{\pi\alpha}{2} & -\sin\frac{\pi\alpha}{2}
+    /// \\ \sin\frac{\pi\alpha}{2} & \cos\frac{\pi\alpha}{2} \end{array} \right]
+    /// \f$
     Ry,
 
-    /**
-     * \f$ \mathrm{Rz}(\alpha) = e^{-\frac12 i \pi \alpha Z} = \left[
-     * \begin{array}{cc} e^{-\frac12 i \pi\alpha} & 0 \\ 0 & e^{\frac12 i
-     * \pi\alpha} \end{array} \right] \f$
-     */
+    /// \f$ \mathrm{Rz}(\alpha) = e^{-\frac12 i \pi \alpha Z} = \left[
+    /// \begin{array}{cc} e^{-\frac12 i \pi\alpha} & 0 \\ 0 & e^{\frac12 i
+    /// \pi\alpha} \end{array} \right] \f$
     Rz,
 
-    /**
-     * \f$ \mathrm{U3}(\theta, \phi, \lambda) = \left[ \begin{array}{cc}
-     * \cos\frac{\pi\theta}{2} & -e^{i\pi\lambda} \sin\frac{\pi\theta}{2} \\
-     * e^{i\pi\phi} \sin\frac{\pi\theta}{2} & e^{i\pi(\lambda+\phi)}
-     * \cos\frac{\pi\theta}{2} \end{array} \right] = e^{\frac12
-     * i\pi(\lambda+\phi)} \mathrm{Rz}(\phi) \mathrm{Ry}(\theta)
-     * \mathrm{Rz}(\lambda) \f$
-     */
+    /// \f$ \mathrm{U3}(\theta, \phi, \lambda) = \left[ \begin{array}{cc}
+    /// \cos\frac{\pi\theta}{2} & -e^{i\pi\lambda} \sin\frac{\pi\theta}{2} \\
+    /// e^{i\pi\phi} \sin\frac{\pi\theta}{2} & e^{i\pi(\lambda+\phi)}
+    /// \cos\frac{\pi\theta}{2} \end{array} \right] = e^{\frac12
+    /// i\pi(\lambda+\phi)} \mathrm{Rz}(\phi) \mathrm{Ry}(\theta)
+    /// \mathrm{Rz}(\lambda) \f$
     U3,
 
-    /**
-     * \f$ \mathrm{U2}(\phi, \lambda) = \mathrm{U3}(\frac12, \phi, \lambda)
-     * = e^{\frac12 i\pi(\lambda+\phi)} \mathrm{Rz}(\phi) \mathrm{Ry}(\frac12)
-     * \mathrm{Rz}(\lambda) \f$
-     */
+    /// \f$ \mathrm{U2}(\phi, \lambda) = \mathrm{U3}(\frac12, \phi, \lambda)
+    /// = e^{\frac12 i\pi(\lambda+\phi)} \mathrm{Rz}(\phi) \mathrm{Ry}(\frac12)
+    /// \mathrm{Rz}(\lambda) \f$
     U2,
 
-    /**
-     * \f$ \mathrm{U1}(\lambda) = \mathrm{U3}(0, 0, \lambda) = e^{\frac12
-     * i\pi\lambda} \mathrm{Rz}(\lambda) \f$
-     */
+    /// \f$ \mathrm{U1}(\lambda) = \mathrm{U3}(0, 0, \lambda) = e^{\frac12
+    /// i\pi\lambda} \mathrm{Rz}(\lambda) \f$
     U1,
 
-    /**
-     * \f$ \mathrm{TK1}(\alpha, \beta, \gamma) = \mathrm{Rz}(\alpha)
-     * \mathrm{Rx}(\beta) \mathrm{Rz}(\gamma) \f$
-     */
+    /// \f$ \mathrm{TK1}(\alpha, \beta, \gamma) = \mathrm{Rz}(\alpha)
+    /// \mathrm{Rx}(\beta) \mathrm{Rz}(\gamma) \f$
     TK1,
 
-    /**
-     * Controlled \ref OpType::X
-     */
+    /// Controlled \ref OpType::X
     CX,
 
-    /**
-     * Controlled \ref OpType::Y
-     */
+    /// Controlled \ref OpType::Y
     CY,
 
-    /**
-     * Controlled \ref OpType::Z
-     */
+    /// Controlled \ref OpType::Z
     CZ,
 
-    /**
-     * Controlled \ref OpType::H
-     */
+    /// Controlled \ref OpType::H
     CH,
 
-    /**
-     * Controlled \ref OpType::V
-     *
-     * \f$ \left[ \begin{array}{cccc}
-     * 1 & 0 & 0 & 0 \\
-     * 0 & 1 & 0 & 0 \\
-     * 0 & 0 & \frac{1}{\sqrt 2} & -i \frac{1}{\sqrt 2} \\
-     * 0 & 0 & -i \frac{1}{\sqrt 2} & \frac{1}{\sqrt 2}
-     * \end{array} \right] \f$
-     */
+    /// Controlled \ref OpType::V
+    ///
+    /// \f$ \left[ \begin{array}{cccc}
+    /// 1 & 0 & 0 & 0 \\
+    /// 0 & 1 & 0 & 0 \\
+    /// 0 & 0 & \frac{1}{\sqrt 2} & -i \frac{1}{\sqrt 2} \\
+    /// 0 & 0 & -i \frac{1}{\sqrt 2} & \frac{1}{\sqrt 2}
+    /// \end{array} \right] \f$
     CV,
 
-    /**
-     * Controlled \ref OpType::Vdg
-     *
-     * \f$ \left[ \begin{array}{cccc}
-     * 1 & 0 & 0 & 0 \\
-     * 0 & 1 & 0 & 0 \\
-     * 0 & 0 & \frac{1}{\sqrt 2} & i \frac{1}{\sqrt 2} \\
-     * 0 & 0 & i \frac{1}{\sqrt 2} & \frac{1}{\sqrt 2}
-     * \end{array} \right] \f$
-     */
+    /// Controlled \ref OpType::Vdg
+    ///
+    /// \f$ \left[ \begin{array}{cccc}
+    /// 1 & 0 & 0 & 0 \\
+    /// 0 & 1 & 0 & 0 \\
+    /// 0 & 0 & \frac{1}{\sqrt 2} & i \frac{1}{\sqrt 2} \\
+    /// 0 & 0 & i \frac{1}{\sqrt 2} & \frac{1}{\sqrt 2}
+    /// \end{array} \right] \f$
     CVdg,
 
-    /**
-     * Controlled \ref OpType::SX
-     *
-     * \f$ \left[ \begin{array}{cccc}
-     * 1 & 0 & 0 & 0 \\
-     * 0 & 1 & 0 & 0 \\
-     * 0 & 0 & \frac{1+i}{2} & \frac{1-i}{2} \\
-     * 0 & 0 & \frac{1-i}{2} & \frac{1+i}{2}
-     * \end{array} \right] \f$
-     */
+    /// Controlled \ref OpType::SX
+    ///
+    /// \f$ \left[ \begin{array}{cccc}
+    /// 1 & 0 & 0 & 0 \\
+    /// 0 & 1 & 0 & 0 \\
+    /// 0 & 0 & \frac{1+i}{2} & \frac{1-i}{2} \\
+    /// 0 & 0 & \frac{1-i}{2} & \frac{1+i}{2}
+    /// \end{array} \right] \f$
     CSX,
 
-    /**
-     * Controlled \ref OpType::SXdg
-     *
-     * \f$ \left[ \begin{array}{cccc}
-     * 1 & 0 & 0 & 0 \\
-     * 0 & 1 & 0 & 0 \\
-     * 0 & 0 & \frac{1-i}{2} & \frac{1+i}{2} \\
-     * 0 & 0 & \frac{1+i}{2} & \frac{1-i}{2}
-     * \end{array} \right] \f$
-     */
+    /// Controlled \ref OpType::SXdg
+    ///
+    /// \f$ \left[ \begin{array}{cccc}
+    /// 1 & 0 & 0 & 0 \\
+    /// 0 & 1 & 0 & 0 \\
+    /// 0 & 0 & \frac{1-i}{2} & \frac{1+i}{2} \\
+    /// 0 & 0 & \frac{1+i}{2} & \frac{1-i}{2}
+    /// \end{array} \right] \f$
     CSXdg,
 
-    /**
-     * Controlled \ref OpType::Rz
-     *
-     * \f$ \mathrm{CRz}(\alpha) = \left[ \begin{array}{cccc} 1 & 0 & 0 & 0 \\ 0
-     * & 1 & 0 & 0 \\ 0 & 0 & e^{-\frac12 i \pi\alpha} & 0 \\ 0 & 0 & 0 &
-     * e^{\frac12 i \pi\alpha} \end{array} \right] \f$
-     *
-     * The phase parameter \f$ \alpha \f$ is defined modulo \f$ 4 \f$.
-     */
+    /// Controlled \ref OpType::Rz
+    ///
+    /// \f$ \mathrm{CRz}(\alpha) = \left[ \begin{array}{cccc} 1 & 0 & 0 & 0 \\ 0
+    /// & 1 & 0 & 0 \\ 0 & 0 & e^{-\frac12 i \pi\alpha} & 0 \\ 0 & 0 & 0 &
+    /// e^{\frac12 i \pi\alpha} \end{array} \right] \f$
+    ///
+    /// The phase parameter \f$ \alpha \f$ is defined modulo \f$ 4 \f$.
     CRz,
 
-    /**
-     * Controlled \ref OpType::Rx
-     *
-     * \f$ \mathrm{CRx}(\alpha) = \left[ \begin{array}{cccc} 1 & 0 & 0 & 0 \\ 0
-     * & 1 & 0 & 0 \\ 0 & 0 & \cos \frac{\pi \alpha}{2} & -i \sin \frac{\pi
-     * \alpha}{2}
-     * \\ 0 & 0 & -i \sin \frac{\pi \alpha}{2}  & \cos \frac{\pi \alpha}{2}
-     * \end{array} \right] \f$
-     *
-     * The phase parameter \f$ \alpha \f$ is defined modulo \f$ 4 \f$.
-     */
+    /// Controlled \ref OpType::Rx
+    ///
+    /// \f$ \mathrm{CRx}(\alpha) = \left[ \begin{array}{cccc} 1 & 0 & 0 & 0 \\ 0
+    /// & 1 & 0 & 0 \\ 0 & 0 & \cos \frac{\pi \alpha}{2} & -i \sin \frac{\pi
+    /// \alpha}{2}
+    /// \\ 0 & 0 & -i \sin \frac{\pi \alpha}{2}  & \cos \frac{\pi \alpha}{2}
+    /// \end{array} \right] \f$
+    ///
+    /// The phase parameter \f$ \alpha \f$ is defined modulo \f$ 4 \f$.
     CRx,
 
-    /**
-     * Controlled \ref OpType::Ry
-     *
-     * \f$ \mathrm{CRy}(\alpha) = \left[ \begin{array}{cccc} 1 & 0 & 0 & 0 \\ 0
-     * & 1 & 0 & 0 \\ 0 & 0 & \cos \frac{\pi \alpha}{2} & -\sin \frac{\pi
-     * \alpha}{2}
-     * \\ 0 & 0 & \sin \frac{\pi \alpha}{2}  & \cos \frac{\pi \alpha}{2}
-     * \end{array} \right] \f$
-     *
-     * The phase parameter \f$ \alpha \f$ is defined modulo \f$ 4 \f$.
-     */
+    /// Controlled \ref OpType::Ry
+    ///
+    /// \f$ \mathrm{CRy}(\alpha) = \left[ \begin{array}{cccc} 1 & 0 & 0 & 0 \\ 0
+    /// & 1 & 0 & 0 \\ 0 & 0 & \cos \frac{\pi \alpha}{2} & -\sin \frac{\pi
+    /// \alpha}{2}
+    /// \\ 0 & 0 & \sin \frac{\pi \alpha}{2}  & \cos \frac{\pi \alpha}{2}
+    /// \end{array} \right] \f$
+    ///
+    /// The phase parameter \f$ \alpha \f$ is defined modulo \f$ 4 \f$.
     CRy,
 
-    /**
-     * Controlled \ref OpType::U1
-     *
-     * \f$ \mathrm{CU1}(\alpha) = \left[ \begin{array}{cccc} 1 & 0 & 0 & 0 \\ 0
-     * & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & e^{i\pi\alpha} \end{array}
-     * \right] \f$
-     */
+    /// Controlled \ref OpType::U1
+    ///
+    /// \f$ \mathrm{CU1}(\alpha) = \left[ \begin{array}{cccc} 1 & 0 & 0 & 0 \\ 0
+    /// & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & e^{i\pi\alpha} \end{array}
+    /// \right] \f$
     CU1,
 
-    /**
-     * Controlled \ref OpType::U3
-     */
+    /// Controlled \ref OpType::U3
     CU3,
 
-    /**
-     * \f$ \alpha \mapsto e^{-\frac12 i \pi\alpha Z^{\otimes n}} \f$
-     */
+    /// \f$ \alpha \mapsto e^{-\frac12 i \pi\alpha Z^{\otimes n}} \f$
     PhaseGadget,
 
-    /**
-     * Controlled \ref OpType::CX
-     */
+    /// Controlled \ref OpType::CX
     CCX,
 
-    /**
-     * Swap two qubits
-     */
+    /// Swap two qubits
     SWAP,
 
-    /**
-     * Controlled \ref OpType::SWAP
-     */
+    /// Controlled \ref OpType::SWAP
     CSWAP,
 
-    /**
-     * Three-qubit gate that swaps the first and third qubits
-     */
+    /// Three-qubit gate that swaps the first and third qubits
     BRIDGE,
 
-    /**
-     * Identity
-     */
+    /// Identity
     #[allow(non_camel_case_types)]
     noop,
 
-    /**
-     * Measure a qubit, producing a classical output
-     */
+    /// Measure a qubit, producing a classical output
     Measure,
 
-    /**
-     * Measure a qubit producing no output
-     */
+    /// Measure a qubit producing no output
     Collapse,
 
-    /**
-     * Reset a qubit to the zero state
-     */
+    /// Reset a qubit to the zero state
     Reset,
 
-    /**
-     * \f$ \frac{1}{\sqrt 2} \left[ \begin{array}{cccc} 0 & 0 & 1 & i \\ 0 & 0 &
-     * i & 1 \\ 1 & -i & 0 & 0 \\ -i & 1 & 0 & 0 \end{array} \right] \f$
-     */
+    /// \f$ \frac{1}{\sqrt 2} \left[ \begin{array}{cccc} 0 & 0 & 1 & i \\ 0 & 0 &
+    /// i & 1 \\ 1 & -i & 0 & 0 \\ -i & 1 & 0 & 0 \end{array} \right] \f$
     ECR,
 
-    /**
-     * \f$ \alpha \mapsto e^{\frac14 i \pi\alpha (X \otimes X + Y \otimes Y)}
-     * = \left[ \begin{array}{cccc} 1 & 0 & 0 & 0 \\ 0 & \cos\frac{\pi\alpha}{2}
-     * & i\sin\frac{\pi\alpha}{2} & 0 \\ 0 & i\sin\frac{\pi\alpha}{2} &
-     * \cos\frac{\pi\alpha}{2} & 0 \\ 0 & 0 & 0 & 1 \end{array} \right] \f$
-     *
-     * Also known as an XY gate.
-     */
+    /// \f$ \alpha \mapsto e^{\frac14 i \pi\alpha (X \otimes X + Y \otimes Y)}
+    /// = \left[ \begin{array}{cccc} 1 & 0 & 0 & 0 \\ 0 & \cos\frac{\pi\alpha}{2}
+    /// & i\sin\frac{\pi\alpha}{2} & 0 \\ 0 & i\sin\frac{\pi\alpha}{2} &
+    /// \cos\frac{\pi\alpha}{2} & 0 \\ 0 & 0 & 0 & 1 \end{array} \right] \f$
+    ///
+    /// Also known as an XY gate.
     ISWAP,
 
-    /**
-     * \f$ (\alpha, \beta) \mapsto \mathrm{Rz}(\beta) \mathrm{Rx}(\alpha)
-     * \mathrm{Rz}(-\beta) \f$
-     */
+    /// \f$ (\alpha, \beta) \mapsto \mathrm{Rz}(\beta) \mathrm{Rx}(\alpha)
+    /// \mathrm{Rz}(-\beta) \f$
     PhasedX,
 
-    /**
-     * PhasedX gates on multiple qubits
-     */
+    /// PhasedX gates on multiple qubits
     NPhasedX,
 
-    /**
-     * \f$ \mathrm{ZZPhase}(\frac12) \f$
-     */
+    /// \f$ \mathrm{ZZPhase}(\frac12) \f$
     ZZMax,
 
-    /**
-     * \f$ \alpha \mapsto e^{-\frac12 i \pi\alpha (X \otimes X)} = \left[
-     * \begin{array}{cccc} \cos\frac{\pi\alpha}{2} & 0 & 0 &
-     * -i\sin\frac{\pi\alpha}{2} \\ 0 & \cos\frac{\pi\alpha}{2} &
-     * -i\sin\frac{\pi\alpha}{2} & 0 \\ 0 & -i\sin\frac{\pi\alpha}{2} &
-     * \cos\frac{\pi\alpha}{2} & 0 \\ -i\sin\frac{\pi\alpha}{2} & 0 & 0 &
-     * \cos\frac{\pi\alpha}{2} \end{array} \right] \f$
-     */
+    /// \f$ \alpha \mapsto e^{-\frac12 i \pi\alpha (X \otimes X)} = \left[
+    /// \begin{array}{cccc} \cos\frac{\pi\alpha}{2} & 0 & 0 &
+    /// -i\sin\frac{\pi\alpha}{2} \\ 0 & \cos\frac{\pi\alpha}{2} &
+    /// -i\sin\frac{\pi\alpha}{2} & 0 \\ 0 & -i\sin\frac{\pi\alpha}{2} &
+    /// \cos\frac{\pi\alpha}{2} & 0 \\ -i\sin\frac{\pi\alpha}{2} & 0 & 0 &
+    /// \cos\frac{\pi\alpha}{2} \end{array} \right] \f$
     XXPhase,
 
-    /**
-     * \f$ \alpha \mapsto e^{-\frac12 i \pi\alpha (Y \otimes Y)} = \left[
-     * \begin{array}{cccc} \cos\frac{\pi\alpha}{2} & 0 & 0 &
-     * i\sin\frac{\pi\alpha}{2} \\ 0 & \cos\frac{\pi\alpha}{2} &
-     * -i\sin\frac{\pi\alpha}{2} & 0 \\ 0 & -i\sin\frac{\pi\alpha}{2} &
-     * \cos\frac{\pi\alpha}{2} & 0 \\ i\sin\frac{\pi\alpha}{2} & 0 & 0 &
-     * \cos\frac{\pi\alpha}{2} \end{array} \right] \f$
-     */
+    /// \f$ \alpha \mapsto e^{-\frac12 i \pi\alpha (Y \otimes Y)} = \left[
+    /// \begin{array}{cccc} \cos\frac{\pi\alpha}{2} & 0 & 0 &
+    /// i\sin\frac{\pi\alpha}{2} \\ 0 & \cos\frac{\pi\alpha}{2} &
+    /// -i\sin\frac{\pi\alpha}{2} & 0 \\ 0 & -i\sin\frac{\pi\alpha}{2} &
+    /// \cos\frac{\pi\alpha}{2} & 0 \\ i\sin\frac{\pi\alpha}{2} & 0 & 0 &
+    /// \cos\frac{\pi\alpha}{2} \end{array} \right] \f$
     YYPhase,
 
-    /**
-     * \f$ \alpha \mapsto e^{-\frac12 i \pi\alpha (Z \otimes Z)} = \left[
-     * \begin{array}{cccc} e^{-\frac12 i \pi\alpha} & 0 & 0 & 0 \\ 0 &
-     * e^{\frac12 i \pi\alpha} & 0 & 0 \\ 0 & 0 & e^{\frac12 i \pi\alpha} & 0 \\ 0
-     * & 0 & 0 & e^{-\frac12 i \pi\alpha} \end{array} \right] \f$
-     */
+    /// \f$ \alpha \mapsto e^{-\frac12 i \pi\alpha (Z \otimes Z)} = \left[
+    /// \begin{array}{cccc} e^{-\frac12 i \pi\alpha} & 0 & 0 & 0 \\ 0 &
+    /// e^{\frac12 i \pi\alpha} & 0 & 0 \\ 0 & 0 & e^{\frac12 i \pi\alpha} & 0 \\ 0
+    /// & 0 & 0 & e^{-\frac12 i \pi\alpha} \end{array} \right] \f$
     ZZPhase,
 
-    /**
-     * Three-qubit phase MSGate
-     */
+    /// Three-qubit phase MSGate
     XXPhase3,
 
-    /**
-     * \f$ \alpha \mapsto e^{-\frac12 i\pi\alpha \cdot \mathrm{SWAP}} = \left[
-     * \begin{array}{cccc} e^{-\frac12 i \pi\alpha} & 0 & 0 & 0 \\ 0 &
-     * \cos\frac{\pi\alpha}{2} & -i\sin\frac{\pi\alpha}{2} & 0 \\ 0 &
-     * -i\sin\frac{\pi\alpha}{2} & \cos\frac{\pi\alpha}{2} & 0 \\ 0 & 0 & 0 &
-     * e^{-\frac12 i \pi\alpha} \end{array} \right] \f$
-     */
+    /// \f$ \alpha \mapsto e^{-\frac12 i\pi\alpha \cdot \mathrm{SWAP}} = \left[
+    /// \begin{array}{cccc} e^{-\frac12 i \pi\alpha} & 0 & 0 & 0 \\ 0 &
+    /// \cos\frac{\pi\alpha}{2} & -i\sin\frac{\pi\alpha}{2} & 0 \\ 0 &
+    /// -i\sin\frac{\pi\alpha}{2} & \cos\frac{\pi\alpha}{2} & 0 \\ 0 & 0 & 0 &
+    /// e^{-\frac12 i \pi\alpha} \end{array} \right] \f$
     ESWAP,
 
-    /**
-     * \f$ (\alpha, \beta) \mapsto \left[ \begin{array}{cccc} 1 & 0 & 0 & 0 \\ 0
-     * & \cos \pi\alpha & -i\sin  \pi\alpha & 0 \\ 0 &
-     * -i\sin \pi\alpha & \cos \pi\alpha & 0 \\ 0 & 0 & 0 &
-     * e^{-i\pi\beta} \end{array} \right] \f$
-     */
+    /// \f$ (\alpha, \beta) \mapsto \left[ \begin{array}{cccc} 1 & 0 & 0 & 0 \\ 0
+    /// & \cos \pi\alpha & -i\sin  \pi\alpha & 0 \\ 0 &
+    /// -i\sin \pi\alpha & \cos \pi\alpha & 0 \\ 0 & 0 & 0 &
+    /// e^{-i\pi\beta} \end{array} \right] \f$
     FSim,
 
-    /**
-     * Fixed instance of a \ref OpType::FSim gate with parameters
-     * \f$ (\frac12, \frac16) \f$:
-     * \f$ \left[ \begin{array}{cccc} 1 & 0 & 0 & 0 \\ 0 & 0 & -i & 0 \\ 0 & -i
-     * & 0 & 0 \\ 0 & 0 & 0 & e^{-i\pi/6} \end{array} \right] \f$
-     */
+    /// Fixed instance of a \ref OpType::FSim gate with parameters
+    /// \f$ (\frac12, \frac16) \f$:
+    /// \f$ \left[ \begin{array}{cccc} 1 & 0 & 0 & 0 \\ 0 & 0 & -i & 0 \\ 0 & -i
+    /// & 0 & 0 \\ 0 & 0 & 0 & e^{-i\pi/6} \end{array} \right] \f$
     Sycamore,
 
-    /**
-     * Fixed instance of a \ref OpType::ISWAP gate with parameter \f$ 1.0 \f$:
-     * \f$ \left[ \begin{array}{cccc} 1 & 0 & 0 & 0 \\ 0 & 0 & i & 0 \\ 0 & i
-     * & 0 & 0 \\ 0 & 0 & 0 & 1 \end{array} \right] \f$
-     */
+    /// Fixed instance of a \ref OpType::ISWAP gate with parameter \f$ 1.0 \f$:
+    /// \f$ \left[ \begin{array}{cccc} 1 & 0 & 0 & 0 \\ 0 & 0 & i & 0 \\ 0 & i
+    /// & 0 & 0 \\ 0 & 0 & 0 & 1 \end{array} \right] \f$
     ISWAPMax,
 
+    /// ISwap gate with extra `Rz`s on each qubit
+    // TODO: Matrix description
     PhasedISWAP,
 
-    /**
-     * Multiply-controlled \ref OpType::Ry
-     *
-     * The phase parameter is defined modulo \f$ 4 \f$.
-     */
+    /// Multiply-controlled \ref OpType::Ry
+    ///
+    /// The phase parameter is defined modulo \f$ 4 \f$.
     CnRy,
 
-    /**
-     * Multiply-controlled \ref OpType::X
-     */
+    /// Multiply-controlled \ref OpType::X
     CnX,
 
-    /**
-     * See \ref CircBox
-     */
+    /// See \ref CircBox
     CircBox,
 
-    /**
-     * See \ref Unitary1qBox
-     */
+    /// See \ref Unitary1qBox
     Unitary1qBox,
 
-    /**
-     * See \ref Unitary2qBox
-     */
+    /// See \ref Unitary2qBox
     Unitary2qBox,
 
-    /**
-     * See \ref Unitary3qBox
-     */
+    /// See \ref Unitary3qBox
     Unitary3qBox,
 
-    /**
-     * See \ref ExpBox
-     */
+    /// See \ref ExpBox
     ExpBox,
 
-    /**
-     * See \ref PauliExpBox
-     */
+    /// See \ref PauliExpBox
     PauliExpBox,
 
-    /**
-     * NYI
-     */
+    /// NYI
     CliffBox,
 
-    /**
-     * See \ref CustomGate
-     */
+    /// See \ref CustomGate
     CustomGate,
 
-    /**
-     * See \ref PhasePolyBox
-     */
+    /// See \ref PhasePolyBox
     PhasePolyBox,
 
-    /**
-     * See \ref QControlBox
-     */
+    /// See \ref QControlBox
     QControlBox,
 
-    /**
-     * See \ref ClassicalExpBox
-     */
+    /// See \ref ClassicalExpBox
     ClassicalExpBox,
 
-    /**
-     * See \ref Conditional
-     */
+    /// See \ref Conditional
     Conditional,
 
-    /**
-     * See \ref ProjectorAssertionBox
-     */
+    /// See \ref ProjectorAssertionBox
     ProjectorAssertionBox,
 
-    /**
-     * See \ref StabiliserAssertionBox
-     */
+    /// See \ref StabiliserAssertionBox
     StabiliserAssertionBox,
 
-    /**
-     * See \ref UnitaryTableauBox
-     */
+    /// See \ref UnitaryTableauBox
     UnitaryTableauBox,
 
+    ///
     #[cfg(feature = "tket2ops")]
     AngleAdd,
+    ///
     #[cfg(feature = "tket2ops")]
     AngleMul,
+    ///
     #[cfg(feature = "tket2ops")]
     AngleNeg,
+    ///
     #[cfg(feature = "tket2ops")]
     QuatMul,
+    ///
     #[cfg(feature = "tket2ops")]
     RxF64,
+    ///
     #[cfg(feature = "tket2ops")]
     RzF64,
+    ///
     #[cfg(feature = "tket2ops")]
     Rotation,
+    ///
     #[cfg(feature = "tket2ops")]
     ToRotation,
+    ///
     #[cfg(feature = "tket2ops")]
     Copy,
+    ///
     #[cfg(feature = "tket2ops")]
     Const,
 }

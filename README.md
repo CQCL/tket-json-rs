@@ -6,12 +6,12 @@ tket-json-rs
 [![msrv][]](https://github.com/CQCL/tket-json-rs)
 [![docs][]](https://docs.rs/tket-json-rs)
 
-Serializable definition of TKET circuits and operations.
+Serializable Rust definition for circuits and operations of the
+[TKET](https://github.com/CQCL/tket) quantum compiler.
 
 ## Features
 
 -   `pyo3`: Enable Python bindings via pyo3.
--   `tket2ops`: Enable definitions for TKET2 operations.
 
 ## Recent Changes
 
@@ -27,4 +27,4 @@ This project is licensed under Apache License, Version 2.0 ([LICENSE][] or http:
   [crates]: https://img.shields.io/crates/v/tket-json-rs
   [LICENSE]: LICENCE
   [msrv]: https://img.shields.io/badge/rust-1.60.0%2B-blue.svg?maxAge=3600
-  [RELEASES]: RELEASES.rst
+  [RELEASES]: RELEASES.md

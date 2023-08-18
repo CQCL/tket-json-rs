@@ -86,7 +86,7 @@ pub enum OpBox {
     /// Three-qubit operation defined as a unitary matrix.
     Unitary3qBox {
         id: BoxID,
-        /// 8x8 matric of complex numbers
+        /// 8x8 matrix of complex numbers
         matrix: Box<[[(f32, f32); 8]; 8]>,
     },
     /// Two-qubit operation defined in terms of a hermitian matrix and a phase.
@@ -112,7 +112,6 @@ pub enum OpBox {
         id: BoxID,
         /// Number of qubits.
         n_qubits: u32,
-        ///
         qubit_indices: Vec<(u32, u32)>,
     },
     StabiliserAssertionBox {

@@ -10,6 +10,7 @@ use serde::{Deserialize, Serialize};
 /// Operation types in a quantum circuit.
 #[cfg_attr(feature = "pyo3", pyclass(name = "RsOpType"))]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
+#[non_exhaustive]
 pub enum OpType {
     /// Quantum input node of the circuit
     Input,
@@ -398,37 +399,6 @@ pub enum OpType {
 
     /// See \ref UnitaryTableauBox
     UnitaryTableauBox,
-
-    ///
-    #[cfg(feature = "tket2ops")]
-    AngleAdd,
-    ///
-    #[cfg(feature = "tket2ops")]
-    AngleMul,
-    ///
-    #[cfg(feature = "tket2ops")]
-    AngleNeg,
-    ///
-    #[cfg(feature = "tket2ops")]
-    QuatMul,
-    ///
-    #[cfg(feature = "tket2ops")]
-    RxF64,
-    ///
-    #[cfg(feature = "tket2ops")]
-    RzF64,
-    ///
-    #[cfg(feature = "tket2ops")]
-    Rotation,
-    ///
-    #[cfg(feature = "tket2ops")]
-    ToRotation,
-    ///
-    #[cfg(feature = "tket2ops")]
-    Copy,
-    ///
-    #[cfg(feature = "tket2ops")]
-    Const,
 }
 
 #[cfg(feature = "pyo3")]

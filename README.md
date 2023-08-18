@@ -12,7 +12,6 @@ Serializable Rust definition for circuits and operations of the
 ## Features
 
 -   `pyo3`: Enable Python bindings via pyo3.
--   `tket2ops`: Enable definitions for TKET2 operations.
 
 ## Recent Changes
 

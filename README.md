@@ -6,12 +6,12 @@ tket-json-rs
 [![msrv][]](https://github.com/CQCL/tket-json-rs)
 [![docs][]](https://docs.rs/tket-json-rs)
 
-Serializable definition of TKET circuits and operations.
+Serializable Rust definition for circuits and operations of the
+[TKET](https://github.com/CQCL/tket) quantum compiler.
 
 ## Features
 
 -   `pyo3`: Enable Python bindings via pyo3.
--   `tket2ops`: Enable definitions for TKET2 operations.
 
 ## Recent Changes
 

@@ -151,6 +151,10 @@ pub enum OpType {
     /// \mathrm{Rx}(\beta) \mathrm{Rz}(\gamma) \f$
     TK1,
 
+    /// \f$ \mathrm{TK1}(\alpha, \beta, \gamma) = \mathrm{XXPhase}(\alpha)
+    /// \mathrm{YYPhase}(\beta) \mathrm{ZZPhase}(\gamma) \f$
+    TK2,
+
     /// Controlled \ref OpType::X
     CX,
 

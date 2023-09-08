@@ -102,8 +102,31 @@ pub enum OpBox {
         id: BoxID,
         /// List of Pauli operators.
         paulis: Vec<String>,
-        /// Symengine expression
+        /// Symengine expression.
         phase: String,
+        /// Config param for decomposition of Pauli exponentials.
+        #[serde(default)]
+        cx_config: String,
+    },
+    /// Operation defined as a pair of exponential of a tensor of Pauli operators.
+    PauliExpPairBox {
+        id: BoxID,
+        /// List of List of Pauli operators.
+        paulis: Vec<Vec<String>>,
+        /// List of Symengine expressions.
+        phase: Vec<String>,
+        /// Config param for decomposition of Pauli exponentials.
+        cx_config: String,
+    },
+    /// Operation defined as a set of commuting exponentials of a tensor of Pauli operators.
+    PauliExpCommutingSetBox {
+        id: BoxID,
+        /// List of List of Pauli operators.
+        paulis: Vec<(Vec<String>, String)>,
+        /// List of Symengine expressions.
+        pauli_gadgets: Vec<(Vec<String>, String)>,
+        /// Config param for decomposition of Pauli exponentials.
+        cx_config: String,
     },
     /// An operation capable of representing arbitrary Circuits made up of CNOT
     /// and RZ, as a PhasePolynomial plus a boolean matrix representing an
@@ -112,16 +135,19 @@ pub enum OpBox {
         id: BoxID,
         /// Number of qubits.
         n_qubits: u32,
-        qubit_indices: Vec<(u32, u32)>,
+        qubit_indices: Vec<(u32, u32)>, // TODO: come back to this one.
     },
+    /// A user-defined assertion specified by a list of Pauli stabilisers.
     StabiliserAssertionBox {
         id: BoxID,
         stabilisers: Vec<PauliStabiliser>,
     },
+    /// A user-defined assertion specified by a 2x2, 4x4, or 8x8 projector matrix.
     ProjectorAssertionBox {
         id: BoxID,
         matrix: Vec<Vec<(f32, f32)>>,
     },
+    /// A user-defined gate defined by a parametrized Circuit.
     Composite {
         id: BoxID,
         gate: CompositeGate,
@@ -135,6 +161,9 @@ pub enum OpBox {
         n_controls: u32,
         /// The operation to be controlled.
         op: Box<Operation>,
+        /// The state of the control.
+        #[serde(default)]
+        control_state: u32,
     },
     /// Holding box for abstract expressions on Bits.
     ClassicalExpBox {
@@ -144,6 +173,29 @@ pub enum OpBox {
         n_o: u32,
         exp: ClassicalExp,
     },
+    /// A user-defined multiplexor specified by a map from bitstrings to Operations.
+    MultiplexorBox {
+        id: BoxID,
+        op_map: Vec<(Vec<bool>, Operation)>,
+    },
+    /// A user-defined multiplexed rotation gate specified by a map from
+    /// bitstrings to Operations.
+    MultiplexedRotationBox {
+        id: BoxID,
+        op_map: Vec<(Vec<bool>, Operation)>,
+    },
+    /// A user-defined multiplexed rotation gate specified by a map from
+    /// bitstrings to Operations.
+    MultiplexedU2Box {
+        id: BoxID,
+        op_map: Vec<(Vec<bool>, Operation)>,
+        #[serde(default = "default_impl_diag")]
+        impl_diag: bool,
+    },
+}
+
+fn default_impl_diag() -> bool {
+    true
 }
 
 /// Decorates another op, adding a QASM-style classical condition.

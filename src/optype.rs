@@ -373,32 +373,47 @@ pub enum OpType {
     /// See \ref PauliExpBox
     PauliExpBox,
 
+    /// See \ref PauliExpPairBox
+    PauliExpPairBox,
+
+    /// See \ref PauliExpCommutingSetBox
+    PauliExpCommutingSetBox,
+
     /// NYI
     CliffBox,
-
-    /// See \ref CustomGate
-    CustomGate,
 
     /// See \ref PhasePolyBox
     PhasePolyBox,
 
-    /// See \ref QControlBox
-    QControlBox,
-
-    /// See \ref ClassicalExpBox
-    ClassicalExpBox,
-
-    /// See \ref Conditional
+    /// NYI
     Conditional,
-
-    /// See \ref ProjectorAssertionBox
-    ProjectorAssertionBox,
 
     /// See \ref StabiliserAssertionBox
     StabiliserAssertionBox,
 
-    /// See \ref UnitaryTableauBox
+    /// See \ref ProjectorAssertionBox
+    ProjectorAssertionBox,
+
+    /// See \ref Composite
+    Composite,
+
+    /// See \ref QControlBox
+    QControlBox,
+
+    /// NYI
     UnitaryTableauBox,
+
+    /// See \ref ClassicalExpBox
+    ClassicalExpBox,
+
+    /// See \ref MultiplexorBox
+    MultiplexorBox,
+
+    /// See \ref MultiplexedRotationBox
+    MultiplexedRotationBox,
+
+    /// See \ref MultiplexedU2Box
+    MultiplexedU2Box,
 }
 
 #[cfg(feature = "pyo3")]

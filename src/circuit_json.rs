@@ -135,7 +135,7 @@ pub enum OpBox {
         id: BoxID,
         /// Number of qubits.
         n_qubits: u32,
-        qubit_indices: Vec<(u32, u32)>, // TODO: come back to this one.
+        qubit_indices: Vec<(Register, u32)>,
     },
     /// A user-defined assertion specified by a list of Pauli stabilisers.
     StabiliserAssertionBox {

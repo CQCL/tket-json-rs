@@ -394,8 +394,8 @@ pub enum OpType {
     /// See \ref ProjectorAssertionBox
     ProjectorAssertionBox,
 
-    /// See \ref Composite
-    Composite,
+    /// See \ref CustomGate
+    CustomGate,
 
     /// See \ref QControlBox
     QControlBox,

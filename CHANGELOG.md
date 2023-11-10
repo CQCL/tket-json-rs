@@ -1,5 +1,11 @@
 # Release notes
 
+## 0.3.0 (2023-11-09)
+
+### Features
+
+- [**breaking**] Non-locking python conversion calls ([#25](https://github.com/CQCL/tket-json-rs/pull/25))
+
 ## 0.2.0 (2023-10-16)
 
 ### Features

@@ -198,7 +198,11 @@ pub enum OpBox {
         id: BoxID,
         /// The classical basis state permutation.
         permutation: Permutation,
+        // Synthesis strategy. See [`ToffoliBoxSynthStrat`].
         strat: ToffoliBoxSynthStrat,
+        // The rotation axis of the multiplexors used in the decomposition. Can
+        // be either `Rx` or `Ry`. Only applicable to the
+        // [`ToffoliBoxSynthStrat::Matching`] strategy. Default to `Ry`.
         #[serde(skip_serializing_if = "Option::is_none")]
         #[serde(default)]
         rotation_axis: Option<OpType>,

@@ -1,5 +1,11 @@
 # Release notes
 
+## 0.3.1 (2024-02-26)
+
+### Features
+
+- ToffoliBox encoding ([#28](https://github.com/CQCL/tket-json-rs/pull/28))
+
 ## 0.3.0 (2023-11-09)
 
 ### Features

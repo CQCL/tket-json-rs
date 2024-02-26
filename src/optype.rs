@@ -418,6 +418,9 @@ pub enum OpType {
 
     /// See \ref MultiplexedU2Box
     MultiplexedU2Box,
+
+    /// See \ref ToffoliBox
+    ToffoliBox,
 }
 
 #[cfg(feature = "pyo3")]

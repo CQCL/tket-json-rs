@@ -192,6 +192,21 @@ pub enum OpBox {
         #[serde(default = "default_impl_diag")]
         impl_diag: bool,
     },
+    /// An operation that constructs a circuit to implement the specified
+    /// permutation of classical basis states.
+    ToffoliBox {
+        id: BoxID,
+        /// The classical basis state permutation.
+        permutation: Permutation,
+        // Synthesis strategy. See [`ToffoliBoxSynthStrat`].
+        strat: ToffoliBoxSynthStrat,
+        // The rotation axis of the multiplexors used in the decomposition. Can
+        // be either `Rx` or `Ry`. Only applicable to the
+        // [`ToffoliBoxSynthStrat::Matching`] strategy. Default to `Ry`.
+        #[serde(skip_serializing_if = "Option::is_none")]
+        #[serde(default)]
+        rotation_axis: Option<OpType>,
+    },
 }
 
 fn default_impl_diag() -> bool {
@@ -279,4 +294,14 @@ impl<P> Operation<P> {
             conditional: None,
         }
     }
+}
+
+/// Strategies for synthesising ToffoliBoxes.
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
+#[non_exhaustive]
+pub enum ToffoliBoxSynthStrat {
+    /// Use multiplexors to perform parallel swaps on hypercubes.
+    Matching,
+    /// Use CnX gates to perform transpositions.
+    Cycle,
 }

@@ -11,7 +11,7 @@ Serializable Rust definition for circuits and operations of the
 
 ## Features
 
--   `pyo3`: Enable Python bindings via pyo3.
+-   `pyo3`: Enable Python bindings and `pytket.Circuit` conversion via pyo3.
 
 ## Recent Changes
 

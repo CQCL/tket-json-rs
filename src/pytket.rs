@@ -2,12 +2,12 @@
 
 use crate::circuit_json::SerialCircuit;
 use pyo3::prelude::*;
-use pythonize::{depythonize, pythonize};
+use pythonize::{depythonize_bound, pythonize};
 
 impl SerialCircuit {
     /// Create a new `SerialCircuit` from a `pytket.Circuit`.
-    pub fn from_tket1(circ: &PyAny) -> PyResult<Self> {
-        let circ = depythonize(circ.call_method0("to_dict").unwrap())?;
+    pub fn from_tket1(circ: &Bound<PyAny>) -> PyResult<Self> {
+        let circ = depythonize_bound(circ.call_method0("to_dict").unwrap())?;
         Ok(circ)
     }
 
@@ -15,13 +15,13 @@ impl SerialCircuit {
     ///
     /// Utility function that calls [`SerialCircuit::from_tket1`] after acquiring the GIL.
     pub fn from_tket1_with_gil(circ: Py<PyAny>) -> PyResult<Self> {
-        Python::with_gil(|py| Self::from_tket1(circ.as_ref(py)))
+        Python::with_gil(|py| Self::from_tket1(circ.bind(py)))
     }
 
     /// Convert a `SerialCircuit` to a `pytket.Circuit`.
-    pub fn to_tket1<'py>(&self, py: Python<'py>) -> PyResult<&'py PyAny> {
+    pub fn to_tket1<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyAny>> {
         let dict = pythonize(py, self).unwrap();
-        let circ_module = PyModule::import(py, "pytket.circuit")?;
+        let circ_module = PyModule::import_bound(py, "pytket.circuit")?;
 
         circ_module
             .getattr("Circuit")?

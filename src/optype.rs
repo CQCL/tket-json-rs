@@ -50,6 +50,9 @@ pub enum OpType {
     /// A general classical operation where all inputs are also outputs
     ClassicalTransform,
 
+    /// Op containing a classical wasm function call.
+    WASM,
+
     /// An operation to set some bits to specified values
     SetBits,
 
@@ -67,6 +70,9 @@ pub enum OpType {
 
     /// A classical operation applied to multiple bits simultaneously
     MultiBit,
+
+    /// Global phase $\alpha \mapsto \[\e^{i\pi\alpha}\]$
+    Phase,
 
     /// \f$ \left[ \begin{array}{cc} 1 & 0 \\ 0 & -1 \end{array} \right] \f$
     Z,
@@ -206,6 +212,12 @@ pub enum OpType {
     /// 0 & 0 & \frac{1+i}{2} & \frac{1-i}{2}
     /// \end{array} \right] \f$
     CSXdg,
+
+    /// Controlled \ref OpType::S gate
+    CS,
+
+    /// Controlled \ref OpType::Sdg gate
+    CSdg,
 
     /// Controlled \ref OpType::Rz
     ///
@@ -359,6 +371,12 @@ pub enum OpType {
     /// Multiply-controlled \ref OpType::X
     CnX,
 
+    /// Multiply-controlled \ref OpType::Y
+    CnY,
+
+    /// Multiply-controlled \ref OpType::Z
+    CnZ,
+
     /// See \ref CircBox
     CircBox,
 
@@ -382,6 +400,9 @@ pub enum OpType {
 
     /// See \ref PauliExpCommutingSetBox
     PauliExpCommutingSetBox,
+
+    /// See \ref TermSequenceBox
+    TermSequenceBox,
 
     /// NYI
     CliffBox,
@@ -419,8 +440,23 @@ pub enum OpType {
     /// See \ref MultiplexedU2Box
     MultiplexedU2Box,
 
+    /// See \ref MultiplexedTensoredU2Box
+    MultiplexedTensoredU2Box,
+
     /// See \ref ToffoliBox
     ToffoliBox,
+
+    /// See \ref ConjugationBox
+    ConjugationBox,
+
+    /// See \ref DummyBox
+    DummyBox,
+
+    /// See \ref StatePreparationBox
+    StatePreparationBox,
+
+    /// See \ref DiagonalBox
+    DiagonalBox,
 }
 
 #[cfg(feature = "pyo3")]

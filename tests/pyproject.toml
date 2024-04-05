@@ -1,0 +1,18 @@
+[tool.poetry]
+description = "tket-json-rs integration tests."
+name = "tket-json-rs-tests"
+version = "0.0.0"
+authors = ["TKET development team <tket-support@cambridgequantum.com>"]
+package-mode = false
+
+[tool.poetry.group.main.dependencies]
+python = "^3.10"
+# Always use the latest pytket version
+pytket = "*"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

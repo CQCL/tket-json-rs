@@ -6,10 +6,11 @@ use pyo3::prelude::*;
 #[cfg(feature = "pyo3")]
 use pyo3::{exceptions::PyNotImplementedError, pyclass::CompareOp};
 use serde::{Deserialize, Serialize};
+use strum::EnumString;
 
 /// Operation types in a quantum circuit.
 #[cfg_attr(feature = "pyo3", pyclass(name = "RsOpType"))]
-#[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash, EnumString)]
 #[non_exhaustive]
 pub enum OpType {
     /// Quantum input node of the circuit

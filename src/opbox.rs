@@ -256,7 +256,7 @@ pub enum PauliSynthStrat {
     /// Synthesise gadgets individually.
     Individual,
     /// Synthesise gadgets using an efficient pairwise strategy from Cowtan et
-    /// al (https://arxiv.org/abs/1906.01734).
+    /// al <https://arxiv.org/abs/1906.01734>.
     Pairwise,
     /// Synthesise gadgets in commuting sets.
     #[default]

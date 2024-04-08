@@ -1,5 +1,22 @@
 # Release notes
 
+## 0.4.0 (2024-04-08)
+
+This release adds various missing `OpType` definitions, and fixes some existing box definitions with incorrect parameters.
+
+### Bug Fixes
+
+- Add missing OpTypes ([#37](https://github.com/CQCL/tket-json-rs/pull/37))
+
+### Miscellaneous Tasks
+
+- [**breaking**] Update pyo3 to 0.21 ([#33](https://github.com/CQCL/tket-json-rs/pull/33))
+
+### Refactor
+
+- Move `OpBox` to a new module ([#35](https://github.com/CQCL/tket-json-rs/pull/35))
+
+
 ## 0.3.1 (2024-02-26)
 
 ### Features

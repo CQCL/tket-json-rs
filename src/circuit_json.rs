@@ -12,10 +12,12 @@ pub struct Register(pub String, pub Vec<i64>);
 /// A gate defined by a circuit.
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct CompositeGate {
-    // List of Symbols
-    args: Vec<String>,
-    definition: Box<SerialCircuit>,
+    /// Name of the composite gate.
     name: String,
+    /// Expressions corresponding to parameter values of the composite gate, if it has parameters.
+    args: Vec<String>,
+    /// The circuit defining the gate.
+    definition: Box<SerialCircuit>,
 }
 
 /// A classical bit register.
@@ -23,6 +25,22 @@ pub struct CompositeGate {
 pub struct BitRegister {
     name: String,
     size: u32,
+}
+
+/// A vector of booleans.
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
+#[serde(transparent)]
+pub struct Bitstring {
+    /// Vector of booleans.
+    pub vec: Vec<bool>,
+}
+
+/// A 2D matrix.
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
+#[serde(transparent)]
+pub struct Matrix<T = f32> {
+    /// A 2D vector of complex numbers.
+    pub data: Vec<Vec<(T, T)>>,
 }
 
 /// The units used in a [`ClassicalExp`].

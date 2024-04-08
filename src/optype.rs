@@ -51,6 +51,9 @@ pub enum OpType {
     /// A general classical operation where all inputs are also outputs
     ClassicalTransform,
 
+    /// Op containing a classical wasm function call.
+    WASM,
+
     /// An operation to set some bits to specified values
     SetBits,
 
@@ -68,6 +71,9 @@ pub enum OpType {
 
     /// A classical operation applied to multiple bits simultaneously
     MultiBit,
+
+    /// Global phase $\alpha \mapsto \[\e^{i\pi\alpha}\]$
+    Phase,
 
     /// \f$ \left[ \begin{array}{cc} 1 & 0 \\ 0 & -1 \end{array} \right] \f$
     Z,
@@ -156,19 +162,19 @@ pub enum OpType {
     /// \mathrm{YYPhase}(\beta) \mathrm{ZZPhase}(\gamma) \f$
     TK2,
 
-    /// Controlled \ref OpType::X
+    /// Controlled [`OpType::X`].
     CX,
 
-    /// Controlled \ref OpType::Y
+    /// Controlled [`OpType::Y`]
     CY,
 
-    /// Controlled \ref OpType::Z
+    /// Controlled [`OpType::Z`]
     CZ,
 
-    /// Controlled \ref OpType::H
+    /// Controlled [`OpType::H`]
     CH,
 
-    /// Controlled \ref OpType::V
+    /// Controlled [`OpType::V`]
     ///
     /// \f$ \left[ \begin{array}{cccc}
     /// 1 & 0 & 0 & 0 \\
@@ -178,7 +184,7 @@ pub enum OpType {
     /// \end{array} \right] \f$
     CV,
 
-    /// Controlled \ref OpType::Vdg
+    /// Controlled [`OpType::Vdg`]
     ///
     /// \f$ \left[ \begin{array}{cccc}
     /// 1 & 0 & 0 & 0 \\
@@ -188,7 +194,7 @@ pub enum OpType {
     /// \end{array} \right] \f$
     CVdg,
 
-    /// Controlled \ref OpType::SX
+    /// Controlled [`OpType::SX`]
     ///
     /// \f$ \left[ \begin{array}{cccc}
     /// 1 & 0 & 0 & 0 \\
@@ -198,7 +204,7 @@ pub enum OpType {
     /// \end{array} \right] \f$
     CSX,
 
-    /// Controlled \ref OpType::SXdg
+    /// Controlled [`OpType::SXdg`]
     ///
     /// \f$ \left[ \begin{array}{cccc}
     /// 1 & 0 & 0 & 0 \\
@@ -208,7 +214,13 @@ pub enum OpType {
     /// \end{array} \right] \f$
     CSXdg,
 
-    /// Controlled \ref OpType::Rz
+    /// Controlled [`OpType::S`] gate
+    CS,
+
+    /// Controlled [`OpType::Sdg`] gate
+    CSdg,
+
+    /// Controlled [`OpType::Rz`]
     ///
     /// \f$ \mathrm{CRz}(\alpha) = \left[ \begin{array}{cccc} 1 & 0 & 0 & 0 \\ 0
     /// & 1 & 0 & 0 \\ 0 & 0 & e^{-\frac12 i \pi\alpha} & 0 \\ 0 & 0 & 0 &
@@ -217,7 +229,7 @@ pub enum OpType {
     /// The phase parameter \f$ \alpha \f$ is defined modulo \f$ 4 \f$.
     CRz,
 
-    /// Controlled \ref OpType::Rx
+    /// Controlled [`OpType::Rx`]
     ///
     /// \f$ \mathrm{CRx}(\alpha) = \left[ \begin{array}{cccc} 1 & 0 & 0 & 0 \\ 0
     /// & 1 & 0 & 0 \\ 0 & 0 & \cos \frac{\pi \alpha}{2} & -i \sin \frac{\pi
@@ -228,7 +240,7 @@ pub enum OpType {
     /// The phase parameter \f$ \alpha \f$ is defined modulo \f$ 4 \f$.
     CRx,
 
-    /// Controlled \ref OpType::Ry
+    /// Controlled [`OpType::Ry`]
     ///
     /// \f$ \mathrm{CRy}(\alpha) = \left[ \begin{array}{cccc} 1 & 0 & 0 & 0 \\ 0
     /// & 1 & 0 & 0 \\ 0 & 0 & \cos \frac{\pi \alpha}{2} & -\sin \frac{\pi
@@ -239,26 +251,26 @@ pub enum OpType {
     /// The phase parameter \f$ \alpha \f$ is defined modulo \f$ 4 \f$.
     CRy,
 
-    /// Controlled \ref OpType::U1
+    /// Controlled [`OpType::U1`]
     ///
     /// \f$ \mathrm{CU1}(\alpha) = \left[ \begin{array}{cccc} 1 & 0 & 0 & 0 \\ 0
     /// & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & e^{i\pi\alpha} \end{array}
     /// \right] \f$
     CU1,
 
-    /// Controlled \ref OpType::U3
+    /// Controlled [`OpType::U3`]
     CU3,
 
     /// \f$ \alpha \mapsto e^{-\frac12 i \pi\alpha Z^{\otimes n}} \f$
     PhaseGadget,
 
-    /// Controlled \ref OpType::CX
+    /// Controlled [`OpType::CX`]
     CCX,
 
     /// Swap two qubits
     SWAP,
 
-    /// Controlled \ref OpType::SWAP
+    /// Controlled [`OpType::SWAP`]
     CSWAP,
 
     /// Three-qubit gate that swaps the first and third qubits
@@ -337,13 +349,13 @@ pub enum OpType {
     /// e^{-i\pi\beta} \end{array} \right] \f$
     FSim,
 
-    /// Fixed instance of a \ref OpType::FSim gate with parameters
+    /// Fixed instance of a [`OpType::FSim`] gate with parameters
     /// \f$ (\frac12, \frac16) \f$:
     /// \f$ \left[ \begin{array}{cccc} 1 & 0 & 0 & 0 \\ 0 & 0 & -i & 0 \\ 0 & -i
     /// & 0 & 0 \\ 0 & 0 & 0 & e^{-i\pi/6} \end{array} \right] \f$
     Sycamore,
 
-    /// Fixed instance of a \ref OpType::ISWAP gate with parameter \f$ 1.0 \f$:
+    /// Fixed instance of a [`OpType::ISWAP`] gate with parameter \f$ 1.0 \f$:
     /// \f$ \left[ \begin{array}{cccc} 1 & 0 & 0 & 0 \\ 0 & 0 & i & 0 \\ 0 & i
     /// & 0 & 0 \\ 0 & 0 & 0 & 1 \end{array} \right] \f$
     ISWAPMax,
@@ -352,76 +364,150 @@ pub enum OpType {
     // TODO: Matrix description
     PhasedISWAP,
 
-    /// Multiply-controlled \ref OpType::Ry
+    /// Multiply-controlled [`OpType::Ry`]
     ///
     /// The phase parameter is defined modulo \f$ 4 \f$.
     CnRy,
 
-    /// Multiply-controlled \ref OpType::X
+    /// Multiply-controlled [`OpType::X`]
     CnX,
 
-    /// See \ref CircBox
+    /// Multiply-controlled [`OpType::Y`]
+    CnY,
+
+    /// Multiply-controlled [`OpType::Z`]
+    CnZ,
+
+    /// See [`CircBox`]
+    ///
+    ///   [`CircBox`]: crate::opbox::OpBox::CircBox
     CircBox,
 
-    /// See \ref Unitary1qBox
+    /// See [`Unitary1qBox`]
+    ///
+    ///   [`Unitary1qBox`]: crate::opbox::OpBox::Unitary1qBox
     Unitary1qBox,
 
-    /// See \ref Unitary2qBox
+    /// See [`Unitary2qBox`]
+    ///
+    ///   [`Unitary2qBox`]: crate::opbox::OpBox::Unitary2qBox
     Unitary2qBox,
 
-    /// See \ref Unitary3qBox
+    /// See [`Unitary3qBox`]
+    ///
+    ///   [`Unitary3qBox`]: crate::opbox::OpBox::Unitary3qBox
     Unitary3qBox,
 
-    /// See \ref ExpBox
+    /// See [`ExpBox`]
+    ///
+    ///   [`ExpBox`]: crate::opbox::OpBox::ExpBox
     ExpBox,
 
-    /// See \ref PauliExpBox
+    /// See [`PauliExpBox`]
+    ///
+    ///   [`PauliExpBox`]: crate::opbox::OpBox::PauliExpBox
     PauliExpBox,
 
-    /// See \ref PauliExpPairBox
+    /// See [`PauliExpPairBox`]
+    ///
+    ///   [`PauliExpPairBox`]: crate::opbox::OpBox::PauliExpPairBox
     PauliExpPairBox,
 
-    /// See \ref PauliExpCommutingSetBox
+    /// See [`PauliExpCommutingSetBox`]
+    ///
+    ///   [`PauliExpCommutingSetBox`]: crate::opbox::OpBox::PauliExpCommutingSetBox
     PauliExpCommutingSetBox,
+
+    /// See [`TermSequenceBox`]
+    ///
+    ///   [`TermSequenceBox`]: crate::opbox::OpBox::TermSequenceBox
+    TermSequenceBox,
 
     /// NYI
     CliffBox,
 
-    /// See \ref PhasePolyBox
+    /// See [`PhasePolyBox`]
+    ///
+    ///   [`PhasePolyBox`]: crate::opbox::OpBox::PhasePolyBox
     PhasePolyBox,
 
     /// NYI
     Conditional,
 
-    /// See \ref StabiliserAssertionBox
+    /// See [`StabiliserAssertionBox`]
+    ///
+    ///   [`StabiliserAssertionBox`]: crate::opbox::OpBox::StabiliserAssertionBox
     StabiliserAssertionBox,
 
-    /// See \ref ProjectorAssertionBox
+    /// See [`ProjectorAssertionBox`]
+    ///
+    ///   [`ProjectorAssertionBox`]: crate::opbox::OpBox::ProjectorAssertionBox
     ProjectorAssertionBox,
 
-    /// See \ref CustomGate
+    /// See [`CustomGate`]
+    ///
+    ///   [`CustomGate`]: crate::opbox::OpBox::CustomGate
     CustomGate,
 
-    /// See \ref QControlBox
+    /// See [`QControlBox`]
+    ///
+    ///   [`QControlBox`]: crate::opbox::OpBox::QControlBox
     QControlBox,
 
-    /// NYI
+    /// See [`UnitaryTableauBox`]
+    ///
+    ///  [`UnitaryTableauBox`]: crate::opbox::OpBox::UnitaryTableauBox
     UnitaryTableauBox,
 
-    /// See \ref ClassicalExpBox
+    /// See [`ClassicalExpBox`]
+    ///
+    ///   [`ClassicalExpBox`]: crate::opbox::OpBox::ClassicalExpBox
     ClassicalExpBox,
 
-    /// See \ref MultiplexorBox
+    /// See [`MultiplexorBox`]
+    ///
+    ///   [`MultiplexorBox`]: crate::opbox::OpBox::MultiplexorBox
     MultiplexorBox,
 
-    /// See \ref MultiplexedRotationBox
+    /// See [`MultiplexedRotationBox`]
+    ///
+    ///  [`MultiplexedRotationBox`]: crate::opbox::OpBox::MultiplexedRotationBox
     MultiplexedRotationBox,
 
-    /// See \ref MultiplexedU2Box
+    /// See [`MultiplexedU2Box`]
+    ///
+    ///   [`MultiplexedU2Box`]: crate::opbox::OpBox::MultiplexedU2Box
     MultiplexedU2Box,
 
-    /// See \ref ToffoliBox
+    /// See [`MultiplexedTensoredU2Box`]
+    ///
+    ///   [`MultiplexedTensoredU2Box`]: crate::opbox::OpBox::MultiplexedTensoredU2Box
+    MultiplexedTensoredU2Box,
+
+    /// See [`ToffoliBox`]
+    ///
+    ///   [`ToffoliBox`]: crate::opbox::OpBox::ToffoliBox
     ToffoliBox,
+
+    /// See [`ConjugationBox`]
+    ///
+    ///   [`ConjugationBox`]: crate::opbox::OpBox::ConjugationBox
+    ConjugationBox,
+
+    /// See [`DummyBox`]
+    ///
+    ///   [`DummyBox`]: crate::opbox::OpBox::DummyBox
+    DummyBox,
+
+    /// See [`StatePreparationBox`]
+    ///
+    ///   [`StatePreparationBox`]: crate::opbox::OpBox::StatePreparationBox
+    StatePreparationBox,
+
+    /// See [`DiagonalBox`]
+    ///
+    ///   [`DiagonalBox`]: crate::opbox::OpBox::DiagonalBox
+    DiagonalBox,
 }
 
 #[cfg(feature = "pyo3")]

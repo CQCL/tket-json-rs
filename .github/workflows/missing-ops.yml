@@ -1,0 +1,41 @@
+name: Detect missing operation definitions
+
+on:
+  push:
+    branches:
+      - main 
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch: {}
+  schedule:
+    # 04:00 daily
+    - cron: '0 4 * * *'
+
+env:
+  CARGO_TERM_COLOR: always
+  SCCACHE_GHA_ENABLED: "true"
+  RUSTC_WRAPPER: "sccache"
+
+jobs:
+  missing-optypes:
+    name: Check for missing op type definitions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mozilla-actions/sccache-action@v0.0.4
+      - name: Install stable toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - name: Install poetry
+        run: pipx install poetry
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: "poetry"
+      - name: Update the project dependencies
+        run: poetry -C tests update
+      - name: Run the missing op types test
+        run: poetry -C tests run -- cargo test --test integration -- --ignored missing_optypes

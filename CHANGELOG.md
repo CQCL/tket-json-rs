@@ -2,6 +2,8 @@
 
 ## 0.4.0 (2024-04-08)
 
+This release adds various missing `OpType` definitions, and fixes some existing box definitions with incorrect parameters.
+
 ### Bug Fixes
 
 - Add missing OpTypes ([#37](https://github.com/CQCL/tket-json-rs/pull/37))

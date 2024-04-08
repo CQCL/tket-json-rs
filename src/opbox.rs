@@ -1,6 +1,6 @@
 //! Data definition for box operations.
 //!
-//! These definitions correspond to the operations `box` attribute in the
+//! These definitions correspond to the operations' `box` attribute in the
 //! [`circuit_v1`](https://github.com/CQCL/tket/blob/develop/schemas/circuit_v1.json)
 //! schema.
 

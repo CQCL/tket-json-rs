@@ -1,9 +1,13 @@
 //! Data definition for box operations.
+//!
+//! These definitions correspond to the operations `box` attribute in the
+//! [`circuit_v1`](https://github.com/CQCL/tket/blob/develop/schemas/circuit_v1.json)
+//! schema.
 
 use std::collections::HashMap;
 
 use crate::circuit_json::{
-    ClassicalExp, CompositeGate, Operation, Permutation, Register, SerialCircuit,
+    Bitstring, ClassicalExp, CompositeGate, Matrix, Operation, Permutation, Register, SerialCircuit,
 };
 use crate::optype::OpType;
 use serde::{Deserialize, Serialize};
@@ -63,21 +67,19 @@ pub enum OpBox {
         #[serde(default)]
         cx_config: String,
     },
-    /// Operation defined as a pair of exponential of a tensor of Pauli operators.
+    /// A pair of (not necessarily commuting) Pauli exponentials performed in sequence.
     PauliExpPairBox {
         id: BoxID,
         /// List of List of Pauli operators.
-        paulis: Vec<Vec<String>>,
+        paulis_pair: Vec<Vec<String>>,
         /// List of Symengine expressions.
-        phase: Vec<String>,
+        phase_pair: Vec<String>,
         /// Config param for decomposition of Pauli exponentials.
         cx_config: String,
     },
     /// Operation defined as a set of commuting exponentials of a tensor of Pauli operators.
     PauliExpCommutingSetBox {
         id: BoxID,
-        /// List of List of Pauli operators.
-        paulis: Vec<(Vec<String>, String)>,
         /// List of Symengine expressions.
         pauli_gadgets: Vec<(Vec<String>, String)>,
         /// Config param for decomposition of Pauli exponentials.
@@ -92,16 +94,16 @@ pub enum OpBox {
         pauli_gadgets: Vec<(Vec<String>, String)>,
         /// Synthesis strategy. See [`PauliSynthStrat`].
         #[serde(default)]
-        synthesis_strategy: PauliSynthStrat,
+        synth_strategy: PauliSynthStrat,
         /// Partition strategy. See [`PauliPartitionStrat`].
         #[serde(default)]
-        partitioning_strategy: PauliPartitionStrat,
+        partition_strategy: PauliPartitionStrat,
         /// Graph colouring method. See [`GraphColourMethod`].
         #[serde(default)]
         graph_colouring: GraphColourMethod,
         /// Configurations for CXs upon decompose phase gadgets.
         #[serde(default)]
-        cx_config_type: CXConfigType,
+        cx_config: CXConfigType,
     },
     /// An operation capable of representing arbitrary Circuits made up of CNOT
     /// and RZ, as a PhasePolynomial plus a boolean matrix representing an
@@ -110,7 +112,13 @@ pub enum OpBox {
         id: BoxID,
         /// Number of qubits.
         n_qubits: u32,
+        /// Map from qubits to inputs.
         qubit_indices: Vec<(Register, u32)>,
+        /// The phase polynomial definition.
+        /// Represented by a map from bitstring to expression of coefficient.
+        phase_polynomial: Vec<Vec<(Bitstring, String)>>,
+        ///
+        linear_transformation: Matrix,
     },
     /// A user-defined assertion specified by a list of Pauli stabilisers.
     StabiliserAssertionBox {
@@ -118,13 +126,11 @@ pub enum OpBox {
         stabilisers: Vec<PauliStabiliser>,
     },
     /// A user-defined assertion specified by a 2x2, 4x4, or 8x8 projector matrix.
-    ProjectorAssertionBox {
+    ProjectorAssertionBox { id: BoxID, matrix: Matrix },
+    /// A user-defined gate defined by a parametrised Circuit.
+    CustomGate {
         id: BoxID,
-        matrix: Vec<Vec<(f32, f32)>>,
-    },
-    /// A user-defined gate defined by a parametrized Circuit.
-    Composite {
-        id: BoxID,
+        /// The gate defined as a circuit.
         gate: CompositeGate,
         // Vec of Symengine Expr
         params: Vec<String>,
@@ -148,22 +154,28 @@ pub enum OpBox {
         n_o: u32,
         exp: ClassicalExp,
     },
+    /// Binary matrix form of a stabilizer tableau for unitary Clifford circuits.
+    UnitaryTableauBox {
+        id: BoxID,
+        /// The tableau.
+        tab: UnitaryTableau,
+    },
     /// A user-defined multiplexor specified by a map from bitstrings to Operations.
     MultiplexorBox {
         id: BoxID,
-        op_map: Vec<(Vec<bool>, Operation)>,
+        op_map: Vec<(Bitstring, Operation)>,
     },
     /// A user-defined multiplexed rotation gate specified by a map from
     /// bitstrings to Operations.
     MultiplexedRotationBox {
         id: BoxID,
-        op_map: Vec<(Vec<bool>, Operation)>,
+        op_map: Vec<(Bitstring, Operation)>,
     },
     /// A user-defined multiplexed rotation gate specified by a map from
     /// bitstrings to Operations.
     MultiplexedU2Box {
         id: BoxID,
-        op_map: Vec<(Vec<bool>, Operation)>,
+        op_map: Vec<(Bitstring, Operation)>,
         #[serde(default = "default_true")]
         impl_diag: bool,
     },
@@ -171,7 +183,7 @@ pub enum OpBox {
     /// from bitstrings to lists of Op or a list of bitstring-list(Op s) pairs.
     MultiplexedTensoredU2Box {
         id: BoxID,
-        op_map: Vec<(Vec<bool>, Operation)>,
+        op_map: Vec<(Bitstring, Operation)>,
     },
     /// An operation that constructs a circuit to implement the specified
     /// permutation of classical basis states.
@@ -196,6 +208,7 @@ pub enum OpBox {
         /// Internal operation to be applied.
         action: Box<Operation>,
         /// Reverse uncomputation.
+        #[serde(default)]
         uncompute: Option<Box<Operation>>,
     },
     /// A placeholder operation that holds resource data. This box type cannot
@@ -215,7 +228,7 @@ pub enum OpBox {
     StatePreparationBox {
         id: BoxID,
         /// Normalised statevector of complex numbers
-        statevector: Vec<(f32, f32)>,
+        statevector: Matrix,
         /// Whether to implement the dagger of the state preparation circuit, default to false.
         #[serde(default)]
         is_inverse: bool,
@@ -228,7 +241,7 @@ pub enum OpBox {
     DiagonalBox {
         id: BoxID,
         /// Diagonal entries.
-        diagonal: Vec<Vec<(f32, f32)>>,
+        diagonal: Matrix,
         /// Indicates whether the multiplexed-Rz gates take the shape of an upper triangle or a lower triangle. Default to true.
         #[serde(default = "default_true")]
         upper_triangle: bool,
@@ -338,4 +351,30 @@ pub struct ResourceBounds {
     pub min: u32,
     /// Maximum value.
     pub max: u32,
+}
+
+/// Binary matrix form of a stabilizer tableau for unitary Clifford circuits.
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
+pub struct UnitaryTableau {
+    /// A symplectic tableau.
+    pub tab: SymplecticTableau,
+    /// Ordered naming of qubits in the tableau.
+    pub qubits: Vec<Register>,
+}
+
+/// Binary matrix form of a collection of Pauli strings.
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
+pub struct SymplecticTableau {
+    /// Number of rows in the tableau.
+    #[serde(default)]
+    pub nrows: u32,
+    /// Number of columns in the tableau.
+    #[serde(default)]
+    pub nqubits: u32,
+    /// The X matrix.
+    pub xmat: Matrix<bool>,
+    /// The Z matrix.
+    pub zmat: Matrix<bool>,
+    /// The phase matrix.
+    pub phase: Matrix<bool>,
 }

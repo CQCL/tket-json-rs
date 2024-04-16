@@ -1,5 +1,16 @@
 # Release notes
 
+## 0.4.1 (2024-04-16)
+
+### Bug Fixes
+
+- Make some missing fields pub ([#43](https://github.com/CQCL/tket-json-rs/pull/43))
+
+### Features
+
+- Add GPI, GPI2, and AAMS gates ([#42](https://github.com/CQCL/tket-json-rs/pull/42))
+
+
 ## 0.4.0 (2024-04-08)
 
 This release adds various missing `OpType` definitions, and fixes some existing box definitions with incorrect parameters.

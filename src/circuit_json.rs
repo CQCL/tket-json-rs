@@ -13,18 +13,20 @@ pub struct Register(pub String, pub Vec<i64>);
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct CompositeGate {
     /// Name of the composite gate.
-    name: String,
+    pub name: String,
     /// Expressions corresponding to parameter values of the composite gate, if it has parameters.
-    args: Vec<String>,
+    pub args: Vec<String>,
     /// The circuit defining the gate.
-    definition: Box<SerialCircuit>,
+    pub definition: Box<SerialCircuit>,
 }
 
 /// A classical bit register.
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct BitRegister {
-    name: String,
-    size: u32,
+    /// Name of the bit register.
+    pub name: String,
+    /// Number of bits in the register.
+    pub size: u32,
 }
 
 /// A vector of booleans.
@@ -60,16 +62,21 @@ pub enum ClassicalExpUnit {
 /// A box for holding classical expressions on Bits.
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct ClassicalExp {
-    args: Vec<ClassicalExpUnit>,
-    op: String,
+    /// Arguments to the expression.
+    pub args: Vec<ClassicalExpUnit>,
+    /// The expression.
+    pub op: String,
 }
 
 /// Decorates another op, adding a QASM-style classical condition.
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct Conditional {
-    op: Box<Operation>,
-    width: u32,
-    value: u32,
+    /// Internal operation to conditionally apply.
+    pub op: Box<Operation>,
+    /// Number of bits in the classical condition.
+    pub width: u32,
+    /// Value to compare against.
+    pub value: u32,
 }
 
 /// Serializable operation descriptor.

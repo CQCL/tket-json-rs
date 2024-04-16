@@ -378,6 +378,39 @@ pub enum OpType {
     /// Multiply-controlled [`OpType::Z`]
     CnZ,
 
+    /// GPi gate
+    ///
+    /// \f$ (\\phi) \\mapsto \\left[ \\begin{array}{cc} 0 &
+    /// e^{-i\\pi\\phi} \\\\ e^{i\\pi\\phi} & 0 \\end{array} \\right] \f$
+    GPI,
+
+    /// GPi2 gate
+    ///
+    /// \f$
+    /// (\\phi) \\mapsto \\frac{1}{\\sqrt 2} \\left[
+    /// \\begin{array}{cc} 1 & -ie^{-i\\pi\\phi} \\\\ -ie^{i\\pi\\phi} &
+    /// 1 \\end{array} \\right]
+    /// \f$
+    GPI2,
+
+    /// AAMS gate
+    ///
+    /// \f$
+    ///
+    /// (\\theta, \\phi_0, \\phi_1) \\mapsto \\left[ "
+    /// \\begin{array}{cccc} \\cos\\frac{\\pi\\theta}{2} & 0 & 0 &
+    /// -ie^{-i\\pi(\\phi_0+\\phi_1)}\\sin\\frac{\\pi\\theta}{2} \\\\
+    /// 0 &
+    /// \\cos\\frac{\\pi\\theta}{2} &
+    /// -ie^{i\\pi(\\phi_1-\\phi_0)}\\sin\\frac{\\pi\\theta}{2} & 0 \\\\ 0
+    /// &
+    /// -ie^{i\\pi(\\phi_0-\\phi_1)}\\sin\\frac{\\pi\\theta}{2} &
+    /// \\cos\\frac{\\pi\\theta}{2} & 0 \\\\
+    /// -ie^{i\\pi(\\phi_0+\\phi_1)}\\sin\\frac{\\pi\\theta}{2} & 0 & 0 &
+    /// \\cos\\frac{\\pi\\theta}{2} \\end{array} \\right]`
+    /// \f$
+    AAMS,
+
     /// See [`CircBox`]
     ///
     ///   [`CircBox`]: crate::opbox::OpBox::CircBox
@@ -508,15 +541,6 @@ pub enum OpType {
     ///
     ///   [`DiagonalBox`]: crate::opbox::OpBox::DiagonalBox
     DiagonalBox,
-
-    /// GPi gate with a possibly symbolic angle
-    GPI,
-
-    /// GPi2 gate with a possibly symbolic angle
-    GPI2,
-
-    /// AAMS gate
-    AAMS,
 }
 
 #[cfg(feature = "pyo3")]

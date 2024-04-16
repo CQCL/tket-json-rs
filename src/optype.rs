@@ -508,6 +508,15 @@ pub enum OpType {
     ///
     ///   [`DiagonalBox`]: crate::opbox::OpBox::DiagonalBox
     DiagonalBox,
+
+    /// GPi gate with a possibly symbolic angle
+    GPI,
+
+    /// GPi2 gate with a possibly symbolic angle
+    GPI2,
+
+    /// AAMS gate
+    AAMS,
 }
 
 #[cfg(feature = "pyo3")]

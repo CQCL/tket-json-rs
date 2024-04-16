@@ -173,20 +173,20 @@ tests = ["pytest (>=4.6)"]
 
 [[package]]
 name = "networkx"
-version = "3.2.1"
+version = "3.3"
 description = "Python package for creating and manipulating graphs and networks"
 optional = false
-python-versions = ">=3.9"
+python-versions = ">=3.10"
 files = [
-    {file = "networkx-3.2.1-py3-none-any.whl", hash = "sha256:f18c69adc97877c42332c170849c96cefa91881c99a7cb3e95b7c659ebdc1ec2"},
-    {file = "networkx-3.2.1.tar.gz", hash = "sha256:9f1bb5cf3409bf324e0a722c20bdb4c20ee39bf1c30ce8ae499c8502b0b5e0c6"},
+    {file = "networkx-3.3-py3-none-any.whl", hash = "sha256:28575580c6ebdaf4505b22c6256a2b9de86b316dc63ba9e93abde3d78dfdbcf2"},
+    {file = "networkx-3.3.tar.gz", hash = "sha256:0c127d8b2f4865f59ae9cb8aafcd60b5c70f3241ebd66f7defad7c4ab90126c9"},
 ]
 
 [package.extras]
-default = ["matplotlib (>=3.5)", "numpy (>=1.22)", "pandas (>=1.4)", "scipy (>=1.9,!=1.11.0,!=1.11.1)"]
-developer = ["changelist (==0.4)", "mypy (>=1.1)", "pre-commit (>=3.2)", "rtoml"]
-doc = ["nb2plots (>=0.7)", "nbconvert (<7.9)", "numpydoc (>=1.6)", "pillow (>=9.4)", "pydata-sphinx-theme (>=0.14)", "sphinx (>=7)", "sphinx-gallery (>=0.14)", "texext (>=0.6.7)"]
-extra = ["lxml (>=4.6)", "pydot (>=1.4.2)", "pygraphviz (>=1.11)", "sympy (>=1.10)"]
+default = ["matplotlib (>=3.6)", "numpy (>=1.23)", "pandas (>=1.4)", "scipy (>=1.9,!=1.11.0,!=1.11.1)"]
+developer = ["changelist (==0.5)", "mypy (>=1.1)", "pre-commit (>=3.2)", "rtoml"]
+doc = ["myst-nb (>=1.0)", "numpydoc (>=1.7)", "pillow (>=9.4)", "pydata-sphinx-theme (>=0.14)", "sphinx (>=7)", "sphinx-gallery (>=0.14)", "texext (>=0.6.7)"]
+extra = ["lxml (>=4.6)", "pydot (>=2.0)", "pygraphviz (>=1.12)", "sympy (>=1.10)"]
 test = ["pytest (>=7.2)", "pytest-cov (>=4.0)"]
 
 [[package]]
@@ -284,26 +284,26 @@ testing = ["argcomplete", "attrs (>=19.2)", "hypothesis (>=3.56)", "mock", "pygm
 
 [[package]]
 name = "pytket"
-version = "1.26.0"
-description = "Python module for interfacing with the CQC tket library of quantum software"
+version = "1.27.0"
+description = "Quantum computing toolkit and interface to the TKET compiler"
 optional = false
 python-versions = ">=3.10"
 files = [
-    {file = "pytket-1.26.0-cp310-cp310-macosx_12_0_arm64.whl", hash = "sha256:3ae0763e7de87c40318901cf261ab227ce914755d285ea271328ca0767540347"},
-    {file = "pytket-1.26.0-cp310-cp310-macosx_12_0_x86_64.whl", hash = "sha256:7b617593acba4861fbbc4dbbae35630706e11c2e5c76061bb5beca746aebf710"},
-    {file = "pytket-1.26.0-cp310-cp310-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:37ce4f703d706b317abebb777ee6acba34389d0aa6d167db2dfe9912d015c8f4"},
-    {file = "pytket-1.26.0-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:cee9e279bc68ab67a46d34ceaed562ad4378b1ae917a3c6d16a7dbdec2d1e264"},
-    {file = "pytket-1.26.0-cp310-cp310-win_amd64.whl", hash = "sha256:003585360ef17ad21b8e4a41baa221e618561d20eb5d26140895054c2f4ec839"},
-    {file = "pytket-1.26.0-cp311-cp311-macosx_12_0_arm64.whl", hash = "sha256:f68a6f6217429a3653ce5e29021c983742f2256af446d82b3092966c9ea9d153"},
-    {file = "pytket-1.26.0-cp311-cp311-macosx_12_0_x86_64.whl", hash = "sha256:235f30ef0ece889f66edebe3c9a7daf146f6ebdb6e704f41d32908b9eb3c53f9"},
-    {file = "pytket-1.26.0-cp311-cp311-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:d5fc8d2b292a9384bb1cfe9f285d4a15d2cbf593437e235bce01d02647f51db4"},
-    {file = "pytket-1.26.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:b6e5190e067a8179d4f88612f273b0969a83c997eb09dbaeab59d118de43def6"},
-    {file = "pytket-1.26.0-cp311-cp311-win_amd64.whl", hash = "sha256:60048f32a3dc2123346b97227b931c87e4ad2e2d75d13362f83f97de65d62ef8"},
-    {file = "pytket-1.26.0-cp312-cp312-macosx_12_0_arm64.whl", hash = "sha256:62ee4d4dc642857c24daefc67712ebde86a7bfb1a848411130b390837e626b82"},
-    {file = "pytket-1.26.0-cp312-cp312-macosx_12_0_x86_64.whl", hash = "sha256:2999dc92e2fa8a7587e4d29e1150227c83b36ea528cdf5187de59ea3b68f53af"},
-    {file = "pytket-1.26.0-cp312-cp312-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:293f4e2799d68eb4e858ec6a4441bb5909eb76e6d131032140a6151df6ae5544"},
-    {file = "pytket-1.26.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:873bd961e89dd641ba023cf4f3f2dc0bcc956f417b01b16f8c29ced8953c588a"},
-    {file = "pytket-1.26.0-cp312-cp312-win_amd64.whl", hash = "sha256:fa306cfafe294e829f7be57fe2bee91b94c995a295b8c1c267ed23964b5bab10"},
+    {file = "pytket-1.27.0-cp310-cp310-macosx_12_0_arm64.whl", hash = "sha256:2252a1dfd3b425d536480e8a17593c88c116511bd8749f0216ffb4087a94ecca"},
+    {file = "pytket-1.27.0-cp310-cp310-macosx_12_0_x86_64.whl", hash = "sha256:36d93839b20dd0738dc92032d9c42cd74ad226089b9a835ee64ec98b6d0cfeb2"},
+    {file = "pytket-1.27.0-cp310-cp310-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:497886d748884252a59a8173c213472967fefbca5ef05d97372394e95d9b078e"},
+    {file = "pytket-1.27.0-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:45c8bdf5f5f79fefbb6331a0febcd938dd297d103b62ccc8c9099a3799c0e846"},
+    {file = "pytket-1.27.0-cp310-cp310-win_amd64.whl", hash = "sha256:e0416874ad371db38a9da6b3bcbc7eb09ed90f353486c40d25098a93ac2fbcc3"},
+    {file = "pytket-1.27.0-cp311-cp311-macosx_12_0_arm64.whl", hash = "sha256:955c3bb4c83ae2fcf8da62d2f2c2e1348f8631070d6dc800c09df9cf13adb9f4"},
+    {file = "pytket-1.27.0-cp311-cp311-macosx_12_0_x86_64.whl", hash = "sha256:a42ac781e154a0308af8faa7ab271406a40518cf24a9779a628849c1fac7a2b5"},
+    {file = "pytket-1.27.0-cp311-cp311-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:759153b2cac05e7255662e0c83ac1d64223e183af4839806d8f31c8d0c9c00bd"},
+    {file = "pytket-1.27.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:07064aaef484e6f45d2429fef314c32e874b9201513eb3cd42dd0dc3c64cc236"},
+    {file = "pytket-1.27.0-cp311-cp311-win_amd64.whl", hash = "sha256:3077eaa28307740188182af20ab42ecfec812b85a3b7d302367b9435f7f49a19"},
+    {file = "pytket-1.27.0-cp312-cp312-macosx_12_0_arm64.whl", hash = "sha256:86b1c42d5415c736ed172327ca18a314257ab3d925271d81c191521a72ce3ffb"},
+    {file = "pytket-1.27.0-cp312-cp312-macosx_12_0_x86_64.whl", hash = "sha256:7f4460b8d5f738f748518200822149ed373d2ff6cafbddc96b4ec368fe017ff2"},
+    {file = "pytket-1.27.0-cp312-cp312-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:b9359f760b1e9d5f4f8d13185d44fe4358a5e46046eca26af28f5b512b480a01"},
+    {file = "pytket-1.27.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:1e604bc7700a9d26c2c2fb3ed9efcae3a6c7d21cc0f9622231ad0906ee70a388"},
+    {file = "pytket-1.27.0-cp312-cp312-win_amd64.whl", hash = "sha256:ef23ae37c134290ec110100a329dbe2d63f26286a6e37ed75c831adbb3ef9132"},
 ]
 
 [package.dependencies]
@@ -313,13 +313,13 @@ lark-parser = ">=0.7,<1.0"
 networkx = ">=2.8.8"
 numpy = ">=1.21.4,<2.0"
 qwasm = ">=1.0,<2.0"
-scipy = ">=1.7.2,<2.0"
+scipy = ">=1.13,<2.0"
 sympy = ">=1.6,<2.0"
 types-pkg-resources = "*"
 typing-extensions = ">=4.2,<5.0"
 
 [package.extras]
-zx = ["autoray (>=0.6.1)", "quimb (>=1.5,<2.0)"]
+zx = ["autoray (>=0.6.1)", "quimb (>=1.8,<2.0)"]
 
 [[package]]
 name = "qwasm"
@@ -379,18 +379,18 @@ test = ["array-api-strict", "asv", "gmpy2", "hypothesis (>=6.30)", "mpmath", "po
 
 [[package]]
 name = "setuptools"
-version = "69.2.0"
+version = "69.5.1"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "setuptools-69.2.0-py3-none-any.whl", hash = "sha256:c21c49fb1042386df081cb5d86759792ab89efca84cf114889191cd09aacc80c"},
-    {file = "setuptools-69.2.0.tar.gz", hash = "sha256:0ff4183f8f42cd8fa3acea16c45205521a4ef28f73c6391d8a25e92893134f2e"},
+    {file = "setuptools-69.5.1-py3-none-any.whl", hash = "sha256:c636ac361bc47580504644275c9ad802c50415c7522212252c033bd15f301f32"},
+    {file = "setuptools-69.5.1.tar.gz", hash = "sha256:6c1fccdac05a97e598fb0ae3bbed5904ccb317337a51139dcd51453611bbb987"},
 ]
 
 [package.extras]
-docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "pygments-github-lexers (==0.0.5)", "rst.linker (>=1.9)", "sphinx (<7.2.5)", "sphinx (>=3.5)", "sphinx-favicon", "sphinx-inline-tabs", "sphinx-lint", "sphinx-notfound-page (>=1,<2)", "sphinx-reredirects", "sphinxcontrib-towncrier"]
-testing = ["build[virtualenv]", "filelock (>=3.4.0)", "importlib-metadata", "ini2toml[lite] (>=0.9)", "jaraco.develop (>=7.21)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "mypy (==1.9)", "packaging (>=23.2)", "pip (>=19.1)", "pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-home (>=0.5)", "pytest-mypy (>=0.9.1)", "pytest-perf", "pytest-ruff (>=0.2.1)", "pytest-timeout", "pytest-xdist (>=3)", "tomli", "tomli-w (>=1.0.0)", "virtualenv (>=13.0.0)", "wheel"]
+docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "pygments-github-lexers (==0.0.5)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-favicon", "sphinx-inline-tabs", "sphinx-lint", "sphinx-notfound-page (>=1,<2)", "sphinx-reredirects", "sphinxcontrib-towncrier"]
+testing = ["build[virtualenv]", "filelock (>=3.4.0)", "importlib-metadata", "ini2toml[lite] (>=0.9)", "jaraco.develop (>=7.21)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "mypy (==1.9)", "packaging (>=23.2)", "pip (>=19.1)", "pytest (>=6,!=8.1.1)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-home (>=0.5)", "pytest-mypy", "pytest-perf", "pytest-ruff (>=0.2.1)", "pytest-timeout", "pytest-xdist (>=3)", "tomli", "tomli-w (>=1.0.0)", "virtualenv (>=13.0.0)", "wheel"]
 testing-integration = ["build[virtualenv] (>=1.0.3)", "filelock (>=3.4.0)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "packaging (>=23.2)", "pytest", "pytest-enabler", "pytest-xdist", "tomli", "virtualenv (>=13.0.0)", "wheel"]
 
 [[package]]

@@ -1,0 +1,137 @@
+{
+    "bits": [],
+    "commands": [
+        {
+            "args": [
+                [
+                    "q",
+                    [
+                        0
+                    ]
+                ],
+                [
+                    "q",
+                    [
+                        1
+                    ]
+                ],
+                [
+                    "q",
+                    [
+                        2
+                    ]
+                ]
+            ],
+            "op": {
+                "box": {
+                    "control_state": 1,
+                    "id": "0dadbfea-5391-41c2-ad71-fb01fdaecddd",
+                    "n_controls": 1,
+                    "op": {
+                        "box": {
+                            "diagonal": [
+                                [
+                                    [
+                                        1.0,
+                                        0.0
+                                    ]
+                                ],
+                                [
+                                    [
+                                        1.0,
+                                        0.0
+                                    ]
+                                ],
+                                [
+                                    [
+                                        0.7071067811865476,
+                                        0.7071067811865475
+                                    ]
+                                ],
+                                [
+                                    [
+                                        0.9238795325112867,
+                                        0.3826834323650898
+                                    ]
+                                ]
+                            ],
+                            "id": "919b6c13-b9c4-4ffc-ad1a-660088402d02",
+                            "type": "DiagonalBox",
+                            "upper_triangle": true
+                        },
+                        "type": "DiagonalBox"
+                    },
+                    "type": "QControlBox"
+                },
+                "type": "QControlBox"
+            }
+        }
+    ],
+    "created_qubits": [],
+    "discarded_qubits": [],
+    "implicit_permutation": [
+        [
+            [
+                "q",
+                [
+                    0
+                ]
+            ],
+            [
+                "q",
+                [
+                    0
+                ]
+            ]
+        ],
+        [
+            [
+                "q",
+                [
+                    1
+                ]
+            ],
+            [
+                "q",
+                [
+                    1
+                ]
+            ]
+        ],
+        [
+            [
+                "q",
+                [
+                    2
+                ]
+            ],
+            [
+                "q",
+                [
+                    2
+                ]
+            ]
+        ]
+    ],
+    "phase": "0.0",
+    "qubits": [
+        [
+            "q",
+            [
+                0
+            ]
+        ],
+        [
+            "q",
+            [
+                1
+            ]
+        ],
+        [
+            "q",
+            [
+                2
+            ]
+        ]
+    ]
+}

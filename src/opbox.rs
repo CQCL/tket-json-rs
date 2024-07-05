@@ -117,7 +117,7 @@ pub enum OpBox {
         /// The phase polynomial definition.
         /// Represented by a map from bitstring to expression of coefficient.
         phase_polynomial: Vec<Vec<(Bitstring, String)>>,
-        ///
+        /// The additional linear transformation.
         linear_transformation: Matrix,
     },
     /// A user-defined assertion specified by a list of Pauli stabilisers.

@@ -364,10 +364,14 @@ pub enum OpType {
     // TODO: Matrix description
     PhasedISWAP,
 
-    /// Multiply-controlled [`OpType::Ry`]
-    ///
-    /// The phase parameter is defined modulo \f$ 4 \f$.
+    /// N-controlled [`OpType::Rx`]
+    CnRx,
+
+    /// N-controlled [`OpType::Ry`]
     CnRy,
+
+    /// N-controlled [`OpType::Rz`]
+    CnRz,
 
     /// Multiply-controlled [`OpType::X`]
     CnX,

@@ -40,7 +40,7 @@ pub struct Bitstring {
 /// A 2D matrix.
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
 #[serde(transparent)]
-pub struct Matrix<T = f32> {
+pub struct Matrix<T = f64> {
     /// A 2D vector of complex numbers.
     pub data: Vec<Vec<(T, T)>>,
 }

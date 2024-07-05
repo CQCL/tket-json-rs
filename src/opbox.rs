@@ -34,25 +34,25 @@ pub enum OpBox {
     Unitary1qBox {
         id: BoxID,
         /// 2x2 matrix of complex numbers
-        matrix: [[(f32, f32); 2]; 2],
+        matrix: [[(f64, f64); 2]; 2],
     },
     /// Two-qubit operation defined as a unitary matrix.
     Unitary2qBox {
         id: BoxID,
         /// 4x4 matrix of complex numbers
-        matrix: [[(f32, f32); 4]; 4],
+        matrix: [[(f64, f64); 4]; 4],
     },
     /// Three-qubit operation defined as a unitary matrix.
     Unitary3qBox {
         id: BoxID,
         /// 8x8 matrix of complex numbers
-        matrix: Box<[[(f32, f32); 8]; 8]>,
+        matrix: Box<[[(f64, f64); 8]; 8]>,
     },
     /// Two-qubit operation defined in terms of a hermitian matrix and a phase.
     ExpBox {
         id: BoxID,
         /// 4x4 matrix of complex numbers
-        matrix: [[(f32, f32); 4]; 4],
+        matrix: [[(f64, f64); 4]; 4],
         /// Phase of the operation.
         phase: f64,
     },

@@ -1,5 +1,13 @@
 # Release notes
 
+## 0.4.2 (2024-07-05)
+
+### Bug Fixes
+
+- Add missing `CnRx` `CnRz` ops ([#49](https://github.com/CQCL/tket-json-rs/pull/49))
+- Matrix encoding roundtrip losing precision. Use `f64` instead of `f32`s. ([#48](https://github.com/CQCL/tket-json-rs/pull/48))
+
+
 ## 0.4.1 (2024-04-16)
 
 ### Bug Fixes

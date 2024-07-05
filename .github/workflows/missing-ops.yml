@@ -48,7 +48,7 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            const outcome = steps.check_missing_optypes.outcome !== 'success';
+            const outcome = ${{ steps.check_missing_optypes.outcome }} !== 'success';
             console.log(`The outcome is: ${outcome}`);
             return outcome
           result-encoding: string

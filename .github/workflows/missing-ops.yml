@@ -9,8 +9,8 @@ on:
       - main
   workflow_dispatch: {}
   schedule:
-    # 04:00 daily
-    - cron: '0 4 * * *'
+    # 08:00 weekly on Monday
+    - cron: '0 8 * * 1'
 
 env:
   CARGO_TERM_COLOR: always
@@ -21,6 +21,8 @@ jobs:
   missing-optypes:
     name: Check for missing op type definitions
     runs-on: ubuntu-latest
+    outputs:
+      should_notify: ${{ steps.check_status.outputs.result }}
     steps:
       - uses: actions/checkout@v4
       - uses: mozilla-actions/sccache-action@v0.0.4
@@ -38,4 +40,34 @@ jobs:
       - name: Update the project dependencies
         run: poetry -C tests update
       - name: Run the missing op types test
+        id: check_missing_optypes
         run: poetry -C tests run -- cargo test --test integration -- --ignored missing_optypes
+      - name: Set output flags
+        id: check_status
+        if: always()
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const outcome = steps.check_missing_optypes.outcome !== 'success';
+            console.log(`The outcome is: ${outcome}`);
+            return outcome
+          result-encoding: string
+
+  notify-slack:
+    needs: missing-optypes
+    runs-on: ubuntu-latest
+    if: ${{ needs.missing-optypes.outputs.should_notify == 'true' && github.event_name == 'schedule' }}
+    steps:
+      - name: Compose the slack message
+        id: make_msg
+        run: |
+          MSG="msg=`tket-json-rs` is missing OpType definitions. See the failing check for more info.\nhttps://github.com/CQCL/tket-json-rs/actions/workflows/missing-ops.yml"
+          echo $MSG
+          echo $MSG  >> "$GITHUB_OUTPUT"
+      - name: Send notification
+        uses: slackapi/slack-github-action@v1.26.0
+        with:
+          channel-id: 'C040CRWH9FF'
+          slack-message: ${{ steps.make_msg.outputs.msg }}
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}

@@ -156,10 +156,12 @@ pub enum OpType {
 
     /// \f$ \mathrm{TK1}(\alpha, \beta, \gamma) = \mathrm{Rz}(\alpha)
     /// \mathrm{Rx}(\beta) \mathrm{Rz}(\gamma) \f$
+    #[serde(alias = "tk1")]
     TK1,
 
     /// \f$ \mathrm{TK2}(\alpha, \beta, \gamma) = \mathrm{XXPhase}(\alpha)
     /// \mathrm{YYPhase}(\beta) \mathrm{ZZPhase}(\gamma) \f$
+    #[serde(alias = "tk2")]
     TK2,
 
     /// Controlled [`OpType::X`].

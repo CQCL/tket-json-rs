@@ -48,6 +48,7 @@ pub struct Matrix<T = f64> {
 /// The units used in a [`ClassicalExp`].
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
 #[serde(untagged)]
+#[non_exhaustive]
 pub enum ClassicalExpUnit {
     /// Unsigned 32-bit integer.
     U32(u32),
@@ -79,8 +80,66 @@ pub struct Conditional {
     pub value: u32,
 }
 
+/// Additional fields for classical operations,
+/// which only act on Bits classically.
+//
+// Note: The order of the variants here is important.
+// Serde will return the first matching variant when deserializing,
+// so CopyBits and SetBits must come after other variants that
+// define `values` and `n_i`.
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
+#[serde(untagged)]
+#[non_exhaustive]
+pub enum Classical {
+    /// Multi-bit operation.
+    MultiBit {
+        /// The inner operation.
+        op: Box<Operation>,
+        /// Multiplier on underlying op for MultiBitOp.
+        n: u32,
+    },
+    /// A range predicate.
+    RangePredicate {
+        /// Number of pure input wires to the RangePredicate.
+        n_i: u32,
+        /// The inclusive minimum of the RangePredicate.
+        lower: u64,
+        /// The inclusive maximum of the RangePredicate.
+        upper: u64,
+    },
+    /// ExplicitModifierOp/ExplicitPredicateOp.
+    Explicit {
+        /// Number of pure input wires to the ExplicitModifierOp/ExplicitPredicateOp.
+        n_i: u32,
+        /// Name of classical ExplicitModifierOp/ExplicitPredicateOp (e.g. AND).
+        name: String,
+        /// Truth table of ExplicitModifierOp/ExplicitPredicateOp.
+        values: Vec<bool>,
+    },
+    /// ClassicalTransformOp
+    ClassicalTransform {
+        /// Number of input/output wires.
+        n_io: u32,
+        /// Name of classical ClassicalTransformOp (e.g. ClassicalCX).
+        name: String,
+        /// Truth table of ClassicalTransformOp.
+        values: Vec<u32>,
+    },
+    /// CopyBitsOp.
+    CopyBits {
+        /// Number of input wires to the CopyBitsOp.
+        n_i: u32,
+    },
+    /// SetBitsOp.
+    SetBits {
+        /// List of bools that SetBitsOp sets bits to.
+        values: Vec<bool>,
+    },
+}
+
 /// Serializable operation descriptor.
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
+#[non_exhaustive]
 pub struct Operation<P = String> {
     /// The type of operation.
     #[serde(rename = "type")]
@@ -88,6 +147,9 @@ pub struct Operation<P = String> {
     /// Number of input and output qubits.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub n_qb: Option<u32>,
+    /// Additional string stored in the op
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub data: Option<String>,
     /// Expressions for the parameters of the operation.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub params: Option<Vec<P>>,
@@ -101,6 +163,9 @@ pub struct Operation<P = String> {
     /// A QASM-style classical condition for the operation.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub conditional: Option<Conditional>,
+    /// Data for commands which only act on Bits classically.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub classical: Option<Box<Classical>>,
 }
 
 /// Operation applied in a circuit, with defined arguments.
@@ -137,6 +202,21 @@ pub struct SerialCircuit<P = String> {
     pub implicit_permutation: Vec<Permutation>,
 }
 
+impl<P> Default for Operation<P> {
+    fn default() -> Self {
+        Self {
+            op_type: Default::default(),
+            n_qb: None,
+            data: None,
+            params: None,
+            op_box: None,
+            signature: None,
+            conditional: None,
+            classical: None,
+        }
+    }
+}
+
 impl<P> Operation<P> {
     /// Returns a default-initialized Operation with the given type.
     ///
@@ -145,11 +225,7 @@ impl<P> Operation<P> {
     pub fn from_optype(op_type: OpType) -> Self {
         Self {
             op_type,
-            n_qb: None,
-            params: None,
-            op_box: None,
-            signature: None,
-            conditional: None,
+            ..Operation::default()
         }
     }
 }

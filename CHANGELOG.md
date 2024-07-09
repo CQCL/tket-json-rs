@@ -5,7 +5,9 @@
 ### Features
 
 - Handle legacy tk1 optype  ([#54](https://github.com/CQCL/tket-json-rs/pull/54))
-- [**breaking**] Classical op params ([#56](https://github.com/CQCL/tket-json-rs/pull/56))
+- [**breaking**] Add missing classical operation params ([#56](https://github.com/CQCL/tket-json-rs/pull/56))
+- [**breaking**] Add missing `data` operation param ([#56](https://github.com/CQCL/tket-json-rs/pull/56))
+- [**breaking**] Make more things `non_exhaustive` ([#56](https://github.com/CQCL/tket-json-rs/pull/56))
 
 
 ## 0.4.2 (2024-07-05)

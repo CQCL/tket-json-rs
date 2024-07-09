@@ -48,6 +48,7 @@ pub struct Matrix<T = f64> {
 /// The units used in a [`ClassicalExp`].
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
 #[serde(untagged)]
+#[non_exhaustive]
 pub enum ClassicalExpUnit {
     /// Unsigned 32-bit integer.
     U32(u32),
@@ -88,6 +89,7 @@ pub struct Conditional {
 // define `values` and `n_i`.
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 #[serde(untagged)]
+#[non_exhaustive]
 pub enum Classical {
     /// Multi-bit operation.
     MultiBit {
@@ -136,7 +138,8 @@ pub enum Classical {
 }
 
 /// Serializable operation descriptor.
-#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, Default, PartialEq)]
+#[non_exhaustive]
 pub struct Operation<P = String> {
     /// The type of operation.
     #[serde(rename = "type")]

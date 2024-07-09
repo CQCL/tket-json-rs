@@ -138,7 +138,7 @@ pub enum Classical {
 }
 
 /// Serializable operation descriptor.
-#[derive(Deserialize, Serialize, Clone, Debug, Default, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 #[non_exhaustive]
 pub struct Operation<P = String> {
     /// The type of operation.
@@ -202,6 +202,21 @@ pub struct SerialCircuit<P = String> {
     pub implicit_permutation: Vec<Permutation>,
 }
 
+impl<P> Default for Operation<P> {
+    fn default() -> Self {
+        Self {
+            op_type: Default::default(),
+            n_qb: None,
+            data: None,
+            params: None,
+            op_box: None,
+            signature: None,
+            conditional: None,
+            classical: None,
+        }
+    }
+}
+
 impl<P> Operation<P> {
     /// Returns a default-initialized Operation with the given type.
     ///
@@ -210,13 +225,7 @@ impl<P> Operation<P> {
     pub fn from_optype(op_type: OpType) -> Self {
         Self {
             op_type,
-            n_qb: None,
-            data: None,
-            params: None,
-            op_box: None,
-            signature: None,
-            conditional: None,
-            classical: None,
+            ..Operation::default()
         }
     }
 }

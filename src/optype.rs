@@ -472,6 +472,7 @@ pub enum OpType {
     PhasePolyBox,
 
     /// NYI
+    #[serde(alias = "Condition")]
     Conditional,
 
     /// See [`StabiliserAssertionBox`]

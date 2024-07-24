@@ -17,61 +17,9 @@
         {
             "args": [
                 [
-                    "q",
-                    [
-                        0
-                    ]
-                ]
-            ],
-            "op": {
-                "type": "H",
-                "data": "Custom data"
-            }
-        },
-        {
-            "args": [
-                [
-                    "q",
-                    [
-                        0
-                    ]
-                ],
-                [
-                    "q",
-                    [
-                        1
-                    ]
-                ]
-            ],
-            "op": {
-                "type": "CX"
-            }
-        },
-        {
-            "args": [
-                [
-                    "q",
-                    [
-                        0
-                    ]
-                ],
-                [
                     "c",
                     [
                         0
-                    ]
-                ]
-            ],
-            "op": {
-                "type": "Measure"
-            }
-        },
-        {
-            "args": [
-                [
-                    "q",
-                    [
-                        1
                     ]
                 ],
                 [
@@ -82,7 +30,69 @@
                 ]
             ],
             "op": {
-                "type": "Measure"
+                "type": "MultiBit",
+                "classical": {
+                    "op": {
+                        "type": "SetBits",
+                        "classical": {
+                            "values": [
+                                true
+                            ]
+                        }
+                    },
+                    "n": 2
+                }
+            }
+        },
+        {
+            "args": [
+                [
+                    "c",
+                    [
+                        0
+                    ]
+                ],
+                [
+                    "c",
+                    [
+                        1
+                    ]
+                ]
+            ],
+            "op": {
+                "type": "ClassicalTransform",
+                "classical": {
+                    "name": "ClassicalCX",
+                    "n_io": 2,
+                    "values": [
+                        0,
+                        1,
+                        3,
+                        2
+                    ]
+                }
+            }
+        },
+        {
+            "args": [
+                [
+                    "c",
+                    [
+                        0
+                    ]
+                ],
+                [
+                    "c",
+                    [
+                        1
+                    ]
+                ]
+            ],
+            "op": {
+                "type": "CopyBits",
+                "classical": {
+                    "n_i": 2
+                }
             }
         }
     ],

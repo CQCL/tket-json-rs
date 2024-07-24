@@ -10,7 +10,7 @@ use strum::EnumString;
 
 /// Operation types in a quantum circuit.
 #[cfg_attr(feature = "pyo3", pyclass(name = "RsOpType"))]
-#[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash, EnumString)]
+#[derive(Deserialize, Serialize, Clone, Debug, Default, PartialEq, Eq, Hash, EnumString)]
 #[non_exhaustive]
 pub enum OpType {
     /// Quantum input node of the circuit
@@ -280,6 +280,7 @@ pub enum OpType {
 
     /// Identity
     #[allow(non_camel_case_types)]
+    #[default]
     noop,
 
     /// Measure a qubit, producing a classical output

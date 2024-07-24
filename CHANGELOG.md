@@ -1,5 +1,12 @@
 # Release notes
 
+## 0.5.1 (2024-07-24)
+
+### Features
+
+- Handle legacy condition optype ([#59](https://github.com/CQCL/tket-json-rs/pull/59))
+
+
 ## 0.5.0 (2024-07-09)
 
 ### Features

@@ -137,6 +137,17 @@ pub enum Classical {
     },
 }
 
+/// Additional fields for Wasm operations.
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
+pub struct Wasm {
+    n: u64,
+    ww_n: u64,
+    width_i_parameter: Vec<u64>,
+    width_o_parameter: Vec<u64>,
+    func_name: String,
+    wasm_file_uid: String,
+}
+
 /// Serializable operation descriptor.
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 #[non_exhaustive]
@@ -166,6 +177,9 @@ pub struct Operation<P = String> {
     /// Data for commands which only act on Bits classically.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub classical: Option<Box<Classical>>,
+    /// Data for commands which apply WASM operations.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub wasm: Option<Box<Wasm>>,
 }
 
 /// Operation applied in a circuit, with defined arguments.
@@ -200,6 +214,9 @@ pub struct SerialCircuit<P = String> {
     pub bits: Vec<Register>,
     /// Implicit permutation of the output qubits.
     pub implicit_permutation: Vec<Permutation>,
+    /// Number of wasm wires in the circuit.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub number_of_ws: Option<u64>,
 }
 
 impl<P> Default for Operation<P> {
@@ -213,6 +230,7 @@ impl<P> Default for Operation<P> {
             signature: None,
             conditional: None,
             classical: None,
+            wasm: None,
         }
     }
 }

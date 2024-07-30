@@ -1,0 +1,35 @@
+{
+  "bits": [],
+  "commands": [
+    {
+      "args": [["_w", [0]]],
+      "op": {
+        "type": "WASM",
+        "wasm": {
+          "func_name": "add_two",
+          "n": 0,
+          "wasm_file_uid": "6a0a29e235cd5c60353254bc2b459e631d381cdd0bded7ae6cb44afb784bd2de",
+          "width_i_parameter": [0],
+          "width_o_parameter": [0],
+          "ww_n": 1
+        }
+      }
+    }
+  ],
+  "implicit_permutation": [
+    [
+      ["q", [0]],
+      ["q", [0]]
+    ],
+    [
+      ["q", [1]],
+      ["q", [1]]
+    ]
+  ],
+  "number_of_ws": 1,
+  "phase": "0.0",
+  "qubits": [
+    ["q", [0]],
+    ["q", [1]]
+  ]
+}

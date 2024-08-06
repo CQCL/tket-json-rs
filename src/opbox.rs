@@ -190,7 +190,7 @@ pub enum OpBox {
     ToffoliBox {
         id: BoxID,
         /// The classical basis state permutation.
-        permutation: Permutation,
+        permutation: Vec<(Vec<bool>, Vec<bool>)>,
         // Synthesis strategy. See [`ToffoliBoxSynthStrat`].
         strat: ToffoliBoxSynthStrat,
         // The rotation axis of the multiplexors used in the decomposition. Can

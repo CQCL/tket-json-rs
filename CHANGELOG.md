@@ -1,5 +1,16 @@
 # Release notes
 
+## 0.6.0 (2024-08-06)
+
+### Bug Fixes
+
+- Update ToffoliBox permutation type ([#64](https://github.com/CQCL/tket-json-rs/pull/64))
+
+### Features
+
+- [**breaking**] Add support for WASM operations ([#61](https://github.com/CQCL/tket-json-rs/pull/61))
+
+
 ## 0.5.1 (2024-07-24)
 
 ### Features

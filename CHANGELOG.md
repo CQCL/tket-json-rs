@@ -4,7 +4,7 @@
 
 ### Bug Fixes
 
-- Update ToffoliBox permutation type ([#64](https://github.com/CQCL/tket-json-rs/pull/64))
+- [**breaking**] Update ToffoliBox permutation type ([#64](https://github.com/CQCL/tket-json-rs/pull/64))
 
 ### Features
 

@@ -7,7 +7,7 @@
 use std::collections::HashMap;
 
 use crate::circuit_json::{
-    Bitstring, ClassicalExp, CompositeGate, Matrix, Operation, Permutation, Register, SerialCircuit
+    Bitstring, ClassicalExp, CompositeGate, Matrix, Operation, Permutation, Register, SerialCircuit,
 };
 use crate::optype::OpType;
 use serde::{Deserialize, Serialize};

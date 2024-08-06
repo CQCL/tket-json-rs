@@ -7,7 +7,7 @@
 use std::collections::HashMap;
 
 use crate::circuit_json::{
-    Bitstring, ClassicalExp, CompositeGate, Matrix, Operation, Register, SerialCircuit,
+    Bitstring, ClassicalExp, CompositeGate, Matrix, Operation, Permutation, Register, SerialCircuit
 };
 use crate::optype::OpType;
 use serde::{Deserialize, Serialize};
@@ -190,7 +190,7 @@ pub enum OpBox {
     ToffoliBox {
         id: BoxID,
         /// The classical basis state permutation.
-        permutation: Vec<(Vec<bool>, Vec<bool>)>,
+        permutation: Permutation,
         // Synthesis strategy. See [`ToffoliBoxSynthStrat`].
         strat: ToffoliBoxSynthStrat,
         // The rotation axis of the multiplexors used in the decomposition. Can

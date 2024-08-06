@@ -184,7 +184,7 @@ pub struct Command<P = String> {
 /// Used when defining Toffoli boxes.
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
 #[serde(transparent)]
-pub struct Permutation(Vec<(Vec<bool>, Vec<bool>)>);
+pub struct Permutation(pub Vec<(Vec<bool>, Vec<bool>)>);
 
 /// An implicit permutation of the elements of a register.
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]

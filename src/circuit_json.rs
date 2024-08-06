@@ -194,9 +194,15 @@ pub struct Command<P = String> {
     pub opgroup: Option<String>,
 }
 
-/// A permutation of the elements of a register.
+/// A classic basis state permutation.
+/// Used when defining Toffoli boxes.
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
-pub struct Permutation(pub Register, pub Register);
+#[serde(transparent)]
+pub struct Permutation(pub Vec<(Vec<bool>, Vec<bool>)>);
+
+/// An implicit permutation of the elements of a register.
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
+pub struct ImplicitPermutation(pub Register, pub Register);
 
 /// Pytket canonical serialized circuit
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
@@ -213,7 +219,7 @@ pub struct SerialCircuit<P = String> {
     /// Input bit registers.
     pub bits: Vec<Register>,
     /// Implicit permutation of the output qubits.
-    pub implicit_permutation: Vec<Permutation>,
+    pub implicit_permutation: Vec<ImplicitPermutation>,
     /// Number of wasm wires in the circuit.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub number_of_ws: Option<u64>,

@@ -252,4 +252,62 @@ impl<P> Operation<P> {
             ..Operation::default()
         }
     }
+
+    /// Applies a function over the parameters of the operation.
+    ///
+    /// Returns a new Operation with the same data, but with a new generic
+    /// type for the parameters.
+    pub fn map_params<Q>(self, f: impl FnMut(P) -> Q) -> Operation<Q> {
+        Operation {
+            op_type: self.op_type,
+            n_qb: self.n_qb,
+            data: self.data,
+            params: self
+                .params
+                .map(|params| params.into_iter().map(f).collect()),
+            op_box: self.op_box,
+            signature: self.signature,
+            conditional: self.conditional,
+            classical: self.classical,
+            wasm: self.wasm,
+        }
+    }
+}
+
+impl<P> Command<P> {
+    /// Applies a function over the parameters of the command.
+    ///
+    /// Returns a new Command with the same data, but with a new generic type
+    /// for the parameters.
+    pub fn map_params<Q>(self, f: impl FnMut(P) -> Q) -> Command<Q> {
+        Command {
+            op: self.op.map_params(f),
+            args: self.args,
+            opgroup: self.opgroup,
+        }
+    }
+}
+
+impl<P> SerialCircuit<P> {
+    /// Applies a function over the parameters of the circuit.
+    ///
+    /// Returns a new SerialCircuit with the same data, but with a new generic
+    /// type for the parameters.
+    pub fn map_params<Q>(self, mut f: impl FnMut(P) -> Q) -> SerialCircuit<Q> {
+        let phase = f(self.phase);
+        let commands = self
+            .commands
+            .into_iter()
+            .map(|c| c.map_params(&mut f))
+            .collect();
+        SerialCircuit {
+            name: self.name,
+            phase,
+            commands,
+            qubits: self.qubits,
+            bits: self.bits,
+            implicit_permutation: self.implicit_permutation,
+            number_of_ws: self.number_of_ws,
+        }
+    }
 }

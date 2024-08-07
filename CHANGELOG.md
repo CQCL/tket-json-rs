@@ -1,5 +1,12 @@
 # Release notes
 
+## 0.6.1 (2024-08-07)
+
+### Features
+
+- `map_params` helpers on the parametric structs ([#65](https://github.com/CQCL/tket-json-rs/pull/65))
+
+
 ## 0.6.0 (2024-08-06)
 
 ### Bug Fixes

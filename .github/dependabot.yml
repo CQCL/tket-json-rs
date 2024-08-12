@@ -13,7 +13,7 @@ updates:
       # Use a conventional commit tag
       prefix: "chore(deps)"
     groups:
-      hugr:
+      pyo3:
         patterns: ["pyo3", "pythonize"]
       dev:
         dependency-type: "development"

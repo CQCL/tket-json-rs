@@ -45,7 +45,7 @@ jobs:
       - name: Set output flags
         id: check_status
         if: always()
-        uses: actions/github-script@v5
+        uses: actions/github-script@v7
         with:
           script: |
             const outcome = ${{ steps.check_missing_optypes.outcome != 'success' }};

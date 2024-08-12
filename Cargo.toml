@@ -37,7 +37,7 @@ name = "integration"
 path = "tests/lib.rs"
 
 [workspace.dependencies]
-pyo3 = "0.21.1"
+pyo3 = "0.22.2"
 pythonize = "0.21.1"
 rstest = "0.22.0"
 serde = "1.0"

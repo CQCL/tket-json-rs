@@ -3,13 +3,11 @@
 
 #[cfg(feature = "pyo3")]
 use pyo3::prelude::*;
-#[cfg(feature = "pyo3")]
-use pyo3::{exceptions::PyNotImplementedError, pyclass::CompareOp};
 use serde::{Deserialize, Serialize};
 use strum::EnumString;
 
 /// Operation types in a quantum circuit.
-#[cfg_attr(feature = "pyo3", pyclass(name = "RsOpType"))]
+#[cfg_attr(feature = "pyo3", pyclass(name = "RsOpType", eq, eq_int))]
 #[derive(Deserialize, Serialize, Clone, Debug, Default, PartialEq, Eq, Hash, EnumString)]
 #[non_exhaustive]
 pub enum OpType {
@@ -549,16 +547,4 @@ pub enum OpType {
     ///
     ///   [`DiagonalBox`]: crate::opbox::OpBox::DiagonalBox
     DiagonalBox,
-}
-
-#[cfg(feature = "pyo3")]
-#[pymethods]
-impl OpType {
-    fn __richcmp__(&self, other: &Self, op: CompareOp) -> PyResult<bool> {
-        match op {
-            CompareOp::Eq => Ok(self == other),
-            CompareOp::Ne => Ok(self != other),
-            _ => Err(PyNotImplementedError::new_err("Unsupported comparison.")),
-        }
-    }
 }

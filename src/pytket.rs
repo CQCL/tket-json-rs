@@ -2,12 +2,12 @@
 
 use crate::circuit_json::SerialCircuit;
 use pyo3::prelude::*;
-use pythonize::{depythonize_bound, pythonize};
+use pythonize::{depythonize, pythonize};
 
 impl SerialCircuit {
     /// Create a new `SerialCircuit` from a `pytket.Circuit`.
     pub fn from_tket1(circ: &Bound<PyAny>) -> PyResult<Self> {
-        let circ = depythonize_bound(circ.call_method0("to_dict").unwrap())?;
+        let circ = depythonize(&circ.call_method0("to_dict").unwrap())?;
         Ok(circ)
     }
 

@@ -65,7 +65,7 @@ jobs:
           echo $MSG
           echo $MSG  >> "$GITHUB_OUTPUT"
       - name: Send notification
-        uses: slackapi/slack-github-action@v1.26.0
+        uses: slackapi/slack-github-action@v1.27.0
         with:
           channel-id: 'C040CRWH9FF'
           slack-message: ${{ steps.make_msg.outputs.msg }}

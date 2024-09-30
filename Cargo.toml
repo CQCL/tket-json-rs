@@ -39,7 +39,7 @@ path = "tests/lib.rs"
 [workspace.dependencies]
 pyo3 = "0.22.2"
 pythonize = "0.22.0"
-rstest = "0.22.0"
+rstest = "0.23.0"
 serde = "1.0"
 serde_json = "1.0"
 strum = "0.26.2"

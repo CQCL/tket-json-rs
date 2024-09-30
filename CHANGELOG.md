@@ -1,5 +1,6 @@
 # Release notes
 
+
 ## 0.6.1 (2024-08-07)
 
 ### Features

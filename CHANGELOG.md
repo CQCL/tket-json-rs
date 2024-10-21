@@ -1,6 +1,13 @@
 # Release notes
 
 
+## 0.6.2 (2024-10-21)
+
+### Features
+
+- Updated pyo3 dependency to `0.22` ([#73](https://github.com/CQCL/tket-json-rs/pull/73))
+
+
 ## 0.6.1 (2024-08-07)
 
 ### Features

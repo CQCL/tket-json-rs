@@ -12,5 +12,5 @@ fix:
 
 # Check for missing optypes
 check-optypes:
-    poetry -C tests update
-    poetry -C tests run -- cargo test -- --ignored missing_optypes
+    uv sync
+    uv run -- cargo test -- --ignored missing_optypes

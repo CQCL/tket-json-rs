@@ -1,0 +1,11 @@
+[project]
+name = "tket-json-rs-tests"
+version = "0.0.0"
+requires-python = ">=3.10"
+classifiers = ["Private :: Do Not Upload"]
+authors = [
+    { name = "TKET development team", email = "tket-support@quantinuum.com" },
+]
+
+[tool.uv]
+dev-dependencies = ["pytket>=1.32"]

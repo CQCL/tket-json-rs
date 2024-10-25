@@ -61,7 +61,7 @@ jobs:
     with:
       channel-id: 'C040CRWH9FF'
       slack-message: |
-        `tket-json-rs` is missing OpType definitions.
+        ⚠️ `tket-json-rs` is missing OpType definitions.
         See <https://github.com/CQCL/tket-json-rs/actions/runs/${{ github.run_id }}|the failing check> for more info.
       # Rate-limit the message to once per week
       timeout-minutes: 10080

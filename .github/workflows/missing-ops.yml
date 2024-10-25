@@ -60,7 +60,9 @@ jobs:
     if: ${{ needs.missing-optypes.outputs.should_notify == 'true' }}
     with:
       channel-id: 'C04SHCL4FKP'
-      slack-message: '`tket-json-rs` is missing OpType definitions. See the failing check for more info.\nhttps://github.com/CQCL/tket-json-rs/actions/workflows/missing-ops.yml'
+      slack-message: |
+        `tket-json-rs` is missing OpType definitions.
+        See <https://github.com/CQCL/tket-json-rs/actions/runs/${{ github.run_id }}|the failing check> for more info.
       # An unique identifier for the message type, to use in rate limiting.
       message-label: "missing-op"
       # Rate-limit the message to once per week

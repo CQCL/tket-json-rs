@@ -9,8 +9,8 @@ on:
       - main
   workflow_dispatch: {}
   schedule:
-    # 08:00 weekly on Monday
-    - cron: '0 8 * * 1'
+    # 08:00 daily
+    - cron: '0 8 * * *'
 
 env:
   CARGO_TERM_COLOR: always
@@ -21,6 +21,7 @@ jobs:
   missing-optypes:
     name: Check for missing op type definitions
     runs-on: ubuntu-latest
+    continue-on-error: true
     outputs:
       should_notify: ${{ steps.check_status.outputs.result }}
     steps:
@@ -54,20 +55,18 @@ jobs:
           result-encoding: string
 
   notify-slack:
+    uses: CQCL/hugrverse-actions/.github/workflows/slack-notifier.yml@main
     needs: missing-optypes
-    runs-on: ubuntu-latest
-    if: ${{ needs.missing-optypes.outputs.should_notify == 'true' && github.event_name == 'schedule' }}
-    steps:
-      - name: Compose the slack message
-        id: make_msg
-        run: |
-          MSG="msg=`tket-json-rs` is missing OpType definitions. See the failing check for more info.\nhttps://github.com/CQCL/tket-json-rs/actions/workflows/missing-ops.yml"
-          echo $MSG
-          echo $MSG  >> "$GITHUB_OUTPUT"
-      - name: Send notification
-        uses: slackapi/slack-github-action@v1.27.0
-        with:
-          channel-id: 'C040CRWH9FF'
-          slack-message: ${{ steps.make_msg.outputs.msg }}
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+    if: ${{ needs.missing-optypes.outputs.should_notify == 'true' && ( github.event_name == 'schedule' || github.event_name == 'push' ) }}
+    with:
+      channel-id: 'C040CRWH9FF'
+      slack-message: |
+        ⚠️ `tket-json-rs` is missing OpType definitions.
+        See <https://github.com/CQCL/tket-json-rs/actions/runs/${{ github.run_id }}|the failing check> for more info.
+      # Rate-limit the message to once per week
+      timeout-minutes: 10080
+      # A repository variable used to store the last message timestamp.
+      timeout-variable: "MISSING_OPS_MSG_SENT"
+    secrets:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        GITHUB_PAT: ${{ secrets.HUGRBOT_PAT }}

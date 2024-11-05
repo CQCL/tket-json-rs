@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 
 /// Data encoding a classical expression.
 ///
-/// A classical expression operates over multi-bit registers,
+/// A classical expression operates over multi-bit registers and/or individual bits,
 /// which are identified here by their individual bit positions.
 ///
 /// This is included in a [`Operation`] when the operation is a [`OpType::ClExpr`].
@@ -37,13 +37,13 @@ pub struct ClExpr {
 /// Serialized as a list with two elements: the index and the bits.
 #[derive(Debug, Default, PartialEq, Clone)]
 pub struct InputClRegister {
-    /// The index of the register.
+    /// The index of the register variable in the expression.
     pub index: u32,
-    /// The individual bit indices that are part of the register.
+    /// The sequence of positions of bits comprising the register variable.
     pub bits: ClRegisterBits,
 }
 
-/// The list of bit indices which are part of a register.
+/// The sequence of positions of bits in the output.
 ///
 /// Registers are little-endian, so the first bit is the least significant.
 #[derive(Debug, Default, PartialEq, Clone, Serialize, Deserialize)]

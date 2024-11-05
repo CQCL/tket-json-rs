@@ -20,8 +20,9 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Default, PartialEq, Clone, Serialize, Deserialize)]
 #[non_exhaustive]
 pub struct ClExpr {
-    /// TODO: ???
-    pub bit_posn: Vec<u32>,
+    /// Mapping between bit variables in the expression and the position of the
+    /// corresponding bit in the `args` list.
+    pub bit_posn: Vec<(u32, u32)>,
     /// The encoded expression.
     pub expr: ClOperator,
     /// The input bits of the expression.

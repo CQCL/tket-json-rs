@@ -37,7 +37,7 @@ pub enum ClTerminal {
     Variable(ClVariable),
     /// A constant integer.
     #[serde(rename = "int")]
-    Int(u32),
+    Int(u64),
 }
 
 /// A variable terminal argument in a classical expression operation.

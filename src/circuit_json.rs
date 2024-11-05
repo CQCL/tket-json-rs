@@ -206,6 +206,7 @@ pub struct ImplicitPermutation(pub Register, pub Register);
 
 /// Pytket canonical serialized circuit
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
+#[non_exhaustive]
 pub struct SerialCircuit<P = String> {
     /// The name of the circuit.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -243,6 +244,22 @@ impl<P> Default for Operation<P> {
             conditional: None,
             classical: None,
             wasm: None,
+        }
+    }
+}
+
+impl<P: Default> Default for SerialCircuit<P> {
+    fn default() -> Self {
+        Self {
+            name: None,
+            phase: Default::default(),
+            commands: Default::default(),
+            qubits: Default::default(),
+            bits: Default::default(),
+            implicit_permutation: Default::default(),
+            number_of_ws: None,
+            created_qubits: None,
+            discarded_qubits: None,
         }
     }
 }
@@ -295,6 +312,21 @@ impl<P> Command<P> {
 }
 
 impl<P> SerialCircuit<P> {
+    /// Initialize a new SerialCircuit with the given name and phase.
+    pub fn new(name: Option<String>, phase: P) -> Self {
+        Self {
+            name,
+            phase,
+            commands: Vec::new(),
+            qubits: Vec::new(),
+            bits: Vec::new(),
+            implicit_permutation: Vec::new(),
+            number_of_ws: None,
+            created_qubits: None,
+            discarded_qubits: None,
+        }
+    }
+
     /// Applies a function over the parameters of the circuit.
     ///
     /// Returns a new SerialCircuit with the same data, but with a new generic

@@ -147,6 +147,8 @@ pub enum OpBox {
         control_state: u32,
     },
     /// Holding box for abstract expressions on Bits.
+    ///
+    /// Deprecated in favour of [`OpType::ClExpr`].
     ClassicalExpBox {
         id: BoxID,
         n_i: u32,

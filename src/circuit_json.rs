@@ -223,6 +223,12 @@ pub struct SerialCircuit<P = String> {
     /// Number of wasm wires in the circuit.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub number_of_ws: Option<u64>,
+    /// A list of qubits initialized at the start of the circuit.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub created_qubits: Option<Vec<Register>>,
+    /// A list of qubits discarded at the end of the circuit.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub discarded_qubits: Option<Vec<Register>>,
 }
 
 impl<P> Default for Operation<P> {
@@ -308,6 +314,8 @@ impl<P> SerialCircuit<P> {
             bits: self.bits,
             implicit_permutation: self.implicit_permutation,
             number_of_ws: self.number_of_ws,
+            created_qubits: self.created_qubits,
+            discarded_qubits: self.discarded_qubits,
         }
     }
 }

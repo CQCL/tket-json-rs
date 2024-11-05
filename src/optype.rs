@@ -500,7 +500,7 @@ pub enum OpType {
 
     /// See [`ClassicalExpBox`]
     ///
-    /// Deprecated. Use [`OpType::ClExpBox`] instead.
+    /// Deprecated. Use [`OpType::ClExpr`] instead.
     ///
     ///   [`ClassicalExpBox`]: crate::opbox::OpBox::ClassicalExpBox
     ClassicalExpBox,
@@ -509,9 +509,9 @@ pub enum OpType {
     ///
     /// An operation of this type is accompanied by a [`ClExpr`] object.
     ///
-    /// This is a replacement of the deprecated [`ClassicalExpBox`].
+    /// This is a replacement of the deprecated [`OpType::ClassicalExpBox`].
     ///
-    ///   [`ClExpBox`]: crate::opbox::OpBox::ClExpBox
+    ///   [`ClExpr`]: crate::clexpr::ClExpr
     ClExpr,
 
     /// See [`MultiplexorBox`]

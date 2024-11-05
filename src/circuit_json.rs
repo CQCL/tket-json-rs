@@ -171,7 +171,7 @@ pub struct Operation<P = String> {
     pub op_box: Option<OpBox>,
     /// Classical expression.
     ///
-    /// Required if the operation is of type [`OpType::ClExp`].
+    /// Required if the operation is of type [`OpType::ClExpr`].
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "expr")]
     pub classical_expr: Option<ClExpr>,

@@ -505,15 +505,6 @@ pub enum OpType {
     ///   [`ClassicalExpBox`]: crate::opbox::OpBox::ClassicalExpBox
     ClassicalExpBox,
 
-    /// Classical expression.
-    ///
-    /// An operation of this type is accompanied by a [`ClExpr`] object.
-    ///
-    /// This is a replacement of the deprecated [`OpType::ClassicalExpBox`].
-    ///
-    ///   [`ClExpr`]: crate::clexpr::ClExpr
-    ClExpr,
-
     /// See [`MultiplexorBox`]
     ///
     ///   [`MultiplexorBox`]: crate::opbox::OpBox::MultiplexorBox
@@ -558,4 +549,13 @@ pub enum OpType {
     ///
     ///   [`DiagonalBox`]: crate::opbox::OpBox::DiagonalBox
     DiagonalBox,
+
+    /// Classical expression.
+    ///
+    /// An operation of this type is accompanied by a [`ClExpr`] object.
+    ///
+    /// This is a replacement of the deprecated [`OpType::ClassicalExpBox`].
+    ///
+    ///   [`ClExpr`]: crate::clexpr::ClExpr
+    ClExpr,
 }

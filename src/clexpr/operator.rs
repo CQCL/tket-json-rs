@@ -51,6 +51,12 @@ pub enum ClVariable {
         /// The register index.
         index: u32,
     },
+    /// A constant bit.
+    #[serde(rename = "bit")]
+    Bit {
+        /// The bit index.
+        index: u32,
+    },
 }
 
 impl Default for ClArgument {

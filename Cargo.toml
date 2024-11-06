@@ -25,6 +25,7 @@ pythonize = { workspace = true, optional = true }
 strum = { workspace = true, features = ["derive"] }
 
 [dev-dependencies]
+itertools = { workspace = true }
 pyo3 = { workspace = true }
 rstest = { workspace = true }
 assert-json-diff = { workspace = true }
@@ -37,6 +38,7 @@ name = "integration"
 path = "tests/lib.rs"
 
 [workspace.dependencies]
+itertools = "0.13.0"
 pyo3 = "0.22.2"
 pythonize = "0.22.0"
 rstest = "0.23.0"

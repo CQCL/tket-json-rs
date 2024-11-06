@@ -500,6 +500,8 @@ pub enum OpType {
 
     /// See [`ClassicalExpBox`]
     ///
+    /// Deprecated. Use [`OpType::ClExpr`] instead.
+    ///
     ///   [`ClassicalExpBox`]: crate::opbox::OpBox::ClassicalExpBox
     ClassicalExpBox,
 
@@ -547,4 +549,13 @@ pub enum OpType {
     ///
     ///   [`DiagonalBox`]: crate::opbox::OpBox::DiagonalBox
     DiagonalBox,
+
+    /// Classical expression.
+    ///
+    /// An operation of this type is accompanied by a [`ClExpr`] object.
+    ///
+    /// This is a replacement of the deprecated [`OpType::ClassicalExpBox`].
+    ///
+    ///   [`ClExpr`]: crate::clexpr::ClExpr
+    ClExpr,
 }

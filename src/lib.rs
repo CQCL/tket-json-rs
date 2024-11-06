@@ -3,6 +3,7 @@
 //! [TKET](https://github.com/CQCL/tket) quantum compiler.
 
 pub mod circuit_json;
+pub mod clexpr;
 pub mod opbox;
 pub mod optype;
 #[cfg(feature = "pyo3")]

@@ -1,6 +1,7 @@
 //! Contains structs for serializing and deserializing TKET circuits to and from
 //! JSON.
 
+use crate::clexpr::ClExpr;
 use crate::opbox::OpBox;
 use crate::optype::OpType;
 use serde::{Deserialize, Serialize};
@@ -168,6 +169,12 @@ pub struct Operation<P = String> {
     #[serde(rename = "box")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub op_box: Option<OpBox>,
+    /// Classical expression.
+    ///
+    /// Required if the operation is of type [`OpType::ClExpr`].
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "expr")]
+    pub classical_expr: Option<ClExpr>,
     /// The pre-computed signature.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub signature: Option<Vec<String>>,
@@ -240,6 +247,7 @@ impl<P> Default for Operation<P> {
             data: None,
             params: None,
             op_box: None,
+            classical_expr: None,
             signature: None,
             conditional: None,
             classical: None,
@@ -289,6 +297,7 @@ impl<P> Operation<P> {
                 .params
                 .map(|params| params.into_iter().map(f).collect()),
             op_box: self.op_box,
+            classical_expr: self.classical_expr,
             signature: self.signature,
             conditional: self.conditional,
             classical: self.classical,

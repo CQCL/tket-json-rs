@@ -4,11 +4,9 @@
 use crate::clexpr::ClExpr;
 use crate::opbox::OpBox;
 use crate::optype::OpType;
-use serde::{Deserialize, Serialize};
+use crate::register::{Bit, BitRegister, ElementId, Qubit};
 
-/// A register of locations sharing the same name.
-#[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
-pub struct Register(pub String, pub Vec<i64>);
+use serde::{Deserialize, Serialize};
 
 /// A gate defined by a circuit.
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
@@ -19,23 +17,6 @@ pub struct CompositeGate {
     pub args: Vec<String>,
     /// The circuit defining the gate.
     pub definition: Box<SerialCircuit>,
-}
-
-/// A classical bit register.
-#[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
-pub struct BitRegister {
-    /// Name of the bit register.
-    pub name: String,
-    /// Number of bits in the register.
-    pub size: u32,
-}
-
-/// A vector of booleans.
-#[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
-#[serde(transparent)]
-pub struct Bitstring {
-    /// Vector of booleans.
-    pub vec: Vec<bool>,
 }
 
 /// A 2D matrix.
@@ -53,8 +34,8 @@ pub struct Matrix<T = f64> {
 pub enum ClassicalExpUnit {
     /// Unsigned 32-bit integer.
     U32(u32),
-    /// Register of locations.
-    Register(Register),
+    /// Individual bit.
+    Bit(Bit),
     /// Register of bits.
     BitRegister(BitRegister),
     /// A nested classical expression.
@@ -195,7 +176,9 @@ pub struct Command<P = String> {
     /// The operation to be applied.
     pub op: Operation<P>,
     /// The arguments to the operation.
-    pub args: Vec<Register>,
+    ///
+    /// May correspond to either [`Qubit`]s or [`Bit`]s, depending on the operation.
+    pub args: Vec<ElementId>,
     /// Operation group identifier.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub opgroup: Option<String>,
@@ -209,7 +192,7 @@ pub struct Permutation(pub Vec<(Vec<bool>, Vec<bool>)>);
 
 /// An implicit permutation of the elements of a register.
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
-pub struct ImplicitPermutation(pub Register, pub Register);
+pub struct ImplicitPermutation(pub Qubit, pub Qubit);
 
 /// Pytket canonical serialized circuit
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
@@ -222,10 +205,10 @@ pub struct SerialCircuit<P = String> {
     pub phase: P,
     /// List of commands in the circuit.
     pub commands: Vec<Command<P>>,
-    /// Input qubit registers.
-    pub qubits: Vec<Register>,
-    /// Input bit registers.
-    pub bits: Vec<Register>,
+    /// Input qubits.
+    pub qubits: Vec<Qubit>,
+    /// Input bits.
+    pub bits: Vec<Bit>,
     /// Implicit permutation of the output qubits.
     pub implicit_permutation: Vec<ImplicitPermutation>,
     /// Number of wasm wires in the circuit.
@@ -233,10 +216,10 @@ pub struct SerialCircuit<P = String> {
     pub number_of_ws: Option<u64>,
     /// A list of qubits initialized at the start of the circuit.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub created_qubits: Option<Vec<Register>>,
+    pub created_qubits: Option<Vec<Qubit>>,
     /// A list of qubits discarded at the end of the circuit.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub discarded_qubits: Option<Vec<Register>>,
+    pub discarded_qubits: Option<Vec<Bit>>,
 }
 
 impl<P> Default for Operation<P> {

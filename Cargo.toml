@@ -3,7 +3,7 @@ name = "tket-json-rs"
 version = "0.6.2"
 license = "Apache-2.0"
 edition = "2021"
-rust-version = "1.70"
+rust-version = "1.75"
 
 readme = "README.md"
 documentation = "https://docs.rs/tket-json-rs/"
@@ -17,6 +17,7 @@ categories = ["compilers"]
 name = "tket_json_rs"
 
 [dependencies]
+derive_more = { workspace = true, features = ["display", "from"] }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
 uuid = { workspace = true, features = ["serde"] }
@@ -38,6 +39,7 @@ name = "integration"
 path = "tests/lib.rs"
 
 [workspace.dependencies]
+derive_more = "1.0.0"
 itertools = "0.13.0"
 pyo3 = "0.22.2"
 pythonize = "0.22.0"

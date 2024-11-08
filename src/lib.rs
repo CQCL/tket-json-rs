@@ -8,6 +8,7 @@ pub mod opbox;
 pub mod optype;
 #[cfg(feature = "pyo3")]
 pub mod pytket;
+pub mod register;
 
 pub use circuit_json::SerialCircuit;
 pub use optype::OpType;

@@ -7,9 +7,10 @@
 use std::collections::HashMap;
 
 use crate::circuit_json::{
-    Bitstring, ClassicalExp, CompositeGate, Matrix, Operation, Permutation, Register, SerialCircuit,
+    ClassicalExp, CompositeGate, Matrix, Operation, Permutation, SerialCircuit,
 };
 use crate::optype::OpType;
+use crate::register::{Bitstring, Qubit};
 use serde::{Deserialize, Serialize};
 
 /// Unique identifier for an [`OpBox`].
@@ -113,7 +114,7 @@ pub enum OpBox {
         /// Number of qubits.
         n_qubits: u32,
         /// Map from qubits to inputs.
-        qubit_indices: Vec<(Register, u32)>,
+        qubit_indices: Vec<(Qubit, u32)>,
         /// The phase polynomial definition.
         /// Represented by a map from bitstring to expression of coefficient.
         phase_polynomial: Vec<Vec<(Bitstring, String)>>,
@@ -361,7 +362,7 @@ pub struct UnitaryTableau {
     /// A symplectic tableau.
     pub tab: SymplecticTableau,
     /// Ordered naming of qubits in the tableau.
-    pub qubits: Vec<Register>,
+    pub qubits: Vec<Qubit>,
 }
 
 /// Binary matrix form of a collection of Pauli strings.

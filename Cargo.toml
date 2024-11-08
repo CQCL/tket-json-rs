@@ -3,7 +3,7 @@ name = "tket-json-rs"
 version = "0.6.2"
 license = "Apache-2.0"
 edition = "2021"
-rust-version = "1.70"
+rust-version = "1.75"
 
 readme = "README.md"
 documentation = "https://docs.rs/tket-json-rs/"

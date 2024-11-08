@@ -34,7 +34,7 @@ pub struct Matrix<T = f64> {
 pub enum ClassicalExpUnit {
     /// Unsigned 32-bit integer.
     U32(u32),
-    /// Register of locations.
+    /// Individual bit.
     Bit(Bit),
     /// Register of bits.
     BitRegister(BitRegister),
@@ -205,9 +205,9 @@ pub struct SerialCircuit<P = String> {
     pub phase: P,
     /// List of commands in the circuit.
     pub commands: Vec<Command<P>>,
-    /// Input qubit registers.
+    /// Input qubits.
     pub qubits: Vec<Qubit>,
-    /// Input bit registers.
+    /// Input bits.
     pub bits: Vec<Bit>,
     /// Implicit permutation of the output qubits.
     pub implicit_permutation: Vec<ImplicitPermutation>,

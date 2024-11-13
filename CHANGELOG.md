@@ -2,6 +2,14 @@
 
 ## 0.7.0 (2024-11-13)
 
+### ⚠ BREAKING CHANGES
+
+- Made `SerialCircuit` non exhaustive.
+- `Register` renamed to `ElementId`, `Qubit` and `Bit`
+- Moved some definitions from `::circuit_json` to `::register`
+- Bumped MSRV to rust 1.75
+- Renamed `circuit_json::CompositeGate` to `CustomGate`
+
 ### Features
 
 - [**breaking**] `created/discarded_qubits` circuit attribute ([#87](https://github.com/CQCL/tket-json-rs/pull/87))

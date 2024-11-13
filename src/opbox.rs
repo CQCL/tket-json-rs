@@ -7,7 +7,7 @@
 use std::collections::HashMap;
 
 use crate::circuit_json::{
-    ClassicalExp, CompositeGate, Matrix, Operation, Permutation, SerialCircuit,
+    ClassicalExp, CustomGate, Matrix, Operation, Permutation, SerialCircuit,
 };
 use crate::optype::OpType;
 use crate::register::{Bitstring, Qubit};
@@ -129,10 +129,11 @@ pub enum OpBox {
     /// A user-defined assertion specified by a 2x2, 4x4, or 8x8 projector matrix.
     ProjectorAssertionBox { id: BoxID, matrix: Matrix },
     /// A user-defined gate defined by a parametrised Circuit.
+    #[serde(alias = "Composite")]
     CustomGate {
         id: BoxID,
         /// The gate defined as a circuit.
-        gate: CompositeGate,
+        gate: CustomGate,
         // Vec of Symengine Expr
         params: Vec<String>,
     },

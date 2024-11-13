@@ -486,6 +486,7 @@ pub enum OpType {
     /// See [`CustomGate`]
     ///
     ///   [`CustomGate`]: crate::opbox::OpBox::CustomGate
+    #[serde(alias = "Composite")]
     CustomGate,
 
     /// See [`QControlBox`]

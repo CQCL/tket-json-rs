@@ -9,8 +9,10 @@ use crate::register::{Bit, BitRegister, ElementId, Qubit};
 use serde::{Deserialize, Serialize};
 
 /// A gate defined by a circuit.
+///
+/// Previously known as `CompositeGate`.
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
-pub struct CompositeGate {
+pub struct CustomGate {
     /// Name of the composite gate.
     pub name: String,
     /// Expressions corresponding to parameter values of the composite gate, if it has parameters.

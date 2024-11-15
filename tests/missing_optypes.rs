@@ -47,7 +47,8 @@ fn missing_optypes() -> PyResult<()> {
                 .fold(msg, |msg, s| msg + "  - " + &s + "\n");
             let msg =
                 msg + "Please add them to the `OpType` enum in `tket_json_rs/src/optype.rs`.\n";
-            panic!("{msg}");
+            println!("{msg}");
+            panic!("Found missing ops in `tket_json_rs`.");
         }
 
         Ok(())
@@ -74,7 +75,8 @@ fn missing_classical_optypes() -> PyResult<()> {
                 .fold(msg, |msg, s| msg + "  - " + &s + "\n");
             let msg =
                 msg + "Please add them to the `ClOp` enum in `tket_json_rs/src/clexpr/op.rs`.\n";
-            panic!("{msg}");
+            println!("{msg}");
+            panic!("Found missing classical ops in `tket_json_rs`.");
         }
 
         Ok(())

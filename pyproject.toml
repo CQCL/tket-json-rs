@@ -7,5 +7,8 @@ authors = [
     { name = "TKET development team", email = "tket-support@quantinuum.com" },
 ]
 
-[tool.uv]
-dev-dependencies = ["pytket>=1.32"]
+[dependency-groups]
+# Default dev dependency group
+dev = [{ include-group = "lint" }, { include-group = "test" }]
+lint = ["pre-commit >=3.6.0,<4", "ruff >=0.6.2,<0.7", "mypy ==1.10.0"]
+test = ["pytest >=6.2.4,<7", "pytket>=1.32"]

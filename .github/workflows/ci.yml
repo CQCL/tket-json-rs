@@ -3,7 +3,7 @@ name: Continuous integration
 on:
   push:
     branches:
-      - main 
+      - main
   pull_request:
     branches:
       - main
@@ -71,7 +71,7 @@ jobs:
         run: cargo test --verbose --no-default-features
       - name: Tests with all features
         run: cargo test --verbose --all-features
-  
+
   rs-semver-checks:
     needs: [check]
     if: ${{ github.event_name == 'pull_request' }}

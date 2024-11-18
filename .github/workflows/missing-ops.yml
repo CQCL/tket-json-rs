@@ -3,7 +3,7 @@ name: Detect missing operation definitions
 on:
   push:
     branches:
-      - main 
+      - main
   pull_request:
     branches:
       - main

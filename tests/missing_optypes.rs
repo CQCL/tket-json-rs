@@ -4,7 +4,7 @@
 //! The `pyo3` feature enables the `extension-module` feature in `pyo3`, which is useful
 //! for distributing rust crates with pyo3 bindings without having it link to libpython,
 //! but prevents us from running these tests.
-//! Hence why this tests are not compiled when the `pyo3` feature is enabled.
+//! Hence why these tests are not compiled when the `pyo3` feature is enabled.
 #![cfg(not(feature = "pyo3"))]
 
 use std::str::FromStr;

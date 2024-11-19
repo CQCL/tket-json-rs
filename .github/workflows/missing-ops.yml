@@ -3,7 +3,7 @@ name: Detect missing operation definitions
 on:
   push:
     branches:
-      - main 
+      - main
   pull_request:
     branches:
       - main
@@ -16,6 +16,9 @@ env:
   CARGO_TERM_COLOR: always
   SCCACHE_GHA_ENABLED: "true"
   RUSTC_WRAPPER: "sccache"
+  # Pinned version for the uv package manager
+  UV_VERSION: "0.5.1"
+  UV_FROZEN: 1
 
 jobs:
   missing-optypes:
@@ -32,20 +35,16 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt, clippy
-      - name: Install poetry
-        run: pipx install poetry
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v3
         with:
-          python-version: '3.12'
-          cache: "poetry"
-      - name: Update the project dependencies
-        run: poetry -C tests update
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
       - name: Run the missing op types test
         id: check_missing_optypes
         run: |
           set +e
-          poetry -C tests run -- cargo test --test integration -- --ignored missing_optypes --nocapture --test-threads=1 > missing_optypes.txt
+          uv run -- cargo test --test integration -- --ignored missing_optypes --nocapture --test-threads=1 > missing_optypes.txt
           if [ $? -eq 0 ]; then
             echo "The test passed."
             echo "fail=false" >> $GITHUB_OUTPUT

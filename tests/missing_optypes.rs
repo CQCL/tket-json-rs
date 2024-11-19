@@ -1,6 +1,11 @@
 //! Integration test to detect missing optypes in the optype module.
 //!
-//! Requires the `pyo3` feature to be enabled.
+//! The `pyo3` dependency is included as a dev-dependency in the `Cargo.toml` file.
+//! The `pyo3` feature enables the `extension-module` feature in `pyo3`, which is useful
+//! for distributing rust crates with pyo3 bindings without having it link to libpython,
+//! but prevents us from running these tests.
+//! Hence why these tests are not compiled when the `pyo3` feature is enabled.
+#![cfg(not(feature = "pyo3"))]
 
 use std::str::FromStr;
 

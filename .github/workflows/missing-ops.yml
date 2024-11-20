@@ -26,7 +26,8 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     outputs:
-      should_notify: ${{ steps.check_status.outputs.result }}
+      should_notify: ${{ steps.check_missing_optypes.outputs.fail }}
+      diagnostic: ${{ steps.check_missing_optypes.outputs.diagnostic }}
     steps:
       - uses: actions/checkout@v4
       - uses: mozilla-actions/sccache-action@v0.0.6
@@ -41,31 +42,36 @@ jobs:
           enable-cache: true
       - name: Run the missing op types test
         id: check_missing_optypes
-        run: uv run -- cargo test --test integration -- --ignored missing_optypes
-      - name: Set output flags
-        id: check_status
-        if: always()
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const outcome = ${{ steps.check_missing_optypes.outcome != 'success' }};
-            console.log(`The outcome is: ${outcome}`);
-            return outcome
-          result-encoding: string
+        run: |
+          set +e
+          uv run -- cargo test --test integration -- --ignored missing_optypes --nocapture --test-threads=1 > missing_optypes.txt
+          if [ $? -eq 0 ]; then
+            echo "The test passed."
+            echo "fail=false" >> $GITHUB_OUTPUT
+          else
+            echo "The test failed with error code $?."
+            echo
+            cat missing_optypes.txt
+            echo "fail=true" >> $GITHUB_OUTPUT
+          fi
+          echo "diagnostic=$(cat missing_optypes.txt)" >> $GITHUB_OUTPUT
 
-  notify-slack:
-    uses: CQCL/hugrverse-actions/.github/workflows/slack-notifier.yml@main
+  create-issue:
+    uses: CQCL/hugrverse-actions/.github/workflows/create-issue.yml@main
     needs: missing-optypes
     if: ${{ needs.missing-optypes.outputs.should_notify == 'true' && ( github.event_name == 'schedule' || github.event_name == 'push' ) }}
     with:
-      channel-id: 'C040CRWH9FF'
-      slack-message: |
-        ⚠️ `tket-json-rs` is missing OpType definitions.
-        See <https://github.com/CQCL/tket-json-rs/actions/runs/${{ github.run_id }}|the failing check> for more info.
-      # Rate-limit the message to once per week
-      timeout-minutes: 10080
-      # A repository variable used to store the last message timestamp.
-      timeout-variable: "MISSING_OPS_MSG_SENT"
+        title: "`tket-json-rs` is missing OpType definitions."
+        body: |
+            ⚠️ `tket-json-rs` is missing OpType definitions.
+
+            ```
+            $DIAGNOSTIC
+            ```
+
+            See [https://github.com/CQCL/tket-json-rs/actions/runs/${{ github.run_id }}](the failing check) for more info.
+        unique-label: "missing-ops"
+        other-labels: "bug"
     secrets:
-        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         GITHUB_PAT: ${{ secrets.HUGRBOT_PAT }}
+        DIAGNOSTIC: ${{ needs.missing-optypes.outputs.diagnostic }}

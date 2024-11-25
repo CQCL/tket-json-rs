@@ -12,10 +12,14 @@ use strum::EnumString;
 #[non_exhaustive]
 pub enum OpType {
     /// Quantum input node of the circuit
-    Input,
+    #[serde(rename = "Input")]
+    #[pyo3(name = "Input")]
+    InputNode,
 
     /// Quantum output node of the circuit
-    Output,
+    #[serde(rename = "Output")]
+    #[pyo3(name = "Output")]
+    OutputNode,
 
     /// Quantum node with no predecessors, implicitly in zero state.
     Create,

@@ -1,5 +1,12 @@
 # Release notes
 
+## 0.7.1 (2024-11-29)
+
+### Features
+
+- Update to pyo3 23 (allow free-threaded python) ([#102](https://github.com/CQCL/tket-json-rs/pull/102))
+
+
 ## 0.7.0 (2024-11-13)
 
 ### ⚠ BREAKING CHANGES

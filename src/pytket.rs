@@ -21,7 +21,7 @@ impl SerialCircuit {
     /// Convert a `SerialCircuit` to a `pytket.Circuit`.
     pub fn to_tket1<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyAny>> {
         let dict = pythonize(py, self).unwrap();
-        let circ_module = PyModule::import_bound(py, "pytket.circuit")?;
+        let circ_module = PyModule::import(py, "pytket.circuit")?;
 
         circ_module
             .getattr("Circuit")?

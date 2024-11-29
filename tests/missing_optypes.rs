@@ -39,7 +39,7 @@ fn missing_optypes() -> PyResult<()> {
 
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let Ok(pytket) = PyModule::import_bound(py, "pytket") else {
+        let Ok(pytket) = PyModule::import(py, "pytket") else {
             panic!("Failed to import `pytket`. Make sure the python library is installed.");
         };
         let py_enum = pytket.getattr("OpType")?;
@@ -67,7 +67,7 @@ fn missing_classical_optypes() -> PyResult<()> {
 
     pyo3::prepare_freethreaded_python();
     Python::with_gil(|py| {
-        let Ok(pytket) = PyModule::import_bound(py, "pytket") else {
+        let Ok(pytket) = PyModule::import(py, "pytket") else {
             panic!("Failed to import `pytket`. Make sure the python library is installed.");
         };
         let py_enum = pytket.getattr("circuit")?.getattr("ClOp")?;

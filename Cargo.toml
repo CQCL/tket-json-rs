@@ -41,7 +41,7 @@ path = "tests/lib.rs"
 [workspace.dependencies]
 derive_more = "1.0.0"
 itertools = "0.13.0"
-pyo3 = "0.23.2"
+pyo3 = "0.23.3"
 pythonize = "0.23.0"
 rstest = "0.23.0"
 serde = "1.0"

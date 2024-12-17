@@ -45,16 +45,18 @@ jobs:
         run: |
           set +e
           uv run -- cargo test --test integration -- --ignored missing_optypes --nocapture --test-threads=1 > missing_optypes.txt
+          cat missing_optypes.txt
+          echo
           if [ $? -eq 0 ]; then
             echo "The test passed."
             echo "fail=false" >> $GITHUB_OUTPUT
           else
             echo "The test failed with error code $?."
-            echo
-            cat missing_optypes.txt
             echo "fail=true" >> $GITHUB_OUTPUT
           fi
-          echo "diagnostic=$(cat missing_optypes.txt)" >> $GITHUB_OUTPUT
+          echo "diagnostic<<EOF" >> $GITHUB_OUTPUT
+          cat missing_optypes.txt >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
   create-issue:
     uses: CQCL/hugrverse-actions/.github/workflows/create-issue.yml@main
@@ -66,7 +68,7 @@ jobs:
             ⚠️ `tket-json-rs` is missing OpType definitions.
 
             ```
-            $DIAGNOSTIC
+            ${{ needs.missing-optypes.outputs.diagnostic }}
             ```
 
             See [https://github.com/CQCL/tket-json-rs/actions/runs/${{ github.run_id }}](the failing check) for more info.
@@ -74,4 +76,3 @@ jobs:
         other-labels: "bug"
     secrets:
         GITHUB_PAT: ${{ secrets.HUGRBOT_PAT }}
-        DIAGNOSTIC: ${{ needs.missing-optypes.outputs.diagnostic }}

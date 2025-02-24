@@ -1,5 +1,11 @@
 # Release notes
 
+## 0.7.2 (2025-02-24)
+
+### Features
+
+- Updated dependencies
+
 
 ## 0.7.1 (2024-11-29)
 

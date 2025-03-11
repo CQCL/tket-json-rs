@@ -6,11 +6,14 @@ use crate::opbox::OpBox;
 use crate::optype::OpType;
 use crate::register::{Bit, BitRegister, ElementId, Qubit};
 
+#[cfg(feature = "schemars")]
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 /// A gate defined by a circuit.
 ///
 /// Previously known as `CompositeGate`.
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct CustomGate {
     /// Name of the composite gate.
@@ -22,6 +25,7 @@ pub struct CustomGate {
 }
 
 /// A 2D matrix.
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
 #[serde(transparent)]
 pub struct Matrix<T = f64> {
@@ -30,6 +34,7 @@ pub struct Matrix<T = f64> {
 }
 
 /// The units used in a [`ClassicalExp`].
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
 #[serde(untagged)]
 #[non_exhaustive]
@@ -45,6 +50,7 @@ pub enum ClassicalExpUnit {
 }
 
 /// A box for holding classical expressions on Bits.
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct ClassicalExp {
     /// Arguments to the expression.
@@ -54,6 +60,7 @@ pub struct ClassicalExp {
 }
 
 /// Decorates another op, adding a QASM-style classical condition.
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct Conditional {
     /// Internal operation to conditionally apply.
@@ -71,6 +78,7 @@ pub struct Conditional {
 // Serde will return the first matching variant when deserializing,
 // so CopyBits and SetBits must come after other variants that
 // define `values` and `n_i`.
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 #[serde(untagged)]
 #[non_exhaustive]
@@ -122,6 +130,7 @@ pub enum Classical {
 }
 
 /// Additional fields for Wasm operations.
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct Wasm {
     n: u64,
@@ -133,6 +142,7 @@ pub struct Wasm {
 }
 
 /// Serializable operation descriptor.
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 #[non_exhaustive]
 pub struct Operation<P = String> {
@@ -173,6 +183,7 @@ pub struct Operation<P = String> {
 }
 
 /// Operation applied in a circuit, with defined arguments.
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct Command<P = String> {
     /// The operation to be applied.
@@ -188,15 +199,18 @@ pub struct Command<P = String> {
 
 /// A classic basis state permutation.
 /// Used when defining Toffoli boxes.
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
 #[serde(transparent)]
 pub struct Permutation(pub Vec<(Vec<bool>, Vec<bool>)>);
 
 /// An implicit permutation of the elements of a register.
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct ImplicitPermutation(pub Qubit, pub Qubit);
 
 /// Pytket canonical serialized circuit
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 #[non_exhaustive]
 pub struct SerialCircuit<P = String> {

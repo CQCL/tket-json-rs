@@ -1,10 +1,13 @@
 //! A tree of operators forming a classical expression.
 
+#[cfg(feature = "schemars")]
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 use super::op::ClOp;
 
 /// A node in a classical expression tree.
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Debug, Default, PartialEq, Clone, Serialize, Deserialize)]
 #[non_exhaustive]
 pub struct ClOperator {
@@ -15,6 +18,7 @@ pub struct ClOperator {
 }
 
 /// An argument to a classical expression operation.
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
 #[non_exhaustive]
 #[serde(tag = "type", content = "input")]
@@ -28,6 +32,7 @@ pub enum ClArgument {
 }
 
 /// A terminal argument in a classical expression operation.
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
 #[non_exhaustive]
 #[serde(tag = "type", content = "term")]
@@ -41,6 +46,7 @@ pub enum ClTerminal {
 }
 
 /// A variable terminal argument in a classical expression operation.
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Debug, PartialEq, Clone, Serialize, Deserialize, Hash)]
 #[non_exhaustive]
 #[serde(tag = "type", content = "var")]

@@ -11,15 +11,19 @@ use crate::circuit_json::{
 };
 use crate::optype::OpType;
 use crate::register::{Bitstring, Qubit};
+#[cfg(feature = "schemars")]
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 /// Unique identifier for an [`OpBox`].
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct BoxID(uuid::Uuid);
 
 /// Box for an operation, the enum variant names come from the names
 /// of the C++ operations and are renamed if the string corresponding
 /// to the operation is differently named when serializing.
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 #[serde(tag = "type")]
 #[allow(missing_docs)]
@@ -257,6 +261,7 @@ fn default_true() -> bool {
 }
 
 /// Strategies for synthesising ToffoliBoxes.
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 #[non_exhaustive]
 pub enum ToffoliBoxSynthStrat {
@@ -267,6 +272,7 @@ pub enum ToffoliBoxSynthStrat {
 }
 
 /// Strategies for synthesising PauliBoxes.
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Default)]
 #[non_exhaustive]
 pub enum PauliSynthStrat {
@@ -281,6 +287,7 @@ pub enum PauliSynthStrat {
 }
 
 /// Strategies for partitioning Pauli tensors.
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Default)]
 #[non_exhaustive]
 pub enum PauliPartitionStrat {
@@ -293,6 +300,7 @@ pub enum PauliPartitionStrat {
 }
 
 /// Available methods to perform graph colouring.
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Default)]
 #[non_exhaustive]
 pub enum GraphColourMethod {
@@ -311,6 +319,7 @@ pub enum GraphColourMethod {
 }
 
 /// Available configurations for CXs upon decompose phase gadgets
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Default)]
 #[non_exhaustive]
 pub enum CXConfigType {
@@ -328,6 +337,7 @@ pub enum CXConfigType {
 
 /// A simple struct for Pauli strings with +/- phase, used to represent Pauli
 /// strings in a stabiliser subgroup.
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct PauliStabiliser {
     coeff: bool,
@@ -335,6 +345,7 @@ pub struct PauliStabiliser {
 }
 
 /// An object holding resource data for use in a [`OpType::DummyBox`].
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct ResourceData {
     /// Dictionary of counts of selected [`OpType`]s.
@@ -349,6 +360,7 @@ pub struct ResourceData {
 
 /// Structure holding a minimum and maximum value of some resource, where both
 /// values are unsigned integers.
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct ResourceBounds {
     /// Minimum value.
@@ -358,6 +370,7 @@ pub struct ResourceBounds {
 }
 
 /// Binary matrix form of a stabilizer tableau for unitary Clifford circuits.
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct UnitaryTableau {
     /// A symplectic tableau.
@@ -367,6 +380,7 @@ pub struct UnitaryTableau {
 }
 
 /// Binary matrix form of a collection of Pauli strings.
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct SymplecticTableau {
     /// Number of rows in the tableau.

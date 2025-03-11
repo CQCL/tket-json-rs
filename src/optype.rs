@@ -3,12 +3,15 @@
 
 #[cfg(feature = "pyo3")]
 use pyo3::prelude::*;
+#[cfg(feature = "schemars")]
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use strum::EnumString;
 
 /// Operation types in a quantum circuit.
 #[cfg_attr(feature = "pyo3", pyclass(name = "RsOpType", eq, eq_int))]
 #[derive(Deserialize, Serialize, Clone, Debug, Default, PartialEq, Eq, Hash, EnumString)]
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[non_exhaustive]
 pub enum OpType {
     /// Quantum input node of the circuit

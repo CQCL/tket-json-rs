@@ -1,11 +1,14 @@
 //! Classical expression operations.
 
+#[cfg(feature = "schemars")]
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use strum::EnumString;
 
 /// List of supported classical expressions.
 ///
 /// Corresponds to `pytket.circuit.ClOp`.
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Deserialize, Serialize, Clone, Debug, Default, PartialEq, Eq, Hash, EnumString)]
 #[non_exhaustive]
 pub enum ClOp {

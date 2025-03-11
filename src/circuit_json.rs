@@ -7,7 +7,7 @@ use crate::optype::OpType;
 use crate::register::{Bit, BitRegister, ElementId, Qubit};
 
 #[cfg(feature = "schemars")]
-use schemars::{schema_for, JsonSchema};
+use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 /// A gate defined by a circuit.

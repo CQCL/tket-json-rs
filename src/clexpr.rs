@@ -4,6 +4,8 @@ pub mod op;
 pub mod operator;
 
 use operator::ClOperator;
+#[cfg(feature = "schemars")]
+use schemars::JsonSchema;
 use serde::de::SeqAccess;
 use serde::ser::SerializeSeq;
 use serde::{Deserialize, Serialize};
@@ -17,6 +19,7 @@ use serde::{Deserialize, Serialize};
 ///
 ///   [`Operation`]: crate::circuit_json::Operation
 ///   [`OpType::ClExpr`]: crate::optype::OpType::ClExpr
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Debug, Default, PartialEq, Clone, Serialize, Deserialize)]
 #[non_exhaustive]
 pub struct ClExpr {
@@ -36,6 +39,7 @@ pub struct ClExpr {
 /// Contains the input index as well as the bits that are part of the register.
 ///
 /// Serialized as a list with two elements: the index and the bits.
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Debug, Default, PartialEq, Clone)]
 pub struct InputClRegister {
     /// The index of the register variable in the expression.
@@ -47,6 +51,7 @@ pub struct InputClRegister {
 /// The sequence of positions of bits in the output.
 ///
 /// Registers are little-endian, so the first bit is the least significant.
+#[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Debug, Default, PartialEq, Clone, Serialize, Deserialize)]
 #[serde(transparent)]
 pub struct ClRegisterBits(pub Vec<u32>);

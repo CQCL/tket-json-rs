@@ -1,0 +1,1385 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://cambridgequantum.com/schemas/tket/circuit_v1.json",
+  "type": "object",
+  "description": "Serialized form of pytket Circuit v1.",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Optional name field."
+    },
+    "phase": {
+      "$ref": "#/definitions/expression",
+      "description": "Global phase of circuit as expression string."
+    },
+    "qubits": {
+      "type": "array",
+      "description": "Qubits in Circuit.",
+      "items": {
+        "$ref": "#/definitions/unitid"
+      }
+    },
+    "bits": {
+      "type": "array",
+      "description": "Classical Bits in Circuit.",
+      "items": {
+        "$ref": "#/definitions/unitid"
+      }
+    },
+    "implicit_permutation": {
+      "type": "array",
+      "description": "Implicit permutation in circuit, due to wire swaps in DAG. Expressed as array of pairs, of starting qubit to final.",
+      "items": {
+        "type": "array",
+        "items": [
+          {
+            "$ref": "#/definitions/unitid"
+          },
+          {
+            "$ref": "#/definitions/unitid"
+          }
+        ]
+      }
+    },
+    "commands": {
+      "type": "array",
+      "description": "Sequentially ordered Commands, expressed by the operation and qubits it acts on.",
+      "items": {
+        "$ref": "#/definitions/command"
+      }
+    }
+  },
+  "required": [
+    "phase",
+    "qubits",
+    "bits",
+    "implicit_permutation",
+    "commands"
+  ],
+  "definitions": {
+    "unitid": {
+      "type": "array",
+      "description": "UnitID (Bits and Qubits). First element is register name, second is array of indices.",
+      "items": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      ]
+    },
+    "expression": {
+      "type": "string",
+      "description": "A string representation of a symbolic expression."
+    },
+    "command": {
+      "type": "object",
+      "properties": {
+        "op": {
+          "$ref": "#/definitions/operation",
+          "description": "The operation, e.g. gate, box, conditional."
+        },
+        "args": {
+          "type": "array",
+          "description": "The qubits and bits the command acts on.",
+          "items": {
+            "$ref": "#/definitions/unitid"
+          }
+        },
+        "opgroup": {
+          "type": "string",
+          "description": "Name of the replaceable operation group that the command belongs to."
+        }
+      },
+      "required": [
+        "op",
+        "args"
+      ]
+    },
+    "conditional": {
+      "type": "object",
+      "description": "An operation which expresses how a nested operation is conditional on some bits.",
+      "properties": {
+        "op": {
+          "$ref": "#/definitions/operation"
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of bits that the nested operation is conditional on."
+        },
+        "value": {
+          "type": "integer",
+          "description": "The value the bits must express when interpreted as an unsigned integer bitstring."
+        }
+      },
+      "required": [
+        "op",
+        "width",
+        "value"
+      ]
+    },
+    "classical": {
+      "type": "object",
+      "description": "Operations which only act on Bits classically.",
+      "oneOf": [
+        {
+          "properties": {
+            "op": {
+              "$ref": "#/definitions/operation"
+            },
+            "n": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Multiplier on underlying op for MultiBitOp."
+            }
+          },
+          "required": [
+            "op",
+            "n"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "properties": {
+            "n_i": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of pure input wires to the RangePredicate."
+            },
+            "lower": {
+              "type": "integer",
+              "maximum": 18446744073709551615,
+              "description": "The inclusive minimum of the RangePredicate as a uint64."
+            },
+            "upper": {
+              "type": "integer",
+              "maximum": 18446744073709551615,
+              "description": "The inclusive maximum of the RangePredicate as a uint64."
+            }
+          },
+          "required": [
+            "n_i",
+            "lower",
+            "upper"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "properties": {
+            "n_i": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of input wires to the CopyBitsOp."
+            }
+          },
+          "required": [
+            "n_i"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "properties": {
+            "values": {
+              "type": "array",
+              "items": {
+                "type": "boolean"
+              },
+              "description": "List of bools that SetBitsOp sets bits to."
+            }
+          },
+          "required": [
+            "values"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "properties": {
+            "values": {
+              "type": "array",
+              "items": {
+                "type": "boolean"
+              },
+              "description": "Truth table of ExplicitModifierOp/ExplicitPredicateOp."
+            },
+            "n_i": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of pure input wires to the ExplicitModifierOp/ExplicitPredicateOp."
+            },
+            "name": {
+              "type": "string",
+              "description": "Name of classical ExplicitModifierOp/ExplicitPredicateOp (e.g. AND)."
+            }
+          },
+          "required": [
+            "n_i",
+            "name",
+            "values"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "properties": {
+            "values": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 4294967295
+              },
+              "description": "Truth table of ClassicalTransformOp."
+            },
+            "n_io": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of input/output wires to the ClassicalTransformOp."
+            },
+            "name": {
+              "type": "string",
+              "description": "Name of classical ClassicalTransformOp (e.g. ClassicalCX)."
+            }
+          },
+          "required": [
+            "n_io",
+            "name",
+            "values"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "signature": {
+      "type": "array",
+      "description": "The sequence of Bits and Qubits expected by the operation.",
+      "items": {
+        "type": "string",
+        "description": "Q means Qubit, B means Bit, C means read-only classical bit.",
+        "enum": [
+          "Q",
+          "B",
+          "C"
+        ]
+      }
+    },
+    "operation": {
+      "type": "object",
+      "description": "A representation of the operation performed.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "A string corresponding to the tket OpType of the operation."
+        },
+        "n_qb": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of qubits acted on. Required of signature not set."
+        },
+        "data": {
+          "type": "string",
+          "description": "additional string stored in the op"
+        },
+        "params": {
+          "type": "array",
+          "description": "Expressions corresponding to parameter values of the operation, if it has parameters.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "box": {
+          "$ref": "#/definitions/box"
+        },
+        "signature": {
+          "$ref": "#/definitions/signature"
+        },
+        "conditional": {
+          "$ref": "#/definitions/conditional"
+        },
+        "classical": {
+          "$ref": "#/definitions/classical"
+        },
+        "expr": {
+          "$ref": "#/definitions/wiredclexpr"
+        },
+        "wasm": {
+          "$ref": "#/definitions/wasm"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "Barrier"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "signature"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "Condition"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "conditional"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "enum": [
+                  "MultiBit",
+                  "RangePredicate",
+                  "ExplicitModifier",
+                  "ExplicitPredicate",
+                  "ClassicalTransform",
+                  "SetBits",
+                  "CopyBits"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "classical"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "ClExpr"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "expr"
+            ]
+          }
+        }
+      ]
+    },
+    "composite_gate": {
+      "type": "object",
+      "description": "An operation defined by another circuit.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of composite gate."
+        },
+        "args": {
+          "type": "array",
+          "description": "Expressions corresponding to parameter values of the composite gate, if it has parameters.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "definition": {
+          "$ref": "#",
+          "description": "The circuit defining the gate."
+        }
+      }
+    },
+    "matrix": {
+      "type": "array",
+      "description": "An arbitrary 2D matrix of values.",
+      "items": {
+        "type": "array"
+      }
+    },
+    "box": {
+      "type": "object",
+      "description": "Boxes allow for alternate representations for operations, that can be synthesised to circuits.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "OpType of Box."
+        },
+        "id": {
+          "type": "string",
+          "description": "Internal UUID used to track boxes.",
+          "format": "uuid"
+        },
+        "circuit": {
+          "$ref": "#",
+          "description": "Definition of sub-circuit contained by CircBox."
+        },
+        "matrix": {
+          "$ref": "#/definitions/matrix",
+          "description": "Matrix represented by certain box types."
+        },
+        "phase": {
+          "type": [
+            "number",
+            "string"
+          ],
+          "description": "Phase parameters required by some box types, either expression or double."
+        },
+        "phase_pair": {
+          "type": "array",
+          "description": "A pair of Phase parameters",
+          "items": {
+            "$ref": "#/definitions/box/properties/phase"
+          }
+        },
+        "paulis": {
+          "type": "array",
+          "description": "A Pauli string, representing a tensor of Pauli operators.",
+          "items": {
+            "type": "string",
+            "description": "The four single qubit Pauli operators.",
+            "enum": [
+              "I",
+              "X",
+              "Y",
+              "Z"
+            ]
+          }
+        },
+        "paulis_pair": {
+          "type": "array",
+          "description": "A pair of Pauli strings, both representing a tensor of Pauli operators.",
+          "items": {
+            "$ref": "#/definitions/box/properties/paulis"
+          }
+        },
+        "pauli_gadgets": {
+          "type": "array",
+          "description": "An array of Pauli gadgets, given as a Pauli string and a phase",
+          "items": {
+            "type": "array",
+            "items": [
+              {
+                "$ref": "#/definitions/box/properties/paulis"
+              },
+              {
+                "$ref": "#/definitions/box/properties/phase"
+              }
+            ]
+          }
+        },
+        "cx_config": {
+          "type": "string",
+          "description": "A configuration parameter controlling the decomposition of Pauli exponentials"
+        },
+        "n_qubits": {
+          "type": "integer",
+          "description": "The number of a qubits a PhasePolyBox acts on.",
+          "minimum": 0
+        },
+        "qubit_indices": {
+          "type": "array",
+          "description": "A map from Qubit to the index in a Pauli string it corresponds to.",
+          "items": {
+            "type": "array",
+            "items": [
+              {
+                "$ref": "#/definitions/unitid"
+              },
+              {
+                "type": "integer"
+              }
+            ]
+          }
+        },
+        "phase_polynomial": {
+          "type": "array",
+          "description": "A phase polynomial represented by a map from bitstring to expression of coefficient.",
+          "items": {
+            "type": "array",
+            "items": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "boolean"
+                }
+              },
+              {
+                "$ref": "#/definitions/expression"
+              }
+            ]
+          }
+        },
+        "linear_transformation": {
+          "$ref": "#/definitions/matrix",
+          "description": "PhasePolyBox linear transformation expressed as boolean matrix."
+        },
+        "gate": {
+          "$ref": "#/definitions/composite_gate"
+        },
+        "params": {
+          "type": "array",
+          "description": "Expressions of CompositeGate paramaters.",
+          "items": {
+            "$ref": "#/definitions/expression"
+          }
+        },
+        "op": {
+          "$ref": "#/definitions/operation",
+          "description": "Sub operation of QControlBox."
+        },
+        "n_controls": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of qubits a QControlBox is conditional on."
+        },
+        "control_state": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Control state expressed as an integer."
+        },
+        "n_i": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "n_io": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "n_o": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "exp": {
+          "$ref": "#/definitions/logicexp"
+        },
+        "tab": {
+          "$ref": "#/definitions/unitary_tableau"
+        },
+        "op_map": {
+          "type": "array",
+          "description": "Operation map for multiplexors.",
+          "items": {
+            "type": "array",
+            "items": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "boolean"
+                }
+              },
+              {
+                "anyOf": [
+                  {"$ref": "#/definitions/operation"},
+                  {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/operation"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "impl_diag": {
+          "type": "boolean",
+          "description": "Indicate whether to implement the digonal operator from MultiplexedU2 decomposition."
+        },
+        "statevector": {
+          "$ref": "#/definitions/matrix",
+          "description": "Statevector represented by StatePreparationBox."
+        },
+        "diagonal": {
+          "$ref": "#/definitions/matrix",
+          "description": "Diagonal matrix represented by DiagonalBox."
+        },
+        "compute": {
+          "$ref": "#/definitions/operation",
+          "description": "Compute operation in ConjugationBox."
+        },
+        "action": {
+          "$ref": "#/definitions/operation",
+          "description": "Action operation in ConjugationBox."
+        },
+        "uncompute": {
+          "anyOf": [
+            {"$ref": "#/definitions/operation"},
+            {"type": "null"}
+          ],
+          "description": "Uncompute operation in ConjugationBox."
+        },
+        "upper_triangle": {
+          "type": "boolean",
+          "description": "Indicate whether to implement multiplexors in the DiagonalBox decomposition as an upper triangle."
+        },
+        "is_inverse": {
+          "type": "boolean",
+          "description": "Indicate whether to implement the dagger of a StatePreparationBox."
+        },
+        "with_initial_reset": {
+          "type": "boolean",
+          "description": "Indicate whether to explicitly reset qubits initially in a StatePreparationBox."
+        },
+        "permutation": {
+          "type": "array",
+          "description": "Map of computational basis states",
+          "items": {
+            "type": "array",
+            "items": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "boolean"
+                }
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "boolean"
+                }
+              }
+            ]
+          } 
+        },
+        "rotation_axis": {
+          "type": "string",
+          "description": "A string corresponding to the tket OpType of the rotation axis."
+        },
+        "strat": {
+          "type": "string",
+          "enum": [
+            "Cycle",
+            "Matching"
+          ],
+          "definition": "Strategies for synthesising \"ToffoliBoxes\""
+        },
+        "resource_bound": {
+          "type": "object",
+          "properties": {
+            "max": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "min": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "max",
+            "min"
+          ],
+          "additionalProperties": false
+        },
+        "optype_resource_bound": {
+          "type": "array",
+          "items": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/box/properties/resource_bound"
+            }
+          ]
+        },
+        "resource_data": {
+          "type": "object",
+          "properties": {
+            "gate_depth": {
+              "$ref": "#/definitions/box/properties/resource_bound"
+            },
+            "two_qubit_gate_depth": {
+              "$ref": "#/definitions/box/properties/resource_bound"
+            },
+            "op_type_count": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/box/properties/optype_resource_bound"
+              }
+            },
+            "op_type_depth": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/box/properties/optype_resource_bound"
+              }
+            }
+          },
+          "required": [
+            "gate_depth",
+            "two_qubit_gate_depth",
+            "op_type_count",
+            "op_type_depth"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "type",
+        "id"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "CircBox"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "circuit"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "Unitary1qBox"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "matrix"
+            ],
+            "maxProperties": 3
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "Unitary2qBox"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "matrix"
+            ],
+            "maxProperties": 3
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "ExpBox"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "matrix",
+              "phase"
+            ],
+            "maxProperties": 4
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "PauliExpBox"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "paulis",
+              "phase",
+              "cx_config"
+            ],
+            "maxProperties": 5
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "PauliExpPairBox"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "paulis_pair",
+              "phase_pair",
+              "cx_config"
+            ],
+            "maxProperties": 5
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "PauliExpCommutingSetBox"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "pauli_gadgets",
+              "cx_config"
+            ],
+            "maxProperties": 4
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "TermSequenceBox"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "pauli_gadgets",
+              "synth_strategy",
+              "partition_strategy",
+              "graph_colouring",
+              "cx_config",
+              "depth_weight"
+            ],
+            "maxProperties": 8
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "ToffoliBox"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "permutation",
+              "rotation_axis",
+              "strat"
+            ],
+            "maxProperties": 5
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "DummyBox"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "n_qubits",
+              "n_bits",
+              "resource_data"
+            ],
+            "maxProperties": 5
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "MultiplexorBox"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "op_map"
+            ],
+            "maxProperties": 3
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "MultiplexedRotationBox"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "op_map"
+            ],
+            "maxProperties": 3
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "MultiplexedU2Box"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "op_map",
+              "impl_diag"
+            ],
+            "maxProperties": 4
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "MultiplexedTensoredU2Box"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "op_map"
+            ],
+            "maxProperties": 3
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "StatePreparationBox"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "statevector",
+              "is_inverse",
+              "with_initial_reset"
+            ],
+            "maxProperties": 5
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "DiagonalBox"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "diagonal",
+              "upper_triangle"
+            ],
+            "maxProperties": 4
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "ConjugationBox"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "compute",
+              "action"
+            ],
+            "optional": [
+              "uncompute"
+            ],
+            "maxProperties": 5
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "PhasePolyBox"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "n_qubits",
+              "qubit_indices",
+              "phase_polynomial",
+              "linear_transformation"
+            ],
+            "maxProperties": 6
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "CustomGate"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "gate",
+              "params"
+            ],
+            "maxProperties": 4
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "QControlBox"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "n_controls",
+              "op",
+              "control_state"
+            ],
+            "maxProperties": 5
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "ClassicalExpBox"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "n_i",
+              "n_io",
+              "n_o",
+              "exp"
+            ],
+            "maxProperties": 6
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "UnitaryTableauBox"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "tab"
+            ],
+            "maxProperties": 3
+          }
+        }
+      ]
+    },
+    "logicexp": {
+      "type": "object",
+      "description": "Logical expression over Bit or BitRegister.",
+      "properties": {
+        "op": {
+          "type": "string",
+          "description": "String representation of classical operation enum. E.g. `BitWiseOp.AND`"
+        },
+        "args": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": [
+                  "integer",
+                  "boolean"
+                ],
+                "description": "Constant values."
+              },
+              {
+                "$ref": "#/definitions/unitid",
+                "description": "Bits."
+              },
+              {
+                "type": "object",
+                "description": "BitRegister",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of register."
+                  },
+                  "size": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "Size of register."
+                  }
+                },
+                "required": [
+                  "name",
+                  "size"
+                ]
+              },
+              {
+                "$ref": "#/definitions/logicexp",
+                "description": "Sub expression."
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "op",
+        "args"
+      ],
+      "additionalProperties": false
+    },
+    "symplectic_tableau": {
+      "type": "object",
+      "description": "Binary matrix form of a collection of Pauli strings.",
+      "properties": {
+        "nrows": {
+          "type": "integer",
+          "description": "Number of rows in the tableau."
+        },
+        "nqubits": {
+          "type": "integer",
+          "description": "Number of qubits (columns) in the tableau."
+        },
+        "xmat": {
+          "$ref": "#/definitions/matrix"
+        },
+        "zmat": {
+          "$ref": "#/definitions/matrix"
+        },
+        "phase": {
+          "$ref": "#/definitions/matrix"
+        }
+      },
+      "required": [
+        "xmat",
+        "zmat",
+        "phase"
+      ],
+      "additionalProperties": false
+    },
+    "unitary_tableau": {
+      "type": "object",
+      "description": "Binary matrix form of a stabilizer tableau for unitary Clifford circuits.",
+      "properties": {
+        "tab": {
+          "$ref": "#/definitions/symplectic_tableau"
+        },
+        "qubits": {
+          "type": "array",
+          "description": "Ordered naming of qubits in the tableau.",
+          "items": {
+            "$ref": "#/definitions/unitid"
+          }
+        }
+      },
+      "required": [
+        "tab",
+        "qubits"
+      ],
+      "additionalProperties": false
+    },
+    "wiredclexpr": {
+      "type": "object",
+      "description": "A classical operation defined over a sequence of bits.",
+      "properties": {
+        "expr": {
+          "$ref": "#/definitions/clexpr"
+        },
+        "bit_posn": {
+          "type": "array",
+          "description": "List of pairs representing map from bit-variable indices to wire positions.",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "reg_posn": {
+          "type": "array",
+          "description": "List of pairs representing map from register-variable indices to lists of wire positions.",
+          "items": {
+            "type": "array",
+            "items": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              }
+            ]
+          }
+        },
+        "output_posn": {
+          "type": "array",
+          "description": "List of wire positions of output bits.",
+          "items": {
+            "type": "integer"
+          }
+        }
+      },
+      "required": [
+        "expr",
+        "bit_posn",
+        "reg_posn",
+        "output_posn"
+      ],
+      "additionalProperties": false
+    },
+    "clexpr": {
+      "type": "object",
+      "description": "An abstract classical expression.",
+      "properties": {
+        "op": {
+          "description": "The operation type.",
+          "type": "string"
+        },
+        "args": {
+          "type": "array",
+          "description": "List of arguments to the operation.",
+          "items": {
+            "$ref": "#/definitions/clexprarg"
+          }
+        }
+      }
+    },
+    "clexprarg":{
+      "type": "object",
+      "description": "Argument to a classical expression.",
+      "properties": {
+        "type": {
+          "description": "The type of argument.",
+          "type": "string",
+          "enum": [
+            "term",
+            "expr"
+          ]
+        },
+        "input": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/clexprterm"
+            },
+            {
+              "$ref": "#/definitions/clexpr"
+            }
+          ]
+        }
+      }
+    },
+    "clexprterm": {
+      "type": "object",
+      "description": "A term in a classical expression.",
+      "properties": {
+        "type": {
+          "description": "The type of term.",
+          "type": "string",
+          "enum": [
+            "int",
+            "var"
+          ]
+        },
+        "term": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "$ref": "#/definitions/clvar"
+            }
+          ]
+        }
+      }
+    },
+    "clvar": {
+      "type": "object",
+      "description": "A free variable in a classical expression.",
+      "properties": {
+        "type": {
+          "description": "The type of variable.",
+          "type": "string",
+          "enum": [
+            "bit",
+            "ref"
+          ]
+        },
+        "var": {
+          "$ref": "#/definitions/clindex"
+        }
+      }
+    },
+    "clindex": {
+      "type": "object",
+      "properties": {
+        "index": {
+          "type": "integer"
+        }
+      }
+    },
+    "wasm": {
+      "type": "object",
+      "description": "A classical operation defined in a WASM program.",
+      "properties": {
+        "func_name": {
+          "description": "Name of the function.",
+          "type": "string"
+        },
+        "n": {
+          "description": "Number of bits on which the operation acts.",
+          "type": "integer",
+          "minimum": 0
+        },
+        "wasm_file_uid": {
+          "description": "UID of WASM object.",
+          "type": "string"
+        },
+        "width_i_parameter": {
+          "description": "Array of number of bits used in each i32 input.",
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "width_o_parameter": {
+          "description": "Array of number of bits used in each i32 output.",
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "ww_n": {
+          "description": "Number of WASM wires attached to the operation.",
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}
+

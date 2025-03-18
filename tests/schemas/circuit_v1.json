@@ -16,14 +16,14 @@
       "type": "array",
       "description": "Qubits in Circuit.",
       "items": {
-        "$ref": "#/definitions/ElementId"
+        "$ref": "#/definitions/unitid"
       }
     },
     "bits": {
       "type": "array",
       "description": "Classical Bits in Circuit.",
       "items": {
-        "$ref": "#/definitions/ElementId"
+        "$ref": "#/definitions/unitid"
       }
     },
     "implicit_permutation": {
@@ -33,10 +33,10 @@
         "type": "array",
         "items": [
           {
-            "$ref": "#/definitions/ElementId"
+            "$ref": "#/definitions/unitid"
           },
           {
-            "$ref": "#/definitions/ElementId"
+            "$ref": "#/definitions/unitid"
           }
         ]
       }
@@ -50,16 +50,16 @@
     }
   },
   "required": [
-    "bits",
-    "commands",
-    "implicit_permutation",
     "phase",
-    "qubits"
+    "qubits",
+    "bits",
+    "implicit_permutation",
+    "commands"
   ],
   "definitions": {
-    "ElementId": {
+    "unitid": {
       "type": "array",
-      "description": "ElementId (Bits and Qubits). First element is register name, second is array of indices.",
+      "description": "UnitID (Bits and Qubits). First element is register name, second is array of indices.",
       "items": [
         {
           "type": "string"
@@ -88,7 +88,7 @@
           "type": "array",
           "description": "The qubits and bits the command acts on.",
           "items": {
-            "$ref": "#/definitions/ElementId"
+            "$ref": "#/definitions/unitid"
           }
         },
         "opgroup": {
@@ -305,6 +305,9 @@
         },
         "expr": {
           "$ref": "#/definitions/wiredclexpr"
+        },
+        "wasm": {
+          "$ref": "#/definitions/wasm"
         }
       },
       "required": [
@@ -492,7 +495,7 @@
             "type": "array",
             "items": [
               {
-                "$ref": "#/definitions/ElementId"
+                "$ref": "#/definitions/unitid"
               },
               {
                 "type": "integer"
@@ -1110,7 +1113,7 @@
                 "description": "Constant values."
               },
               {
-                "$ref": "#/definitions/ElementId",
+                "$ref": "#/definitions/unitid",
                 "description": "Bits."
               },
               {
@@ -1186,7 +1189,7 @@
           "type": "array",
           "description": "Ordered naming of qubits in the tableau.",
           "items": {
-            "$ref": "#/definitions/ElementId"
+            "$ref": "#/definitions/unitid"
           }
         }
       },
@@ -1334,6 +1337,46 @@
       "properties": {
         "index": {
           "type": "integer"
+        }
+      }
+    },
+    "wasm": {
+      "type": "object",
+      "description": "A classical operation defined in a WASM program.",
+      "properties": {
+        "func_name": {
+          "description": "Name of the function.",
+          "type": "string"
+        },
+        "n": {
+          "description": "Number of bits on which the operation acts.",
+          "type": "integer",
+          "minimum": 0
+        },
+        "wasm_file_uid": {
+          "description": "UID of WASM object.",
+          "type": "string"
+        },
+        "width_i_parameter": {
+          "description": "Array of number of bits used in each i32 input.",
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "width_o_parameter": {
+          "description": "Array of number of bits used in each i32 output.",
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "ww_n": {
+          "description": "Number of WASM wires attached to the operation.",
+          "type": "integer",
+          "minimum": 0
         }
       }
     }

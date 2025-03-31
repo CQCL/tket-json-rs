@@ -30,7 +30,7 @@ jobs:
       diagnostic: ${{ steps.check_missing_optypes.outputs.diagnostic }}
     steps:
       - uses: actions/checkout@v4
-      - uses: mozilla-actions/sccache-action@v0.0.8
+      - uses: mozilla-actions/sccache-action@v0.0.9
       - name: Install stable toolchain
         uses: dtolnay/rust-toolchain@stable
         with:

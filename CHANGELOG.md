@@ -1,5 +1,12 @@
 # Release notes
 
+## 0.7.3 (2025-06-02)
+
+### Features
+
+- Add schemars optional feature ([#129](https://github.com/CQCL/tket-json-rs/issues/129))
+
+
 ## 0.7.2 (2025-02-24)
 
 ### Features

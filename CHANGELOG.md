@@ -1,5 +1,16 @@
 # Release notes
 
+## 0.7.4 (2025-06-10)
+
+### Documentation
+
+- Clearup clexpr argument index documentation ([#138](https://github.com/CQCL/tket-json-rs/issues/138))
+
+### Features
+
+- Method for generating BoxIDs ([#139](https://github.com/CQCL/tket-json-rs/issues/139))
+
+
 ## 0.7.3 (2025-06-02)
 
 ### Features

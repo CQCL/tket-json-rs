@@ -13,7 +13,7 @@ use serde::{Deserialize, Serialize};
 /// Data encoding a classical expression.
 ///
 /// A classical expression operates over multi-bit registers and/or individual bits,
-/// which are identified here by their individual bit positions.
+/// each identified by an index local to the expression.
 ///
 /// This is included in a [`Operation`] when the operation is a [`OpType::ClExpr`].
 ///
@@ -27,10 +27,19 @@ pub struct ClExpr {
     /// corresponding bit in the `args` list.
     pub bit_posn: Vec<(u32, u32)>,
     /// The encoded expression.
+    ///
+    /// This expression may only refer to bits and registers by their id either
+    /// in [`Self::bit_posn`] or [`Self::reg_posn`], respectively.
     pub expr: ClOperator,
-    /// The input bits of the expression.
+    /// A list of registers defined over the input bits, with a local
+    /// identifier.
+    ///
+    /// `expr` may contain references to these registers by their
+    /// [`InputClRegister::index`].
     pub reg_posn: Vec<InputClRegister>,
     /// The output bits of the expression.
+    ///
+    /// This is a list of bit indices in [`ClExpr::bit_posn`].
     pub output_posn: ClRegisterBits,
 }
 
@@ -42,13 +51,17 @@ pub struct ClExpr {
 #[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Debug, Default, PartialEq, Clone)]
 pub struct InputClRegister {
-    /// The index of the register variable in the expression.
+    /// The identifier for this register variable in the [`ClExpr::expr`] expression.
     pub index: u32,
     /// The sequence of positions of bits comprising the register variable.
+    ///
+    /// The indexes in this sequence refer to the bits in the [`ClExpr::bit_posn`] list.
     pub bits: ClRegisterBits,
 }
 
 /// The sequence of positions of bits in the output.
+///
+/// The indices here refer to the bit identifiers in the operation's [`ClExpr::bit_posn`].
 ///
 /// Registers are little-endian, so the first bit is the least significant.
 #[cfg_attr(feature = "schemars", derive(JsonSchema))]

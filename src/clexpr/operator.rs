@@ -46,6 +46,8 @@ pub enum ClTerminal {
 }
 
 /// A variable terminal argument in a classical expression operation.
+///
+/// The indices refer to the local identifiers in the [`super::ClExpr`] structure.
 #[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Debug, PartialEq, Clone, Serialize, Deserialize, Hash)]
 #[non_exhaustive]
@@ -54,13 +56,13 @@ pub enum ClVariable {
     /// A register variable.
     #[serde(rename = "reg")]
     Register {
-        /// The register index.
+        /// The register identifier in [`super::ClExpr::reg_posn`].
         index: u32,
     },
     /// A constant bit.
     #[serde(rename = "bit")]
     Bit {
-        /// The bit index.
+        /// The bit identifier in [`super::ClExpr::bit_posn`].
         index: u32,
     },
 }

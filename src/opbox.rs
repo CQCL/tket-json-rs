@@ -5,6 +5,7 @@
 //! schema.
 
 use std::collections::HashMap;
+use std::str::FromStr;
 
 use crate::circuit_json::{
     ClassicalExp, CustomGate, Matrix, Operation, Permutation, SerialCircuit,
@@ -25,15 +26,26 @@ impl BoxID {
     pub fn new() -> Self {
         BoxID(uuid::Uuid::new_v4())
     }
+}
 
-    /// Parse a [`BoxID`] from a UUID string.
-    pub fn from_str(s: &str) -> Result<Self, uuid::Error> {
-        Ok(BoxID(uuid::Uuid::parse_str(s)?))
+impl FromStr for BoxID {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let uuid = uuid::Uuid::from_str(s).map_err(|e| e.to_string())?;
+        Ok(BoxID(uuid))
     }
+}
 
-    /// Get the UUID string representation of the [`BoxID`].
-    pub fn to_string(&self) -> String {
-        self.0.to_string()
+impl std::fmt::Display for BoxID {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
+impl Default for BoxID {
+    fn default() -> Self {
+        BoxID::new()
     }
 }
 

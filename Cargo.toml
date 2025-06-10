@@ -20,7 +20,7 @@ name = "tket_json_rs"
 derive_more = { workspace = true, features = ["display", "from"] }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
-uuid = { workspace = true, features = ["serde"] }
+uuid = { workspace = true, features = ["serde", "v4"] }
 pyo3 = { workspace = true, optional = true, features = ["extension-module"] }
 pythonize = { workspace = true, optional = true }
 schemars = { workspace = true, optional = true, features = ["uuid1"] }

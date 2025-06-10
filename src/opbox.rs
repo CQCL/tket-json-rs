@@ -20,6 +20,23 @@ use serde::{Deserialize, Serialize};
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct BoxID(uuid::Uuid);
 
+impl BoxID {
+    /// Create a new [`BoxID`] with a random UUID.
+    pub fn new() -> Self {
+        BoxID(uuid::Uuid::new_v4())
+    }
+
+    /// Parse a [`BoxID`] from a UUID string.
+    pub fn from_str(s: &str) -> Result<Self, uuid::Error> {
+        Ok(BoxID(uuid::Uuid::parse_str(s)?))
+    }
+
+    /// Get the UUID string representation of the [`BoxID`].
+    pub fn to_string(&self) -> String {
+        self.0.to_string()
+    }
+}
+
 /// Box for an operation, the enum variant names come from the names
 /// of the C++ operations and are renamed if the string corresponding
 /// to the operation is differently named when serializing.

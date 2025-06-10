@@ -5,6 +5,7 @@
 //! schema.
 
 use std::collections::HashMap;
+use std::str::FromStr;
 
 use crate::circuit_json::{
     ClassicalExp, CustomGate, Matrix, Operation, Permutation, SerialCircuit,
@@ -19,6 +20,34 @@ use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct BoxID(uuid::Uuid);
+
+impl BoxID {
+    /// Create a new [`BoxID`] with a random UUID.
+    pub fn new() -> Self {
+        BoxID(uuid::Uuid::new_v4())
+    }
+}
+
+impl FromStr for BoxID {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let uuid = uuid::Uuid::from_str(s).map_err(|e| e.to_string())?;
+        Ok(BoxID(uuid))
+    }
+}
+
+impl std::fmt::Display for BoxID {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
+impl Default for BoxID {
+    fn default() -> Self {
+        BoxID::new()
+    }
+}
 
 /// Box for an operation, the enum variant names come from the names
 /// of the C++ operations and are renamed if the string corresponding

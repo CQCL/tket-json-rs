@@ -10,7 +10,19 @@ use strum::EnumString;
 
 /// Operation types in a quantum circuit.
 #[cfg_attr(feature = "pyo3", pyclass(name = "RsOpType", eq, eq_int))]
-#[derive(Deserialize, Serialize, Clone, Debug, Default, PartialEq, Eq, Hash, EnumString)]
+#[derive(
+    Deserialize,
+    Serialize,
+    Copy,
+    Clone,
+    Debug,
+    Default,
+    PartialEq,
+    Eq,
+    Hash,
+    EnumString,
+    derive_more::Display,
+)]
 #[cfg_attr(feature = "schemars", derive(JsonSchema))]
 #[non_exhaustive]
 pub enum OpType {

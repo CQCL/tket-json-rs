@@ -20,7 +20,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install stable toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
@@ -51,7 +51,7 @@ jobs:
             isMerge: true
     name: tests (Rust ${{ matrix.rust }})
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - id: toolchain
         uses: dtolnay/rust-toolchain@master
         with:
@@ -77,7 +77,7 @@ jobs:
     runs-on: ubuntu-latest
     name: tests (Rust MSRV, min dependencies)
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: mozilla-actions/sccache-action@v0.0.9
       - name: Install MSRV toolchain
         id: toolchain

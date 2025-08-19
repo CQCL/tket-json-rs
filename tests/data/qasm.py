@@ -25,7 +25,7 @@ def qasm_circuit() -> Circuit:
         z q[2];
         cx q[2], q[1];
         """
-    return circuit_from_qasm_str(qasm, use_clexpr=True)
+    return circuit_from_qasm_str(qasm)
 
 
 if __name__ == "__main__":

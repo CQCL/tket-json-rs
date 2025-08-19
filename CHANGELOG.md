@@ -1,5 +1,13 @@
 # Release notes
 
+## 0.7.5 (2025-08-19)
+
+### Features
+
+- Implement `Display` and `Copy` for `OpType` ([#145](https://github.com/CQCL/tket-json-rs/issues/145))
+- Add missing RNG ops ([#148](https://github.com/CQCL/tket-json-rs/issues/148))
+
+
 ## 0.7.4 (2025-06-10)
 
 ### Documentation

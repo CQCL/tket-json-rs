@@ -9,6 +9,7 @@ const CLASSICAL: &str = include_str!("data/classical.json");
 const DIAGONAL: &str = include_str!("data/diagonal-box.json");
 const QASM: &str = include_str!("data/qasm.json");
 const WASM: &str = include_str!("data/wasm.json");
+const RNG: &str = include_str!("data/rng.json");
 
 /// Cleanup some fields in the JSON so that we can compare them.
 fn normalize_json(json: &mut Value) {
@@ -36,6 +37,7 @@ fn normalize_json(json: &mut Value) {
 #[case::diagonal_box(DIAGONAL, 1)]
 #[case::qasm_box(QASM, 4)]
 #[case::wasm_box(WASM, 1)]
+#[case::rng(RNG, 8)]
 fn roundtrip(#[case] json: &str, #[case] num_commands: usize) {
     let mut initial_json: Value = serde_json::from_str(json).unwrap();
     normalize_json(&mut initial_json);

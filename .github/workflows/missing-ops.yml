@@ -40,6 +40,10 @@ jobs:
         with:
           version: ${{ env.UV_VERSION }}
           enable-cache: true
+      - name: Ensure we are using the latest version of pytket
+        run: |
+          # Ensure we are using the latest version of pytket
+          uv lock -P pytket
       - name: Run the missing op types test
         id: check_missing_optypes
         run: |

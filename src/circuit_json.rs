@@ -230,6 +230,9 @@ pub struct SerialCircuit<P = String> {
     /// Number of wasm wires in the circuit.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub number_of_ws: Option<u64>,
+    /// Number of RNG wires in the circuit.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub number_of_rs: Option<u64>,
     /// A list of qubits initialized at the start of the circuit.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub created_qubits: Option<Vec<Qubit>>,
@@ -265,6 +268,7 @@ impl<P: Default> Default for SerialCircuit<P> {
             bits: Default::default(),
             implicit_permutation: Default::default(),
             number_of_ws: None,
+            number_of_rs: None,
             created_qubits: None,
             discarded_qubits: None,
         }
@@ -330,6 +334,7 @@ impl<P> SerialCircuit<P> {
             bits: Vec::new(),
             implicit_permutation: Vec::new(),
             number_of_ws: None,
+            number_of_rs: None,
             created_qubits: None,
             discarded_qubits: None,
         }
@@ -354,6 +359,7 @@ impl<P> SerialCircuit<P> {
             bits: self.bits,
             implicit_permutation: self.implicit_permutation,
             number_of_ws: self.number_of_ws,
+            number_of_rs: self.number_of_rs,
             created_qubits: self.created_qubits,
             discarded_qubits: self.discarded_qubits,
         }

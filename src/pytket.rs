@@ -15,7 +15,7 @@ impl SerialCircuit {
     ///
     /// Utility function that calls [`SerialCircuit::from_tket1`] after acquiring the GIL.
     pub fn from_tket1_with_gil(circ: Py<PyAny>) -> PyResult<Self> {
-        #[allow(deprecated, reason = "Required for compatibility with pyo3 < 0.26")]
+        #[allow(deprecated)] // Required for compatibility with pyo3 < 0.26
         Python::with_gil(|py| Self::from_tket1(circ.bind(py)))
     }
 
@@ -33,7 +33,7 @@ impl SerialCircuit {
     ///
     /// Utility function that calls [`SerialCircuit::to_tket1`] after acquiring the GIL.
     pub fn to_tket1_with_gil(&self) -> PyResult<Py<PyAny>> {
-        #[allow(deprecated, reason = "Required for compatibility with pyo3 < 0.26")]
+        #[allow(deprecated)] // Required for compatibility with pyo3 < 0.26
         Python::with_gil(|py| self.to_tket1(py).map(|x| x.into()))
     }
 }

@@ -37,7 +37,9 @@ where
 fn missing_optypes() -> PyResult<()> {
     println!("Checking missing optypes");
 
+    #[allow(deprecated)] // Required for compatibility with pyo3 < 0.26
     pyo3::prepare_freethreaded_python();
+    #[allow(deprecated)] // Required for compatibility with pyo3 < 0.26
     Python::with_gil(|py| {
         let Ok(pytket) = PyModule::import(py, "pytket") else {
             panic!("Failed to import `pytket`. Make sure the python library is installed.");
@@ -65,7 +67,9 @@ fn missing_optypes() -> PyResult<()> {
 fn missing_classical_optypes() -> PyResult<()> {
     println!("Checking missing classical ops");
 
+    #[allow(deprecated)] // Required for compatibility with pyo3 < 0.26
     pyo3::prepare_freethreaded_python();
+    #[allow(deprecated)] // Required for compatibility with pyo3 < 0.26
     Python::with_gil(|py| {
         let Ok(pytket) = PyModule::import(py, "pytket") else {
             panic!("Failed to import `pytket`. Make sure the python library is installed.");

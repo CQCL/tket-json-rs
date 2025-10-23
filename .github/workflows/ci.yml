@@ -45,7 +45,7 @@ jobs:
         # workaround to ignore non-stable tests when running the merge queue checks
         # see: https://github.community/t/how-to-conditionally-include-exclude-items-in-matrix-eg-based-on-branch/16853/6
         isMerge:
-            - ${{ github.event_name == 'merge_group' }}
+          - ${{ github.event_name == 'merge_group' }}
         exclude:
           - rust: beta
             isMerge: true
@@ -69,7 +69,6 @@ jobs:
         run: cargo test --verbose --no-default-features
       - name: Tests with all features
         run: cargo test --verbose --all-features
-
 
   # Run tests on the minimum supported rust version, with minimal dependency versions
   tests-msrv:
@@ -103,6 +102,7 @@ jobs:
           rm Cargo.lock
           cargo add -p tket-json-rs toml_datetime@=0.7.1
           cargo add -p tket-json-rs toml_parser@=1.0.2
+          cargo add -p tket-json-rs indexmap@=2.11.4
       - name: Build with no features
         run: cargo minimal-versions --direct test --verbose  --no-default-features --no-run
       - name: Tests with no features

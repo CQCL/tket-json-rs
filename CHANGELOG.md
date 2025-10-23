@@ -2,6 +2,10 @@
 
 ## 0.7.7 (2025-10-23)
 
+### Features
+
+- Loosened bound of public dependency `pyo3` to `>= 0.23.4, < 0.27`
+
 
 ## 0.7.6 (2025-09-15)
 

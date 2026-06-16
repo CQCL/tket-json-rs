@@ -21,8 +21,8 @@ large_enum_variant = "warn"
 
 [workspace.dependencies]
 itertools = "0.14.0"
-pyo3 = ">= 0.27.0, < 0.29"
-pythonize = ">= 0.27.0, < 0.29"
+pyo3 = ">= 0.27.0, < 0.30"
+pythonize = ">= 0.27.0, < 0.30"
 rstest = "0.26.1"
 schemars = "1.2.1"
 serde = "1.0.228"

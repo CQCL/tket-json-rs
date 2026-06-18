@@ -1,5 +1,12 @@
 # Release notes
 
+## 0.8.4 (2026-06-16)
+
+### Features
+
+- Relax pyo3 and pythonize dependencies to `>= 0.27.0, < 0.30` ([#192](https://github.com/Quantinuum/tket-json-rs/issues/192))
+
+
 ## 0.8.3 (2026-05-07)
 
 ### Bug Fixes

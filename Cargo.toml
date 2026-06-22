@@ -20,7 +20,7 @@ result_large_err = "warn"
 large_enum_variant = "warn"
 
 [workspace.dependencies]
-itertools = "0.14.0"
+itertools = "0.15.0"
 pyo3 = ">= 0.27.0, < 0.30"
 pythonize = ">= 0.27.0, < 0.30"
 rstest = "0.26.1"
